@@ -27,16 +27,12 @@
     float IMAGE_SIZE_BOUND = 0;
     float SHAPE_QUALITY = 0;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-     
+    if (IS_iPad) {
         IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPAD;
         SHAPE_QUALITY = SHAPE_QUALITY_IPAD;
-        
-    } else {  
-
+    } else {
         IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPHONE;
         SHAPE_QUALITY = SHAPE_QUALITY_IPHONE;
-
     }    
     
     //Create context on background thread

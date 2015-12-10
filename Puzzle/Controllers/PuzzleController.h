@@ -6,18 +6,12 @@
 //  Copyright (c) 2012 Università degli studi di Padova. All rights reserved.
 //
 
+@import UIKit;
+@import QuartzCore;
+@import AVFoundation;
+@import MediaPlayer;
 
-#define IF_IPAD if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#define IF_IPHONE if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-#define HIDE_STATUS_BAR IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
-#define SHOW_STATUS_BAR IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-#import <AVFoundation/AVAudioPlayer.h>
-#import <MediaPlayer/MediaPlayer.h>
 #import "UIImage+CWAdditions.h"
-
 #import "PieceView.h"
 #import "MenuController.h"
 #import "PuzzleCompletedController.h"
@@ -36,12 +30,10 @@
 
 
 @interface PuzzleController : iAdViewController <UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
- 
     
     BOOL swiping;
     BOOL didRotate;
     BOOL receivedFirstTouch;
-    BOOL loadingGame;
     BOOL panningMode;
     BOOL panningDrawerUP;
     BOOL loadingFailed;
@@ -57,14 +49,11 @@
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
 
-
-    
     NSArray *directions_positions;
     NSArray *directions_numbers;
     
     UIAlertView *alertView;
 
-    
     NSInteger numberOfPiecesInDrawer;
     
     NSInteger DrawerPosition;
@@ -142,9 +131,6 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIImageView *imageViewLattice;
 
-
-
-
 + (float)computeFloat:(float)f modulo:(float)m;
 - (NSMutableArray*)shuffleArray:(NSMutableArray*)array;
 
@@ -158,29 +144,26 @@
 - (void)toggleImageWithDuration:(float)duration;
 
 - (IBAction)restartPuzzle:(id)sender;
-- (IBAction)scrollDrawerRight:(id)sender;
-- (IBAction)scrollDrawerLeft:(id)sender;
 - (IBAction)togglePanningMode:(id)sender;
 - (IBAction)puzzleCompleted;
 - (IBAction)toggleMenu:(id)sender;
 
-- (void)loadPuzzle:(Puzzle*)puzzleDB;
+- (void)loadPuzzle:(Puzzle *)puzzleDB;
 - (BOOL)drawerStoppedShouldBeStopped;
-- (Puzzle*)lastSavedPuzzle;
+- (Puzzle *)lastSavedPuzzle;
 - (void)prepareForNewPuzzle;
 - (void)prepareForLoading;
 
 - (CGRect)frameOfLatticePiece:(NSInteger)i;
 
-- (UIView*)upperPositionedThing;
+- (UIView *)upperPositionedThing;
 
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture;
 - (void)pan:(UIPanGestureRecognizer*)gesture;
 
-- (BOOL)pieceIsOut:(PieceView*)piece;
-- (void)movePiece:(PieceView*)piece toLatticePoint:(NSInteger)i animated:(BOOL)animated;
-- (void)groupMoved:(GroupView*)group;
-
+- (BOOL)pieceIsOut:(PieceView *)piece;
+- (void)movePiece:(PieceView *)piece toLatticePoint:(NSInteger)i animated:(BOOL)animated;
+- (void)groupMoved:(GroupView *)group;
 
 - (void)startNewGame;
 - (void)print_free_memory;
@@ -192,7 +175,7 @@
 
 
 - (void)allPiecesLoaded;
-- (Piece*)pieceOfCurrentPuzzleDB:(NSInteger)n;
+- (Piece *)pieceOfCurrentPuzzleDB:(NSInteger)n;
 
 - (void)startTimer;
 - (void)stopTimer;
@@ -202,11 +185,10 @@
 - (void)puzzleSaved:(NSNotification *)saveNotification;
 - (void)addPiecesToView;
 - (void)resetSizeOfAllThePieces;
-- (IBAction)rateGame;
 - (BOOL)saveGame;
 - (BOOL)isPositioned:(PieceView*)piece;
 
-- (UIView*)upperGroupBut:(GroupView*)group;
+- (UIView *)upperGroupBut:(GroupView *)group;
 - (void)moveBar;
 - (void)addAnothePieceToView;
 

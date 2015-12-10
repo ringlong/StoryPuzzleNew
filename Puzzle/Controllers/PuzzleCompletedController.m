@@ -24,10 +24,8 @@
 {
     [super viewDidLoad];
     
-    int size = 40;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) size = 60;
+    int size = IS_iPad ? 60 : 40;
     score.font = [UIFont fontWithName:@"Bello-Pro" size:size];
-
     
     self.view.layer.cornerRadius = 20;
     self.view.layer.masksToBounds = YES;

@@ -120,7 +120,7 @@
 
 - (void)playMenuSound {
     
-    if (!IS_DEVICE_PLAUYING_MUSIC) {
+    if (!Is_Device_Playing_Music) {
         
         [menuSound play];
     }
@@ -177,8 +177,7 @@
     loadGameButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-     
+    if (IS_iPad) {
         self.view.layer.masksToBounds = YES;
         self.view.layer.cornerRadius = 20;        
     }
@@ -186,13 +185,15 @@
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGRect rect = CGRectMake(0, 0, screen.size.height, screen.size.height);
     obscuringView = [[UIView alloc] initWithFrame:rect];
-    obscuringView.backgroundColor = WOOD;
+    obscuringView.backgroundColor = [UIColor puzzleBackgroundColor];
     
     
     chooseLabel = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChooseLabel"]];
     chooseLabel.alpha = 0;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) [obscuringView addSubview:chooseLabel];
+    if (IS_iPad) {
+        [obscuringView addSubview:chooseLabel];
+    }
     
     [delegate.view addSubview:obscuringView];
     [delegate.view bringSubviewToFront:self.view];

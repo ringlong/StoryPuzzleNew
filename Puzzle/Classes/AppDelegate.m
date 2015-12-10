@@ -10,22 +10,14 @@
 #import "PuzzleController.h"
 #import "CreatePuzzleOperation.h"
 
-
-
 @implementation AppDelegate
 
-@synthesize window = _window;
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
-
-@synthesize puzzle, operationQueue, puzzleOperation;
-
-
-
+@synthesize operationQueue;
 
 - (void)didReceiveMemoryWarning {
-    
     DLog(@"\n\n Dio can!   \n\n");
 }
 
@@ -35,22 +27,16 @@
     [self.window makeKeyAndVisible];
     self.window.frame = [[UIScreen mainScreen] bounds];
     
-//    application.applicationSupportsShakeToEdit = YES;
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     }
-
     
-    puzzle = [[PuzzleController alloc] init];
-    puzzle.managedObjectContext = self.managedObjectContext;
-    puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;    
-    [puzzle loadPuzzle:[puzzle lastSavedPuzzle]];
+    _puzzle = [[PuzzleController alloc] init];
+    _puzzle.managedObjectContext = self.managedObjectContext;
+    _puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    [_puzzle loadPuzzle:[_puzzle lastSavedPuzzle]];
     
-    self.window.rootViewController = puzzle;
-//    [self.window addSubview:puzzle.view];
-    
+    self.window.rootViewController = _puzzle;
     
     return YES;
 }
@@ -62,51 +48,14 @@
     return operationQueue;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-        
-    
-    return;
-    
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{    
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
-    if (wasOpened) {
-        
-        wasOpened = NO;
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    if (_wasOpened) {
+        _wasOpened = NO;
     }
-    
-
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSInteger launchCount = [prefs integerForKey:@"launchCount"];
-    launchCount++;
-    //DLog(@"Application has been launched %d times", launchCount);
-    [prefs setInteger:launchCount  forKey:@"launchCount"];
-    
-    if ( launchCount!=0 && (launchCount%TIMES_B4_ASKING_TO_REIEW==0 || launchCount==3)) {
-        [puzzle rateGame];
-    }
-    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }
 
@@ -190,7 +139,6 @@
     }
     
     return __persistentStoreCoordinator;
-    
     
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {} 

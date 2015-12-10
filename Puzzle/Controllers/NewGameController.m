@@ -59,7 +59,7 @@
 
     imagePath = [[NSString alloc] initWithFormat:@""];
 
-    typeOfImageView.backgroundColor = WOOD;
+    typeOfImageView.backgroundColor = [UIColor puzzleBackgroundColor];
     
 }
 
@@ -68,8 +68,9 @@
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.adBannerView];
     delegate.delegate.adBannerView.hidden = NO;
 
-    IF_IPAD return;
-    
+    if (IS_iPad) {
+        return;
+    }    
 
     float origin = -delegate.delegate.adPresent*delegate.delegate.adBannerView.frame.size.height/2;
     
@@ -145,11 +146,9 @@
 
 - (void)dismissPicker {
         
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
+    if (IS_iPad) {
         [popover dismissPopoverAnimated:NO];
-        
-    } else {  
+    } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }

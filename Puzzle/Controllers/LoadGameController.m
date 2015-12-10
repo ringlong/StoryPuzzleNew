@@ -155,10 +155,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.backgroundColor = [UIColor clearColor];
         UIView *v = [[UIView alloc] init];
-        v.backgroundColor = YELLOW;
+        v.backgroundColor = [UIColor rrYellowColor];
         cell.selectedBackgroundView = v;
         cell.textLabel.textColor = [UIColor whiteColor];
-        cell.detailTextLabel.textColor = YELLOW;
+        cell.detailTextLabel.textColor = [UIColor rrYellowColor];
         cell.textLabel.textAlignment = NSTextAlignmentRight;
         cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
     }

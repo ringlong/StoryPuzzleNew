@@ -37,11 +37,9 @@
 
 @synthesize operationQueue, managedObjectContext, persistentStoreCoordinator;
 
-#pragma mark -
 #pragma mark View Lifecycle
 
 - (void)piecesNotificationResponse:(NSNotification*)notification {
-   
     //PieceView *piece = notification.object;
     //DLog(@"Piece #%d sent a notification", piece.number);
 }
@@ -102,7 +100,7 @@
     _imageViewLattice = [[UIImageView alloc] initWithImage:_image];
     
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    if (IS_iPad){
         _puzzleCompleteImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PuzzleComplete"]];
     } else {  
         _puzzleCompleteImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PuzzleComplete_iPhone"]];
@@ -232,7 +230,9 @@
     
     _puzzleCompleteImage.transform = CGAffineTransformScale(_puzzleCompleteImage.transform, 1/1.8, 1/1.8);
     
-    IF_IPHONE [self resetLatticePositionAndSizeWithDuration:1.75];
+    if (IS_iPhone) {
+        [self resetLatticePositionAndSizeWithDuration:1.75];
+    }
     
     [UIView beginAnimations:@"pulseAnimation" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -265,7 +265,9 @@
             } completion:^(BOOL finished) {
                 
                 [self resizeLatticeToScale:f];
-                IF_IPAD [self moveLatticeToLeftWithDuration:0.5];
+                if (IS_iPad) {
+                    [self moveLatticeToLeftWithDuration:0.5];
+                }
         
             }];
             
@@ -274,7 +276,7 @@
                 translation = -screenWidth/2+_puzzleCompleteImage.bounds.size.height / 2;
             } else {
                 translation = -screenHeight/2+_puzzleCompleteImage.bounds.size.height / 2;
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                if (IS_iPad){
                  translation += 30;   
                 }
             }
@@ -405,7 +407,7 @@
     
     DLog(@"%s", __PRETTY_FUNCTION__);
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    if (IS_iPad){
      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];   
     }
     //HUDView.frame = CGRectMake(0, 20, screenWidth, HUDView.frame.size.height);
@@ -444,7 +446,7 @@
         drawerFirstPoint = CGPointMake(-4, 5);
         
         
-        if (loadingGame) {
+        if (_loadingGame) {
             
             _pieces = [self shuffleArray:_pieces];
             
@@ -461,7 +463,7 @@
             [self organizeDrawerWithOrientation:[UIApplication sharedApplication].statusBarOrientation];
             [self checkNeighborsForAllThePieces];
             [self updatePercentage];
-            loadingGame = NO;
+            _loadingGame = NO;
             DLog(@"-----------> All pieces Loaded");
             
         } else {
@@ -548,7 +550,7 @@
     _puzzleCompleteImage.alpha = 0;
     _completedController.view.alpha = 0;
     
-    if (!loadingGame) {
+    if (!_loadingGame) {
         
         _elapsedTime = 0.0;
         _score = 0;
@@ -565,7 +567,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myNotificationResponse:) name:@"GTCNotification" object:nil];
     _puzzleOperation = [[CreatePuzzleOperation alloc] init];
     _puzzleOperation.delegate = self;
-    _puzzleOperation.loadingGame = loadingGame;
+    _puzzleOperation.loadingGame = _loadingGame;
     _puzzleOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
         
 }
@@ -584,7 +586,7 @@
 
 - (void)createPuzzleFromSavedGame {
 
-    loadingGame = YES;
+    _loadingGame = YES;
     self.view.userInteractionEnabled = NO;    
     [self prepareForNewPuzzle];
 
@@ -642,7 +644,7 @@
     float IMAGE_SIZE_BOUND = 0;
     float SHAPE_QUALITY = 0;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    if (IS_iPad){
         
         IMAGE_SIZE_BOUND = IMAGE_SIZE_BOUND_IPAD;
         SHAPE_QUALITY = SHAPE_QUALITY_IPAD;
@@ -657,7 +659,7 @@
     NSMutableArray<PieceView *> *arrayPieces = [[NSMutableArray alloc] initWithCapacity:_NumberSquare];
     NSMutableArray *array;
     
-    if (loadingGame) {
+    if (_loadingGame) {
         
         if (self.image==nil) {
             return;
@@ -684,7 +686,7 @@
     }
     
     
-    if (loadingGame) {
+    if (_loadingGame) {
     
         for (NSInteger i=0;i<_pieceNumber;i++){
             for (NSInteger j=0;j<_pieceNumber;j++){
@@ -815,7 +817,7 @@
     float a = (float)_loadedPieces;
     float b = (float)_NumberSquare;
     
-    if (loadingGame) {
+    if (_loadingGame) {
         
         b = _NumberSquare;
     }
@@ -890,13 +892,16 @@
             [self.view bringSubviewToFront:_imageView];
             //
             _imageView.alpha = 1;
-            HIDE_STATUS_BAR
-
+            if (IS_iPad) {
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+            }
         } else if (_imageView.alpha==1) {
             
             _menuButtonView.userInteractionEnabled = YES;
             _imageView.alpha = 0;
-            SHOW_STATUS_BAR
+            if (IS_iPad) {
+                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+            }
         }
     }];
     
@@ -924,7 +929,7 @@
             v.alpha = 0;
         }
         
-    }completion:^(BOOL finished) {
+    } completion:^(BOOL finished) {
         
         [self saveGame];
         [self.view bringSubviewToFront:_lattice];
@@ -934,22 +939,16 @@
 
     }];
     
-    
-    if (!IS_DEVICE_PLAUYING_MUSIC) {
-        
+    if (!Is_Device_Playing_Music) {
         [_completedSound play];
-        
     }
     
     [self showCompleteImage];
-    
 }
 
 - (IBAction)restartPuzzle:(id)sender {
-    
     [self createPuzzleFromImage:_image];
 }
-
 
 
 #pragma mark -
@@ -978,16 +977,6 @@
     UILongPressGestureRecognizer *longPressure = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleImage:)];
     [longPressure setMinimumPressDuration:0.5];
     [self.view addGestureRecognizer:longPressure];
-    
-//    UISwipeGestureRecognizer *swipeR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeR:)];
-//    [swipeR setDirection:UISwipeGestureRecognizerDirectionRight];
-//    [swipeR setNumberOfTouchesRequired:2];
-//    [self.view addGestureRecognizer:swipeR];
-//    UISwipeGestureRecognizer *swipeL = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeL:)];
-//    [swipeL setDirection:UISwipeGestureRecognizerDirectionLeft];
-//    [swipeL setNumberOfTouchesRequired:2];
-//    [self.view addGestureRecognizer:swipeL];
-    
 }
 
 - (void)doubleTap:(UITapGestureRecognizer*)gesture {
@@ -1141,7 +1130,7 @@
 
 - (void)createNewGroupForPiece:(PieceView*)piece {
     
-    if ([self isTheFuckingPiecePositioned:piece] && !loadingGame) {
+    if ([self isTheFuckingPiecePositioned:piece] && !_loadingGame) {
         return;
     }
         
@@ -1163,7 +1152,7 @@
         newGroup.boss = piece;
         newGroup.transform = _lattice.transform;
         newGroup.delegate = self;
-        newGroup.isPositioned = (piece.isPositioned && loadingGame);
+        newGroup.isPositioned = (piece.isPositioned && _loadingGame);
 
         
         piece.isBoss = YES;
@@ -1202,7 +1191,7 @@
 
 - (void)addPiece:(PieceView*)piece toGroup:(GroupView*)group {
         
-    if ([self isTheFuckingPiecePositioned:piece] && !loadingGame) {
+    if ([self isTheFuckingPiecePositioned:piece] && !_loadingGame) {
         return;
     }
     
@@ -1661,15 +1650,15 @@
                                 piece.hasNeighbors = YES;
                                 otherPiece.hasNeighbors = YES;
                                 
-                                if (!loadingGame &&
-                                    !IS_DEVICE_PLAUYING_MUSIC &&
+                                if (!_loadingGame &&
+                                    !Is_Device_Playing_Music &&
                                     ![self isTheFuckingPiecePositioned:piece]) {
                                     [_neighborSound play];
                                 }
                                 
                                 //DLog(@"piece.isPositioned = %d, otherpiece.isPositioned = %d", piece.isPositioned, otherPiece.isPositioned);
                                 
-                                if ((![self isTheFuckingPiecePositioned:piece] || ![self isTheFuckingPiecePositioned:otherPiece]) && !loadingGame) {
+                                if ((![self isTheFuckingPiecePositioned:piece] || ![self isTheFuckingPiecePositioned:otherPiece]) && !_loadingGame) {
                                                                         
                                     if (otherPiece.group!=nil && !otherPiece.group.isPositioned) {
                                         
@@ -1736,7 +1725,7 @@
         if (!piece.isPositioned) {
             
             
-            if (!loadingGame) {
+            if (!_loadingGame) {
                                 
                 [self addPoints:[self pointsForPiece:piece]];
             }
@@ -1755,9 +1744,9 @@
             [piece pulse];
 
             
-            if (![self isPuzzleComplete] && !loadingGame) {
+            if (![self isPuzzleComplete] && !_loadingGame) {
                                
-                if (!IS_DEVICE_PLAUYING_MUSIC) {
+                if (!Is_Device_Playing_Music) {
                     [_positionedSound play];
                 }
             }
@@ -2147,7 +2136,9 @@
     
 
     float bannerHeight = (self.adBannerView.frame.size.height)*self.adBannerView.bannerLoaded;
-    IF_IPAD bannerHeight -= 20*self.adBannerView.bannerLoaded;
+    if (IS_iPad) {
+        bannerHeight -= 20*self.adBannerView.bannerLoaded;
+    }
     
     //[UIView animateWithDuration:ORG_TIME animations:^{
         
@@ -2689,7 +2680,9 @@
                 drawerFrame.size.height = drawerSize+bannerHeight;
                 drawerFrame.size.width = screenWidth;
                 drawerFrame.origin.y = screenWidth;
-                IF_IPHONE drawerFrame.origin.y += 25;
+                if (IS_iPhone) {
+                    drawerFrame.origin.y += 25;
+                }
                 
             } else { //Move DOWN
                 drawerFrame.size.height = drawerSize;
@@ -2701,7 +2694,7 @@
         
         //Move the lattice and the menu
         
-        IF_IPHONE {
+        if (IS_iPhone) {
             
             CGRect menuFrame = _menu.mainView.frame;
             menuFrame.origin.y -= direction*bannerHeight/2;
@@ -2710,7 +2703,6 @@
             CGRect newGameFrame = _menu.game.view.frame;
             newGameFrame.origin.y -= direction*bannerHeight/2;
             _menu.game.view.frame = newGameFrame;
-            
             
             [UIView animateWithDuration:0.5 animations:^{
                 
@@ -2746,7 +2738,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    if (IS_iPad){
         
         if (_puzzleCompete && _menu.view.alpha<1) {
             return NO;
@@ -2769,8 +2761,9 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
         
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    IF_IPAD [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+    if (IS_iPad) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+    }
     
     [_completedController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
@@ -2807,7 +2800,9 @@
         
         chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
         _panningSwitch.center = CGPointMake(_panningSwitch.center.x+drawerSize, _panningSwitch.center.y);
-        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
+        if (IS_iPhone) {
+            percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
+        }
         
         _lattice.center = CGPointMake(_lattice.center.x+drawerSize, _lattice.center.y);
         
@@ -2832,7 +2827,9 @@
         
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
         _panningSwitch.center = CGPointMake(_panningSwitch.center.x-drawerSize, _panningSwitch.center.y);
-        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
+        if (IS_iPhone) {
+            percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
+        }
         
         _lattice.center = CGPointMake(_lattice.center.x-drawerSize, _lattice.center.y);
         
@@ -2910,7 +2907,9 @@
         
         chooseCenter = CGPointMake(self.view.center.x+128, self.view.center.y-425);
         _panningSwitch.center = CGPointMake(_panningSwitch.center.x+drawerSize, _panningSwitch.center.y);
-        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
+        if (IS_iPhone) {
+            percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
+        }
         
         _lattice.center = CGPointMake(_lattice.center.x+drawerSize, _lattice.center.y);
         
@@ -2935,7 +2934,9 @@
         
         chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
         _panningSwitch.center = CGPointMake(_panningSwitch.center.x-drawerSize, _panningSwitch.center.y);
-        IF_IPHONE percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
+        if (IS_iPhone) {
+            percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
+        }
         
         _lattice.center = CGPointMake(_lattice.center.x-drawerSize, _lattice.center.y);
         
@@ -2980,12 +2981,12 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+    if (IS_iPad){
       
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
     } 
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && 
+    if (IS_iPad && 
         [_menu.game.popover isPopoverVisible]
         ) {
         
@@ -3003,30 +3004,23 @@
 #pragma mark -
 #pragma mark Tools
 
-- (IBAction)togglePanningMode:(id)sender {
-    
+- (IBAction)togglePanningMode:(UIButton *)sender {
     if (panningMode) {
-        
         for (PieceView *p in _pieces) {
             if (p.isFree && !p.isPositioned) {
                 p.userInteractionEnabled = YES;
             }
         }
-
-        _panningSwitch.alpha = 0.5;
-        panningMode = NO;
-        
     } else {
-        
         for (PieceView *p in _pieces) {
             if (p.isFree) {
                 p.userInteractionEnabled = NO;
             }
         }
-
-        _panningSwitch.alpha = 1;
-        panningMode = YES;
-    }    
+    }
+    
+    sender.alpha = panningMode ? 0.5 : 1;
+    panningMode = !panningMode;
 }
 
 - (void)refreshPositions {
@@ -3043,7 +3037,6 @@
 }
 
 - (void)loadSounds {
-    
     NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"mp3"];
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     _positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
@@ -3068,7 +3061,6 @@
 }
 
 - (CGPoint)applyMatrix:(CGAffineTransform)matrix toVector:(CGPoint)vector {
-    
     return CGPointMake(matrix.a*vector.x+matrix.b*vector.y, matrix.c*vector.x+matrix.d*vector.y);
 }
 
@@ -3158,34 +3150,20 @@
 }
 
 - (void)computePieceSize {
+    _piceSize = IS_iPad ? PIECE_SIZE_IPAD : PIECE_SIZE_IPHONE;
+    self.padding = _piceSize * 0.15;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        
-        _piceSize = PIECE_SIZE_IPAD;
-        
-    }else{  
-        
-        _piceSize = PIECE_SIZE_IPHONE;
-        
-    }
-    
-    self.padding = _piceSize*0.15;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    if (IS_iPad) {
         drawerSize = _piceSize+1.8*self.padding-15;
-    else   
+    } else {
         drawerSize = _piceSize+1.8*self.padding-10;
-    
+    }
     
     numberOfPiecesInDrawer = screenWidth/(_piceSize+1);
     float unusedSpace = screenWidth - numberOfPiecesInDrawer*_piceSize;
     drawerMargin = (float)(unusedSpace/(numberOfPiecesInDrawer+1));
     
     firstPiecePlace =  3*_NumberSquare+_pieceNumber;
-    
-    //DLog(@"n = %d, %.1f", n, drawerMargin);
-    
-    
 }
 
 - (void)bringDrawerToTop {
@@ -3218,8 +3196,9 @@
 
 - (void)updatePercentage {
     
-    _puzzleDB.percentage = [NSNumber numberWithFloat:[self completedPercentage]];
-    percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
+    _puzzleDB.percentage = @([self completedPercentage]);
+//    percentageLabel.text = [NSString stringWithFormat:@"%.0f %%", [self completedPercentage]];
+    percentageLabel.text = [NSNumberFormatter localizedStringFromNumber:_puzzleDB.percentage numberStyle:NSNumberFormatterPercentStyle];
 }
 
 - (void)removeOldPieces {
@@ -3261,42 +3240,7 @@
             positioned += 1.0;
         }
     }
-    
-    return (positioned/_NumberSquare*100);
-    
-}
-
-- (IBAction)rateGame {
-    
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    
-    if (![prefs boolForKey:@"Reviewed"]) {
-        
-        alertView = [[UIAlertView alloc] initWithTitle:@"Give your opinion!" message:@"Do you like this game? Give us\n★★★★★!\nDo you have any suggestions?\nWrite a review and we will try to improve the app to fulfill your desires." delegate:self cancelButtonTitle:@"No thanks" otherButtonTitles:@"Sure!", nil];
-        [alertView show];
-        
-    } else {
-        
-        DLog(@"Already rated");
-    }
-    
-}
-
-- (void)alertView:(UIAlertView *)alertView_ clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if (buttonIndex==1) {
-        
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        [prefs setBool:YES forKey:@"Reviewed"];
-        
-        
-        [alertView_ dismissWithClickedButtonIndex:buttonIndex animated:YES];
-        
-        NSString* url = [NSString stringWithFormat: @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%d", APP_STORE_APP_ID];
-        [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
-        
-    }
-    
+    return (positioned / _NumberSquare);
 }
 
 - (void)print_free_memory {
@@ -3345,34 +3289,24 @@
 - (void)oneSecondElapsed {
     
     _elapsedTime += 0.1;
-    _puzzleDB.elapsedTime = [NSNumber numberWithFloat:_elapsedTime];
+    _puzzleDB.elapsedTime = @(_elapsedTime);
     
-    
-    int seconds = (int)_elapsedTime%60;
-    int minutes = (int)_elapsedTime/60;
-    
+    int seconds = (int)_elapsedTime % 60;
+    int minutes = (int)_elapsedTime / 60;
     
     if (_elapsedTime - (int)_elapsedTime < 0.1) {
-        
         _elapsedTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds]; 
-    }    
-    
-    //DLog(@"%d, %f", (int)_elapsedTime, _elapsedTime);
-    
+    }
 }
 
 - (void)startTimer {
-    
     if (!loadingFailed && ![self isPuzzleComplete]) {
-        
         timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(oneSecondElapsed) userInfo:nil repeats:YES];
     }
 }
 
 - (void)stopTimer {
-    
     [timer invalidate];
-    
 }
 
 - (void)startNewGame {
@@ -3386,58 +3320,13 @@
     _groups = [[NSMutableArray alloc] initWithCapacity:_NumberSquare];
     _pieces = [[NSMutableArray alloc] initWithCapacity:_NumberSquare];
     
-    
     [self createPuzzleFromImage:_image];
     
     receivedFirstTouch = NO;    
     
     [UIView animateWithDuration:0.2 animations:^{
-        
         _lattice.frame = [self frameForLatticeWithOrientation:[UIApplication sharedApplication].statusBarOrientation];
-        
     }];
-    
-}
-
-
-
-#pragma mark -
-#pragma mark Unuseful
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    
-    return;
-    
-    if (motion == UIEventSubtypeMotionShake)
-    {
-        
-        for (PieceView *p in _pieces) {
-            p.isFree = YES;
-            [self movePiece:p toLatticePoint:p.number animated:NO];
-        }
-        
-    [self refreshPositions];
-    }
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self becomeFirstResponder];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [self resignFirstResponder];
-    [super viewWillDisappear:animated];
 }
 
 @end

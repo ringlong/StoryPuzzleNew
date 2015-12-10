@@ -180,7 +180,7 @@
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             UIView *v = [[UIView alloc] init];
-            v.backgroundColor = YELLOW;
+            v.backgroundColor = [UIColor rrYellowColor];
             cell.selectedBackgroundView = v;
         }
         
@@ -203,7 +203,7 @@
             cell.photo.layer.masksToBounds = YES;
             [cell addSubview:cell.photo];
             UIView *v = [[UIView alloc] init];
-            v.backgroundColor = YELLOW;
+            v.backgroundColor = [UIColor rrYellowColor];
             cell.selectedBackgroundView = v;
         }
         

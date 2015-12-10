@@ -14,5 +14,16 @@
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
     #import "AppDelegate.h"
-
+    #import "UIColor+Additions.h"
 #endif
+
+#ifdef FRACTAL_DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define DLog(...);
+#endif
+
+#define Is_Device_Playing_Music [[MPMusicPlayerController systemMusicPlayer] playbackState] != MPMusicPlaybackStatePlaying
+
+#define IS_iPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IS_iPhone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
