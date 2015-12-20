@@ -9,18 +9,12 @@
 #import "PuzzleLibraryController.h"
 #import "NewGameController.h"
 #import "MenuController.h"
+#import "UIColor+Additions.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define IMAGE_SIZE 240
 
 @implementation PhotoCell
-
-- (void)viewDidLoad
-{
-    self.backgroundColor = [UIColor clearColor];
-}
-
-@synthesize photo;
 
 @end
 
@@ -30,36 +24,19 @@
 
 @synthesize delegate;
 
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
-    thumbs = [[NSArray alloc] initWithArray:[self imagesForPuzzle]];
-    paths = [[NSArray alloc] initWithArray:[self pathsForImages]];
-    contents = [[NSArray alloc] initWithArray:[self joinData]];
+    thumbs = [NSArray arrayWithArray:[self imagesForPuzzle]];
+    paths = [NSArray arrayWithArray:[self pathsForImages]];
+    contents = [NSArray arrayWithArray:[self joinData]];
     
     if (contents.count == 0) {
         delegate.puzzleLibraryButton.enabled = NO;
     }
     
     self.clearsSelectionOnViewWillAppear = YES;
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -67,7 +44,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (NSMutableArray*)shuffleArray:(NSMutableArray*)array {
+- (NSMutableArray *)shuffleArray:(NSMutableArray*)array {
     
     for (NSUInteger i = array.count; i > 1; i--) {
         u_int32_t j = arc4random_uniform((u_int32_t)i);
@@ -79,13 +56,13 @@
 
 #pragma mark - Table view data source
 
-- (NSArray*)joinData {
+- (NSArray *)joinData {
     
     NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:paths.count];
-    for (int i=0; i<paths.count; i++) {
+    for (int i = 0; i < paths.count; i++) {
         
-        NSArray *objects = [NSArray arrayWithObjects:[paths objectAtIndex:i], [thumbs objectAtIndex:i], nil];
-        NSArray *keys = [NSArray arrayWithObjects:@"Path", @"Thumb", nil];
+        NSArray *objects = @[paths[i], thumbs[i]];
+        NSArray *keys = @[@"Path", @"Thumb"];
         NSDictionary *dict = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
         [tempArray addObject:dict];
     }
@@ -94,44 +71,28 @@
     
 }
 
-- (NSArray*)imagesForPuzzle {
+- (NSArray *)imagesForPuzzle {
     
     NSArray *dirContents = [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:nil];
     NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:dirContents.count];
-    for (NSString *string in dirContents) 
-    {
-        if ([string hasSuffix:@"_puzzle_thumb.jpg"]  || 
-            [string hasSuffix:@"_puzzle_thumb.jpeg"] ||
-            [string hasSuffix:@"_puzzle_thumb.png"]  ||
-            [string hasSuffix:@"_puzzle_thumb.JPG"]  ||
-            [string hasSuffix:@"_puzzle_thumb.JPEG"] ||
-            [string hasSuffix:@"_puzzle_thumb.PNG"]
-            ) {
-            
+    for (NSString *string in dirContents) {
+        if ([string hasSuffix:@"-puzzle.jpeg"]) {
             [tempArray addObject:[UIImage imageWithContentsOfFile:string]];
-        } 
+        }
     }
     DLog(@"Found %d thumbs", tempArray.count);
     return [NSArray arrayWithArray:tempArray];
     
 }
 
-- (NSArray*)pathsForImages {
+- (NSArray *)pathsForImages {
     
     NSArray *dirContents = [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:nil];
     NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:dirContents.count];
-    for (NSString *string in dirContents) 
-    {
-        if ([string hasSuffix:@"_puzzle.jpg"]  || 
-            [string hasSuffix:@"_puzzle.jpeg"] ||
-            [string hasSuffix:@"_puzzle.png"]  ||
-            [string hasSuffix:@"_puzzle.JPG"]  ||
-            [string hasSuffix:@"_puzzle.JPEG"] ||
-            [string hasSuffix:@"_puzzle.PNG"]
-            ) {
-            
+    for (NSString *string in dirContents)  {
+        if ([string hasSuffix:@"-puzzle.jpeg"]) {
             [tempArray addObject:string];
-        } 
+        }
     }
     DLog(@"Found %d images", tempArray.count);
     return [NSArray arrayWithArray:tempArray];
@@ -140,13 +101,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section==0) {
-        
-        return 50;
-        
+    if (indexPath.section == 0) {
+        return 64;
     } else {
-        
-        return self.view.bounds.size.width;
+        return IMAGE_SIZE + 30;
     }
 }
 
@@ -177,11 +135,7 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
         if (!cell) {
-            
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            UIView *v = [[UIView alloc] init];
-            v.backgroundColor = [UIColor rrYellowColor];
-            cell.selectedBackgroundView = v;
         }
         
         cell.textLabel.text = @"Back";
@@ -194,20 +148,18 @@
         static NSString *CellIdentifier = @"Cell";
         PhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
-        if (cell == nil) {
+        if (!cell) {
             
-            float w = self.view.bounds.size.width;
+            CGFloat width = self.view.bounds.size.width;
             cell = [[PhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.photo = [[UIImageView alloc] initWithFrame:CGRectMake((w-IMAGE_SIZE)/2, (w-IMAGE_SIZE)/2, IMAGE_SIZE, IMAGE_SIZE)];
+            cell.photo = [[UIImageView alloc] initWithFrame:CGRectMake((width - IMAGE_SIZE) / 2, 15, IMAGE_SIZE, IMAGE_SIZE)];
+            cell.photo.contentMode = UIViewContentModeScaleAspectFill;
             cell.photo.layer.cornerRadius = 20;
             cell.photo.layer.masksToBounds = YES;
             [cell addSubview:cell.photo];
-            UIView *v = [[UIView alloc] init];
-            v.backgroundColor = [UIColor rrYellowColor];
-            cell.selectedBackgroundView = v;
         }
         
-        cell.photo.image = [[contents objectAtIndex:indexPath.row] objectForKey:@"Thumb"];
+        cell.photo.image = contents[indexPath.row][@"Thumb"];
         return cell;
     }
 }
@@ -215,17 +167,13 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section==0) {
-        
-        [delegate imagePickedFromPuzzleLibrary:delegate.image.image];       
-        
+    if (indexPath.section == 0) {
+        [delegate imagePickedFromPuzzleLibrary:delegate.image.image];
     } else {
-        
         [delegate.delegate playMenuSound];
-        NSString *path = [[contents objectAtIndex:indexPath.row] objectForKey:@"Path"];
+        NSString *path = contents[indexPath.row][@"Path"];
         [delegate imagePickedFromPuzzleLibrary:[UIImage imageWithContentsOfFile:path]];
         
     }

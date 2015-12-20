@@ -25,7 +25,6 @@
 
 - (void)setup {
     
-            
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
     [pan setMinimumNumberOfTouches:1];
     [pan setMaximumNumberOfTouches:1];
@@ -37,7 +36,6 @@
     
     UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];    
     [self addGestureRecognizer:rot];
-
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rotateTap:)];
     tap.numberOfTapsRequired = 2;
@@ -167,11 +165,6 @@
             }
         }
     }
-    
-//    for (PieceView *p in [self allTheNeighborsBut:nil]) {
-//        p.position = [delegate positionOfPiece:p];
-//    }
-//    self.position = [delegate positionOfPiece:self]; 
     
 }
 
@@ -428,8 +421,7 @@
             
             group.transform = transform;
             
-        }completion:^(BOOL finished) {
-            
+        } completion:^(BOOL finished) {
             [delegate pieceRotated:self];
         }];
                 
@@ -496,16 +488,9 @@
     }
     
     float l3 = (l-2*p)/3;
-
-    
-    //UIGraphicsPushContext(ctx);
-    
-    
-    
         
-        
-        CGPoint point = [self sum:a plus:b firstWeight:2.0/3.0];
-        CGContextAddLineToPoint(ctx, point.x, point.y);
+    CGPoint point = [self sum:a plus:b firstWeight:2.0/3.0];
+    CGContextAddLineToPoint(ctx, point.x, point.y);
         //DLog(@"p = ( %.1f, %.1f )", p.x, p.y);
 
         
@@ -591,20 +576,10 @@
     }
     
     CGContextAddLineToPoint(ctx, b.x, b.y);
-    
-    
-    
-    //UIGraphicsPopContext();
-    
 }
 
 
 - (void)drawRect:(CGRect)rect {
-    
-    
-    //DLog(@"Drawing piece #%d", number);
-
-
     
     if (!delegate.loadingGame && !delegate.creatingGame) {
         [delegate prepareForLoading];

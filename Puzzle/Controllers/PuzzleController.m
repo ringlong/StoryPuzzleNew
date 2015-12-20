@@ -49,8 +49,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:@"PiecesNotifications" object:nil];
     
-    //DLog(@"%@", [UIFont fontNamesForFamilyName:@"Bello Pro"]);
-        
     scoreLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
 
     
@@ -60,7 +58,7 @@
     screenHeight = [[UIScreen mainScreen] bounds].size.height;
 
     
-    if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad){
+    if (IS_iPad){
       
         self.view.frame = CGRectMake(0, 0, screenWidth, screenHeight);
         HUDView.frame = CGRectMake(0, 20, screenWidth, HUDView.frame.size.height);
@@ -213,6 +211,14 @@
 
 #pragma mark -
 #pragma mark Puzzle
+
+- (void)showNextButton {
+    UIButton *next = [UIButton buttonWithType:UIButtonTypeCustom];
+    [next setTitle:@"Next" forState:UIControlStateNormal];
+    next.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
+    next.frame = CGRectMake((self.view.bounds.size.width - 100) / 2, 450, 100, 40);
+    [self.view addSubview:next];
+}
 
 - (void)showCompleteImage {
     
@@ -614,7 +620,7 @@
     
 }
 
-- (void)createPuzzleFromImage:(UIImage*)image_ {
+- (void)createPuzzleFromImage:(UIImage *)image {
     
     _loadingGame = NO;
     _creatingGame = YES;
@@ -681,6 +687,7 @@
         float f = (float)(_pieceNumber*partSize*0.7);
         _image = [_image imageCroppedToSquareWithSide:f];
         _imageView.image = _image;
+        _imageView.contentMode = UIViewContentModeScaleAspectFill;
         array = [[NSMutableArray alloc] initWithArray:[self splitImage:_image partSize:partSize]];
         
     }
@@ -808,8 +815,11 @@
 }
 
 - (void)addAnothePieceToView {
-        
-    [self.view insertSubview:[_pieces objectAtIndex:_loadedPieces] belowSubview:_menu.obscuringView];
+    if (_loadedPieces >= _pieces.count) {
+        return;
+    }
+    
+    [self.view insertSubview:_pieces[_loadedPieces] belowSubview:_menu.obscuringView];
 }
 
 - (void)moveBar {
@@ -818,7 +828,6 @@
     float b = (float)_NumberSquare;
     
     if (_loadingGame) {
-        
         b = _NumberSquare;
     }
     
@@ -839,22 +848,17 @@
     for (int i=0;i<x;i++){
         for (int j=0;j<y;j++){
             
-            CGRect rect = CGRectMake(i * (partSize-2*padding_temp)-padding_temp, 
-                                     j * (partSize-2*padding_temp)-padding_temp, 
+            CGRect rect = CGRectMake(i * (partSize - 2 * padding_temp) - padding_temp,
+                                     j * (partSize - 2 * padding_temp) - padding_temp,
                                      partSize, partSize);
             
-            [arr addObject:[im subimageWithRect:rect]]; 
-            
-            //loadedPieces++;
-            
-            //[arr addObject:[self clipImage:im toRect:rect]];          
+            [arr addObject:[im subimageWithRect:rect]];
         }
     }
     
     DLog(@"Image splitted");
 
     return arr;
-    
 }
 
 - (BOOL)isPuzzleComplete {
@@ -877,7 +881,6 @@
 - (void)toggleImage:(UILongPressGestureRecognizer*)gesture {
     
     if (gesture.state == UIGestureRecognizerStateBegan && _menu.view.alpha == 0) {
-        
         [self toggleImageWithDuration:0.5];
     }
     
@@ -944,6 +947,7 @@
     }
     
     [self showCompleteImage];
+    [self showNextButton];
 }
 
 - (IBAction)restartPuzzle:(id)sender {
@@ -1999,6 +2003,7 @@
     
     //Add the image to lattice
     _imageViewLattice.image = _image;
+    _imageViewLattice.contentMode = UIViewContentModeScaleAspectFill;
     _imageViewLattice.frame = CGRectMake(0 ,0, _pieceNumber*_lattice.scale*(_piceSize-2*self.padding), _pieceNumber*_lattice.scale*(_piceSize-2*self.padding));
     _imageViewLattice.alpha = 0;
     [_lattice addSubview:_imageViewLattice];
@@ -2864,9 +2869,6 @@
         [self organizeDrawerWithOrientation:toInterfaceOrientation];
     }];    
     //DLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
-    
-    
-    
 }
 
 - (void)fuckingRotateTo:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -2911,7 +2913,7 @@
             percentageLabel.center = CGPointMake(percentageLabel.center.x+drawerSize, percentageLabel.center.y);
         }
         
-        _lattice.center = CGPointMake(_lattice.center.x+drawerSize, _lattice.center.y);
+        _lattice.center = CGPointMake(_lattice.center.x + drawerSize, _lattice.center.y);
         
         completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
         

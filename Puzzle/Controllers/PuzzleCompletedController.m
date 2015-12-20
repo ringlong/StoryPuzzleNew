@@ -43,9 +43,8 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
-    
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        two.center = CGPointMake(one.center.x+320, 80);
+        two.center = CGPointMake(one.center.x + 320, 80);
     } else {
         two.center = CGPointMake(160, 240);
     }

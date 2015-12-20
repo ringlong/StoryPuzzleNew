@@ -31,8 +31,8 @@
     backButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     startButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
 
-    
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
+    slider.maximumValue = 8;
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value * (int)slider.value];
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         cameraButton.enabled = NO;
@@ -72,7 +72,7 @@
         return;
     }    
 
-    float origin = -delegate.delegate.adPresent*delegate.delegate.adBannerView.frame.size.height/2;
+    float origin = -delegate.delegate.adPresent * delegate.delegate.adBannerView.frame.size.height / 2;
     
     NSLog(@"Origin = %.1f", origin);
     
@@ -112,13 +112,8 @@
     
     tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
-    
 
-    //image.image = [delegate.delegate clipImage:temp toRect:rect];
-    image.image = temp;    
-    
-//    [self adjustForAd];
-
+    image.image = temp;
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
@@ -181,10 +176,6 @@
 //    [self adjustForAd];
 
 }
-
-
-
-
 
 - (IBAction)selectImageFromPuzzleLibrary:(id)sender {
     
@@ -257,10 +248,8 @@
     [self startLoading];
 
     [delegate.delegate removeOldPieces];
-
     
     [delegate createNewGame];
-    
 }
 
 - (IBAction)back:(id)sender {
@@ -382,31 +371,20 @@
 - (void)moveBar {
         
     float a = (float)delegate.delegate.loadedPieces;
-    float b = (float)((int)slider.value*(int)slider.value);
+    float b = (float)((int)slider.value * (int)slider.value);
     
     if (delegate.delegate.loadingGame) {
-        
         b = delegate.delegate.NumberSquare;
     }
-    
-    progressView.progress = a/b;
-
+    progressView.progress = a / b;
 }
 
 
-- (IBAction)numberSelected:(UISlider*)sender {
-        
+- (IBAction)numberSelected:(UISlider *)sender {
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
 
     
 }
-
-
-
-
-
-
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -415,15 +393,6 @@
         // Custom initialization
     }
     return self;
-}
-
-
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
