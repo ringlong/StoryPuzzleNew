@@ -24,9 +24,15 @@
 
 @synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton, progressView, slider;
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kPieceNumberChangedNotification object:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:kPieceNumberChangedNotification object:nil];
     
     backButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     startButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
@@ -83,6 +89,11 @@
     frame = delegate.view.frame;
     frame.origin.y = origin;
     //delegate.view.frame = frame;
+}
+
+- (void)piecesNotificationResponse:(NSNotification *)notification {
+    NSInteger pieceNumber = delegate.delegate.pieceNumber;
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%@ ", @(pieceNumber * pieceNumber)];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -242,7 +253,9 @@
     
     delegate.delegate.imageView.image = delegate.delegate.image;
     delegate.delegate.imageViewLattice.image = delegate.delegate.image;
-    delegate.delegate.pieceNumber = (int)slider.value;
+    if (!self.slider.hidden) {
+        delegate.delegate.pieceNumber = (int)slider.value;
+    }
     
     
     [self startLoading];

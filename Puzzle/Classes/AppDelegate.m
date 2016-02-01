@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "PuzzleController.h"
 #import "CreatePuzzleOperation.h"
+#import "FLEXManager.h"
 
 @implementation AppDelegate
 
@@ -153,6 +154,14 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+/// shake
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if (event.type == UIEventTypeMotion && event.subtype == UIEventSubtypeMotionShake) {
+        [[FLEXManager sharedManager] showExplorer];
+    }
+    [super motionEnded:motion withEvent:event];
 }
 
 @end

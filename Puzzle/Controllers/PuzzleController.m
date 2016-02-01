@@ -27,6 +27,7 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
+NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 @interface PuzzleController ()
 
@@ -39,15 +40,7 @@
 
 #pragma mark View Lifecycle
 
-- (void)piecesNotificationResponse:(NSNotification*)notification {
-    //PieceView *piece = notification.object;
-    //DLog(@"Piece #%d sent a notification", piece.number);
-}
-
 - (void)viewDidLoad {
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:@"PiecesNotifications" object:nil];
     
     scoreLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
 
@@ -79,8 +72,14 @@
     
     _imageSize = QUALITY;
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
-    _drawerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+    effectView.frame = self.view.bounds;
+    
+    self.view.backgroundColor = [UIColor puzzleBackgroundColor];
+    _drawerView.backgroundColor = [UIColor clearColor];
+    
+//    [self.view addSubview:effectView];
     
     CGRect rect = [[UIScreen mainScreen] bounds];
     self.view.frame = rect;
@@ -115,7 +114,7 @@
 
     drawerFrame.size.height = drawerSize;
     drawerFrame.size.width = screenHeight;
-    drawerFrame.origin.y = screenHeight-drawerSize;
+    drawerFrame.origin.y = screenHeight - drawerSize;
     
     stepperFrame.origin.y = drawerFrame.size.height;
     stepperFrame.origin.x = 10;
@@ -145,6 +144,10 @@
     //gesture recognizers
     [self addGestures];    
 
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (NSArray *)directionsUpdated_numbers {
@@ -218,6 +221,8 @@
     next.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
     next.frame = CGRectMake((self.view.bounds.size.width - 100) / 2, 450, 100, 40);
     [self.view addSubview:next];
+    
+    [next addTarget:self action:@selector(showNextGame:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)showCompleteImage {
@@ -317,7 +322,7 @@
     if (_puzzleDB) {
     
         [self removeOldPieces];
-        [self set_pieceNumber:[_puzzleDB.pieceNumber intValue]];
+        [self setPieceNumber:[_puzzleDB.pieceNumber intValue]];
     
         _image = [UIImage imageWithData:_puzzleDB.image.data];
         _groups = [[NSMutableArray alloc] initWithCapacity:_NumberSquare/2];
@@ -355,7 +360,7 @@
     [self.view bringSubviewToFront:_menuButtonView];
 //    [self.view bringSubviewToFront:self.adBannerView];
     
-    [_menu toggleMenuWithDuration:(sender!=nil)*0.5];
+    [_menu toggleMenuWithDuration:(sender != nil) * 0.5];
     
 }
 
@@ -749,7 +754,7 @@
                 PieceView *piece = [[PieceView alloc] initWithFrame:rect];
                 piece.delegate = self;
                 piece.image = [array objectAtIndex:j+_pieceNumber*i];
-                piece.number = j+_pieceNumber*i;
+                piece.number = j + _pieceNumber*i;
                 piece.size = _piceSize;
                 piece.position = -1;
                 NSNumber *n = @(_NumberSquare);
@@ -954,6 +959,13 @@
     [self createPuzzleFromImage:_image];
 }
 
+- (void)showNextGame:(UIButton *)sender {
+    self.pieceNumber += 1;
+    [self toggleMenu:nil];
+    [self.menu startNewGame:nil];
+    [sender removeFromSuperview];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPieceNumberChangedNotification object:nil];
+}
 
 #pragma mark -
 #pragma mark Gesture handling
@@ -1875,13 +1887,13 @@
     }
 }
 
-- (void)set_pieceNumber:(NSInteger)_pieceNumber_ {
-    _pieceNumber = _pieceNumber_;
+- (void)setPieceNumber:(NSInteger)pieceNumber {
+    _pieceNumber = pieceNumber;
     _NumberSquare = _pieceNumber * _pieceNumber;
     
 }
 
-- (PieceView*)pieceWithNumber:(NSInteger)j {
+- (PieceView *)pieceWithNumber:(NSInteger)j {
     
     for (PieceView *p in _pieces) {
         if (p.number == j) {
@@ -1968,8 +1980,7 @@
     
     [_lattice removeFromSuperview];
     
-    
-    float w = (_piceSize-2*self.padding)*_pieceNumber;
+    float w = (_piceSize - 2 * self.padding) * _pieceNumber;
     
     CGRect rect = [[UIScreen mainScreen] bounds];
     
@@ -1977,11 +1988,11 @@
     
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
         
-        rect = CGRectMake((rect.size.height-w)/2+drawerSize/2, (rect.size.width-w)/2, w, w);
+        rect = CGRectMake((rect.size.height - w) / 2 + drawerSize / 2, (rect.size.width - w) / 2, w, w);
         
     } else {
         
-        rect = CGRectMake((rect.size.width-w)/2, (rect.size.height-w)/2+drawerSize/2, w, w);
+        rect = CGRectMake((rect.size.width - w) / 2, (rect.size.height - w) / 2 + drawerSize / 2, w, w);
         
     }
     
@@ -1989,9 +2000,7 @@
     [_lattice initWithFrame:rect withNumber:_pieceNumber withDelegate:self];
     _lattice.frame = [self frameForLatticeWithOrientation:[UIApplication sharedApplication].statusBarOrientation];
     
-    //float optimalPiceSize = PUZZLE_SIZE*rect.size.width/(_pieceNumber)+2*self.padding;
     _lattice.scale = 1; //optimalPiceSize/piceSize;
-    //[self resizeLattice];
     
     [self.view addSubview:_lattice];
     
@@ -2539,19 +2548,17 @@
 
 - (CGRect)frameForLatticeWithOrientation:(UIInterfaceOrientation)orientation {
     
-    float w = (_piceSize-2*self.padding)*_pieceNumber;
+    float w = (_piceSize - 2 * self.padding) * _pieceNumber;
     
     CGRect latticeRect = [[UIScreen mainScreen] bounds];
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        
-        latticeRect = CGRectMake((latticeRect.size.height-w)/2+drawerSize/2, (latticeRect.size.width-w)/2, w, w);
-        
+        latticeRect = CGRectMake((latticeRect.size.height - w) / 2 + drawerSize / 2, (latticeRect.size.width - w) / 2, w, w);
     } else {
-        
-        latticeRect = CGRectMake((latticeRect.size.width-w)/2, (latticeRect.size.height-w)/2+drawerSize/2, w, w);
-        
+        latticeRect = CGRectMake((latticeRect.size.width - w) / 2, (latticeRect.size.height - w) / 2 + drawerSize / 2, w, w);
     }
+    
+    latticeRect.origin.y = latticeRect.size.height / 2;
     
     return latticeRect;
 }

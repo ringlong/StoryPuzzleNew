@@ -21,50 +21,34 @@
     self.delegate = delegate_;
     
     scale = 1;
-    float w = frame.size.width/n;
+    float w = frame.size.width / n;
     
-    
-    @autoreleasepool {
-        
-        NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:n^2];
+    NSMutableArray *a = [[NSMutableArray alloc] initWithCapacity:n^2];
+            
+    for (int i = 0; i < 3 * n; i++) {
+        for (int j = 0; j < 3 * n; j++) {
+            
+            float panning = 2.0;
+            
+            CGRect rect = CGRectMake(i * w - panning, j * w - panning, w - 2 * panning, w - 2 * panning);
+            UIView *v = [[UIView alloc] initWithFrame:rect];
+            
+            v.backgroundColor = [UIColor blackColor];
+
+            if ( i >= n && i < 2 * n && j >= n && j < 2 * n ) {
+                v.alpha = .3;
                 
-                for (int i=0;i<3*n;i++){
-                    for (int j=0;j<3*n;j++){
-                        
-                        //CGRect rect = CGRectMake(i*w+self.padding, (j)*w+piceSize+2*self.padding+20, w-1, w-1);
-                        //CGRect rect = CGRectMake(i*w+frame.origin.x, (j)*w+frame.origin.y, w-1, w-1);
-                        
-                        float panning = 2.0;
-                        
-                        CGRect rect = CGRectMake(i*w-panning, j*w-panning, w-2*panning, w-2*panning);
-                        UIView *v = [[UIView alloc] initWithFrame:rect];
-                        
-                        
-                        //v.layer.cornerRadius = w/15;
-                        //v.layer.masksToBounds = YES;
-                        
-                        v.backgroundColor = [UIColor whiteColor];
-
-                        if ( i >= n && i < 2*n && j >= n && j < 2*n ) {
-                            
-                            v.alpha = .2;
-                            
-                        } else {
-                            
-                            v.alpha = .05;
-                        }
-                        
-                        [a addObject:v];
-                        [self addSubview:v];
-                    }
-                }
-
-        pieces = [NSArray arrayWithArray:a];
-        
+            } else {
+                v.alpha = .1;
+            }
+            
+            [a addObject:v];
+            [self addSubview:v];
+        }
     }
+
+    pieces = [NSArray arrayWithArray:a];
         
-    //[self addSubview:[[UIImageView alloc] initWithImage:[(PuzzleController*)delegate image]]];
-    
 }
 
 

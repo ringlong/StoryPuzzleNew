@@ -36,7 +36,7 @@
     }
     
     
-    if (self.view.alpha==0) {
+    if (self.view.alpha == 0) {
         
         [delegate.view removeGestureRecognizer:delegate.pan];
 
@@ -101,7 +101,7 @@
 
 - (void)showNewGameView {
     
-    chooseLabel.center = CGPointMake(self.view.center.x-5, self.view.center.y-280);
+    chooseLabel.center = CGPointMake(self.view.center.x - 5, self.view.center.y - 280);
     game.tapToSelectLabel.hidden = NO;
     game.startButton.enabled = game.image.image;
     game.view.frame = CGRectMake(0, game.view.frame.origin.y, game.view.frame.size.width, game.view.frame.size.height);
@@ -110,7 +110,6 @@
 }
 
 - (void)loadSounds {
-    
     NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"Scissors_Shears" ofType:@"wav"];
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     menuSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];

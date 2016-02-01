@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		265799981C19B02A00DE05D4 /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 265799971C19B02A00DE05D4 /* UIColor+Additions.m */; };
+		602983F076B9E99CA2600ECB /* libPods-Puzzle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E1573E001317C1298F87A6 /* libPods-Puzzle.a */; };
 		942BB0CC1C0FD69B0024232F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 942BB0CB1C0FD69B0024232F /* Assets.xcassets */; };
 		9491D4631C1D177000C4A5F6 /* default-10-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D3631C1D177000C4A5F6 /* default-10-puzzle.jpeg */; };
 		9491D4641C1D177000C4A5F6 /* default-100-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D3641C1D177000C4A5F6 /* default-100-puzzle.jpeg */; };
@@ -282,14 +283,6 @@
 		B87C5CF11540174400AF69BC /* PuzzleController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87C5CEF1540174400AF69BC /* PuzzleController.m */; };
 		B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B87C5CF01540174400AF69BC /* PuzzleController.xib */; };
 		B88BF755158214000057F65D /* BannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88BF753158213FF0057F65D /* BannerViewController.m */; };
-		B8AA19BA154B502900750458 /* icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B2154B502900750458 /* icon-144.png */; };
-		B8AA19BB154B502900750458 /* icon-512.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B3154B502900750458 /* icon-512.png */; };
-		B8AA19BC154B502900750458 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B4154B502900750458 /* icon-72.png */; };
-		B8AA19BD154B502900750458 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B5154B502900750458 /* Icon-Small-50.png */; };
-		B8AA19BE154B502900750458 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B6154B502900750458 /* Icon-Small.png */; };
-		B8AA19BF154B502900750458 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B7154B502900750458 /* Icon-Small@2x.png */; };
-		B8AA19C0154B502900750458 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B8154B502900750458 /* icon.png */; };
-		B8AA19C1154B502900750458 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19B9154B502900750458 /* icon@2x.png */; };
 		B8AA19CE154B565400750458 /* NewGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AA19CC154B565400750458 /* NewGameController.m */; };
 		B8AA19CF154B565400750458 /* NewGameController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8AA19CD154B565400750458 /* NewGameController.xib */; };
 		B8AE1208155990DB00742256 /* GroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AE1204155990DB00742256 /* GroupView.m */; };
@@ -339,6 +332,8 @@
 /* Begin PBXFileReference section */
 		265799961C19B02A00DE05D4 /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Additions.h"; path = "Classes/UIColor+Additions.h"; sourceTree = "<group>"; };
 		265799971C19B02A00DE05D4 /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Additions.m"; path = "Classes/UIColor+Additions.m"; sourceTree = "<group>"; };
+		370C4E27AD0CDED87B9164B1 /* Pods-Puzzle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Puzzle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle.debug.xcconfig"; sourceTree = "<group>"; };
+		54E1573E001317C1298F87A6 /* libPods-Puzzle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Puzzle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		942BB0CB1C0FD69B0024232F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9491D3631C1D177000C4A5F6 /* default-10-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-10-puzzle.jpeg"; sourceTree = "<group>"; };
 		9491D3641C1D177000C4A5F6 /* default-100-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-100-puzzle.jpeg"; sourceTree = "<group>"; };
@@ -596,6 +591,7 @@
 		9491D4601C1D177000C4A5F6 /* default-97-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-97-puzzle.jpeg"; sourceTree = "<group>"; };
 		9491D4611C1D177000C4A5F6 /* default-98-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-98-puzzle.jpeg"; sourceTree = "<group>"; };
 		9491D4621C1D177000C4A5F6 /* default-99-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-99-puzzle.jpeg"; sourceTree = "<group>"; };
+		AC74B84026307EBD6FA5290B /* Pods-Puzzle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Puzzle.release.xcconfig"; path = "Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle.release.xcconfig"; sourceTree = "<group>"; };
 		B804EF391560870F00826712 /* BelloPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BelloPro.ttf; sourceTree = "<group>"; };
 		B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleCompletedController_iPhone.xib; path = Controllers/PuzzleCompletedController_iPhone.xib; sourceTree = "<group>"; };
 		B823757D1561B58000426E92 /* LoadGameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadGameController.h; path = Controllers/LoadGameController.h; sourceTree = "<group>"; };
@@ -621,14 +617,6 @@
 		B87C5CF01540174400AF69BC /* PuzzleController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleController.xib; path = Controllers/PuzzleController.xib; sourceTree = "<group>"; };
 		B88BF753158213FF0057F65D /* BannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerViewController.m; sourceTree = "<group>"; };
 		B88BF754158214000057F65D /* BannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerViewController.h; sourceTree = "<group>"; };
-		B8AA19B2154B502900750458 /* icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-144.png"; sourceTree = "<group>"; };
-		B8AA19B3154B502900750458 /* icon-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-512.png"; sourceTree = "<group>"; };
-		B8AA19B4154B502900750458 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
-		B8AA19B5154B502900750458 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
-		B8AA19B6154B502900750458 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
-		B8AA19B7154B502900750458 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
-		B8AA19B8154B502900750458 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		B8AA19B9154B502900750458 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		B8AA19CB154B565400750458 /* NewGameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewGameController.h; path = Controllers/NewGameController.h; sourceTree = "<group>"; };
 		B8AA19CC154B565400750458 /* NewGameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewGameController.m; path = Controllers/NewGameController.m; sourceTree = "<group>"; };
 		B8AA19CD154B565400750458 /* NewGameController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewGameController.xib; path = Controllers/NewGameController.xib; sourceTree = "<group>"; };
@@ -710,12 +698,22 @@
 				B87C5CC815400B2A00AF69BC /* Foundation.framework in Frameworks */,
 				B87C5CCA15400B2A00AF69BC /* CoreGraphics.framework in Frameworks */,
 				B87C5CCC15400B2A00AF69BC /* CoreData.framework in Frameworks */,
+				602983F076B9E99CA2600ECB /* libPods-Puzzle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		75C03FFAED18A51AF7F0FB2A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				370C4E27AD0CDED87B9164B1 /* Pods-Puzzle.debug.xcconfig */,
+				AC74B84026307EBD6FA5290B /* Pods-Puzzle.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9491D3621C1D177000C4A5F6 /* Image */ = {
 			isa = PBXGroup;
 			children = (
@@ -985,6 +983,7 @@
 				B87C5CCD15400B2A00AF69BC /* Puzzle */,
 				B87C5CC415400B2A00AF69BC /* Frameworks */,
 				B87C5CC215400B2A00AF69BC /* Products */,
+				75C03FFAED18A51AF7F0FB2A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1008,6 +1007,7 @@
 				B87C5CC715400B2A00AF69BC /* Foundation.framework */,
 				B87C5CC915400B2A00AF69BC /* CoreGraphics.framework */,
 				B87C5CCB15400B2A00AF69BC /* CoreData.framework */,
+				54E1573E001317C1298F87A6 /* libPods-Puzzle.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1021,7 +1021,6 @@
 				B87C5CE9154014C300AF69BC /* Classes */,
 				B8E1815F15503B0900A8B450 /* Audio */,
 				B8E1815E15503AF800A8B450 /* PNGs */,
-				B8AA19B1154B502900750458 /* Icon */,
 				B8DFA69115497ED300256385 /* Default */,
 				B8AE12141559912200742256 /* Core Data models */,
 				B87C5CCE15400B2A00AF69BC /* Supporting Files */,
@@ -1102,21 +1101,6 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
-		B8AA19B1154B502900750458 /* Icon */ = {
-			isa = PBXGroup;
-			children = (
-				B8AA19B2154B502900750458 /* icon-144.png */,
-				B8AA19B3154B502900750458 /* icon-512.png */,
-				B8AA19B4154B502900750458 /* icon-72.png */,
-				B8AA19B5154B502900750458 /* Icon-Small-50.png */,
-				B8AA19B6154B502900750458 /* Icon-Small.png */,
-				B8AA19B7154B502900750458 /* Icon-Small@2x.png */,
-				B8AA19B8154B502900750458 /* icon.png */,
-				B8AA19B9154B502900750458 /* icon@2x.png */,
-			);
-			path = Icon;
-			sourceTree = "<group>";
-		};
 		B8AE12141559912200742256 /* Core Data models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1182,9 +1166,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B87C5CDE15400B2A00AF69BC /* Build configuration list for PBXNativeTarget "Puzzle" */;
 			buildPhases = (
+				26E7516DC1B7EC1AC98419F3 /* Check Pods Manifest.lock */,
 				B87C5CBD15400B2A00AF69BC /* Sources */,
 				B87C5CBE15400B2A00AF69BC /* Frameworks */,
 				B87C5CBF15400B2A00AF69BC /* Resources */,
+				11BF790CC1C941C8056631EE /* Embed Pods Frameworks */,
+				5A842C722CDF96358D9DFF25 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1256,23 +1243,15 @@
 				B8DFA69D15497ED300256385 /* Default@2x.png in Resources */,
 				B8E4AC80154AA22300D0A75D /* MenuController.xib in Resources */,
 				9491D48F1C1D177000C4A5F6 /* default-14-puzzle.jpeg in Resources */,
-				B8AA19BA154B502900750458 /* icon-144.png in Resources */,
-				B8AA19BB154B502900750458 /* icon-512.png in Resources */,
-				B8AA19BC154B502900750458 /* icon-72.png in Resources */,
 				9491D4D91C1D177000C4A5F6 /* default-206-puzzle.jpeg in Resources */,
-				B8AA19BD154B502900750458 /* Icon-Small-50.png in Resources */,
 				9491D4781C1D177000C4A5F6 /* default-119-puzzle.jpeg in Resources */,
-				B8AA19BE154B502900750458 /* Icon-Small.png in Resources */,
 				9491D4DB1C1D177000C4A5F6 /* default-208-puzzle.jpeg in Resources */,
 				9491D5291C1D177000C4A5F6 /* default-47-puzzle.jpeg in Resources */,
 				9491D4B81C1D177000C4A5F6 /* default-177-puzzle.jpeg in Resources */,
 				9491D4771C1D177000C4A5F6 /* default-118-puzzle.jpeg in Resources */,
 				9491D51E1C1D177000C4A5F6 /* default-37-puzzle.jpeg in Resources */,
-				B8AA19BF154B502900750458 /* Icon-Small@2x.png in Resources */,
 				9491D4811C1D177000C4A5F6 /* default-127-puzzle.jpeg in Resources */,
 				9491D49D1C1D177000C4A5F6 /* default-152-puzzle.jpeg in Resources */,
-				B8AA19C0154B502900750458 /* icon.png in Resources */,
-				B8AA19C1154B502900750458 /* icon@2x.png in Resources */,
 				B8AA19CF154B565400750458 /* NewGameController.xib in Resources */,
 				9491D55F1C1D177000C4A5F6 /* default-96-puzzle.jpeg in Resources */,
 				B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */,
@@ -1534,6 +1513,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		11BF790CC1C941C8056631EE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		26E7516DC1B7EC1AC98419F3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5A842C722CDF96358D9DFF25 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B87C5CBD15400B2A00AF69BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1601,7 +1628,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PROVISIONING_PROFILE = "E5EB72A9-6342-4142-9328-BCA309ADC2B2";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E5EB72A9-6342-4142-9328-BCA309ADC2B2";
 				SDKROOT = iphoneos;
@@ -1627,7 +1654,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "E5EB72A9-6342-4142-9328-BCA309ADC2B2";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DA84BA24-715D-4C5E-8D8E-1ED3361B8CD3";
@@ -1639,6 +1666,7 @@
 		};
 		B87C5CDF15400B2A00AF69BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 370C4E27AD0CDED87B9164B1 /* Pods-Puzzle.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1651,17 +1679,18 @@
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "Puzzle/Puzzle-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Bit.StoryPuzzle;
 				PRODUCT_NAME = "Your$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		B87C5CE015400B2A00AF69BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC74B84026307EBD6FA5290B /* Pods-Puzzle.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1674,11 +1703,11 @@
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "Puzzle/Puzzle-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Bit.StoryPuzzle;
 				PRODUCT_NAME = "Your$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

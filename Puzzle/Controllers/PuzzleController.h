@@ -27,7 +27,7 @@
 #define PIECE_SIZE_IPAD 180
 #define PIECE_SIZE_IPHONE 75
 
-
+UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 
 @interface PuzzleController : iAdViewController <UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
     

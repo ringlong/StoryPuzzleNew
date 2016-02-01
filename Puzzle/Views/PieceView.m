@@ -477,7 +477,7 @@
             break;
     }
     
-    if (type<0) {
+    if (type < 0) {
         sign *= -1;
     }
     
@@ -487,86 +487,28 @@
         l = x;
     }
     
-    float l3 = (l-2*p)/3;
-        
-    CGPoint point = [self sum:a plus:b firstWeight:2.0/3.0];
+    CGPoint point = [self sum:a plus:b firstWeight:2.0 / 3.0];
     CGContextAddLineToPoint(ctx, point.x, point.y);
-        //DLog(@"p = ( %.1f, %.1f )", p.x, p.y);
 
-        
-    if (ABS(type) == 1) { //Triangle
-
-        CGPoint p2 = [self sum:a plus:b firstWeight:1.0/2.0];
-
-        if (!vertical) {
-            p2 = [self sum:p2 plus:CGPointMake(sign*(p-CO_PADDING), 0)];
-        } else {
-            p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-CO_PADDING))];
-        }
-        
-        CGContextAddLineToPoint(ctx, p2.x, p2.y);
-        
-        
-        CGPoint p3 = [self sum:a plus:b firstWeight:1.0/3.0];
-        CGContextAddLineToPoint(ctx, p3.x, p3.y);        
-
-    } else if (ABS(type)==2) { //Cerchietto
-        
-        CGPoint p2 = [self sum:a plus:b firstWeight:1.0/2.0];
+    if (ABS(type) != 0) {
+        CGPoint p2 = [self sum:a plus:b firstWeight:1.0 / 2.0];
         
         switch (n) {
             case 1:
-                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, M_PI, 0, sign+1);
+                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, M_PI, 0, sign+1);
                 break;
             case 2:
-                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, M_PI*3/2, M_PI/2, sign-1);
+                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, M_PI_2 * 3, M_PI_2, sign - 1);
                 break;
             case 3:
-                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, 0, M_PI, sign-1);
+                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, 0, M_PI, sign - 1);
                 break;
             case 4:
-                CGContextAddArc(ctx, p2.x, p2.y, (l-2*p)/6, M_PI/2, M_PI*3/2, sign+1);
+                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, M_PI_2, M_PI_2 * 3, sign + 1);
                 break;
             default:
                 break;
         }
-
-    } else if (ABS(type)==3) { //Quadratino
-        
-        CGPoint p2 = point;
-        CGPoint p3 = point;
-        CGPoint p4 = point;
-        
-        switch (n) {
-            case 1:
-                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-CO_PADDING))];
-                p3 = [self sum:p2 plus:CGPointMake(l3, 0)];
-                p4 = [self sum:point plus:CGPointMake(l3, 0)];
-                break;
-            case 2:
-                p2 = [self sum:p2 plus:CGPointMake(sign*(p-CO_PADDING), 0)];
-                p3 = [self sum:p2 plus:CGPointMake(0, l3)];
-                p4 = [self sum:point plus:CGPointMake(0 , l3)];
-                break;
-            case 3:
-                p2 = [self sum:p2 plus:CGPointMake(0, sign*(p-CO_PADDING))];
-                p3 = [self sum:p2 plus:CGPointMake(-l3, 0)];
-                p4 = [self sum:point plus:CGPointMake(-l3, 0)];
-                break;
-            case 4:
-                p2 = [self sum:p2 plus:CGPointMake(sign*(p-CO_PADDING), 0)];
-                p3 = [self sum:p2 plus:CGPointMake(0, -l3)];
-                p4 = [self sum:point plus:CGPointMake(0 , -l3)];
-                break;
-            default:
-                break;
-        }
-        
-        CGContextAddLineToPoint(ctx, p2.x, p2.y);
-        CGContextAddLineToPoint(ctx, p3.x, p3.y);
-        CGContextAddLineToPoint(ctx, p4.x, p4.y);
-
-    
         
     } else {
         
@@ -574,7 +516,7 @@
         CGContextAddLineToPoint(ctx, point.x, point.y);
     
     }
-    
+
     CGContextAddLineToPoint(ctx, b.x, b.y);
 }
 

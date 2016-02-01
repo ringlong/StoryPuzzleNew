@@ -15,7 +15,7 @@
 }
 
 + (UIColor *)puzzleBackgroundColor {
-    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"Wood.jpg"]];
+    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"jeans"]];
 }
 
 @end
