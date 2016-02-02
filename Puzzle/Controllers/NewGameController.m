@@ -28,8 +28,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kPieceNumberChangedNotification object:nil];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:kPieceNumberChangedNotification object:nil];
@@ -70,7 +69,6 @@
 }
 
 - (void)adjustForAd {
-    
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.adBannerView];
     delegate.delegate.adBannerView.hidden = NO;
 
@@ -85,10 +83,6 @@
     CGRect frame = self.view.frame;
     frame.origin.y = origin;
     self.view.frame = frame;
-    
-    frame = delegate.view.frame;
-    frame.origin.y = origin;
-    //delegate.view.frame = frame;
 }
 
 - (void)piecesNotificationResponse:(NSNotification *)notification {
@@ -134,9 +128,6 @@
     }];
     
     [self dismissPicker];
-    
-//    [self adjustForAd];
-
 }
 
 - (void)dismissPicker {
@@ -172,16 +163,12 @@
     
     tapToSelectLabel.hidden = YES;
     startButton.enabled = YES;    
-    
-//    [self adjustForAd];
-
 }
 
 - (IBAction)selectImageFromPuzzleLibrary:(id)sender {
     
     [delegate playMenuSound];
     delegate.chooseLabel.alpha = 1;
-
     
     PuzzleLibraryController *c = [[PuzzleLibraryController alloc] init];
     c.delegate = self;
@@ -200,15 +187,13 @@
     UIImagePickerController *c = [[UIImagePickerController alloc] init];
    
     if ([sender.titleLabel.text isEqualToString:@"Camera"]) {
-        
         c.sourceType = UIImagePickerControllerSourceTypeCamera;
         direction = UIPopoverArrowDirectionUp;
-
     } else {
-
         c.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         direction = UIPopoverArrowDirectionUp;
     }
+    
     c.allowsEditing = YES;
     c.delegate = self;
     
@@ -229,7 +214,6 @@
 }
 
 - (IBAction)startNewGame:(id)sender {
-    
     [delegate playMenuSound];
     
     DLog(@"Started");
@@ -246,7 +230,6 @@
         delegate.delegate.pieceNumber = (int)slider.value;
     }
     
-    
     [self startLoading];
 
     [delegate.delegate removeOldPieces];
@@ -261,30 +244,23 @@
     if (typeOfImageView.hidden) {
         
         [UIView animateWithDuration:0.3 animations:^{
-            
             self.view.frame = CGRectMake(self.view.frame.size.width, self.view.frame.origin.y,
                                          self.view.frame.size.width, self.view.frame.size.height);
             
             delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y, 
                                                  self.view.frame.size.width, self.view.frame.size.height);
-            
         }completion:^(BOOL finished) {
-            
             typeOfImageView.hidden = YES;
         }];
-        
     } else {
-        
         typeOfImageView.hidden = YES;
     }
     
 }
 
 - (void)startLoading {
-    
     startButton.hidden = YES;
     backButton.hidden = YES;
-
     
     if (delegate.delegate.loadingGame) {
         
@@ -310,8 +286,6 @@
     progressView.progress = 0.0;
     
     //timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
-    
-
 }
 
 
@@ -335,9 +309,7 @@
     tapToSelectView.hidden = NO;
     tapToSelectLabel.hidden = NO;
 
-    
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];    
-
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
 }
 
 - (void)loadingFailed {
@@ -371,9 +343,8 @@
 
 
 - (void)moveBar {
-        
     float a = (float)delegate.delegate.loadedPieces;
-    float b = (float)((int)slider.value * (int)slider.value);
+    float b = (float)(slider.value * slider.value);
     
     if (delegate.delegate.loadingGame) {
         b = delegate.delegate.NumberSquare;
@@ -383,22 +354,10 @@
 
 
 - (IBAction)numberSelected:(UISlider *)sender {
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
-
-    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%@ ", @(slider.value * slider.value)];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 

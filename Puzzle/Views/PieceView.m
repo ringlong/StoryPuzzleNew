@@ -42,9 +42,6 @@
     [self addGestureRecognizer:tap];
     
     self.backgroundColor = [UIColor clearColor];
-    
-        
-        
 }
 
 - (void)pulse {    
@@ -452,23 +449,23 @@
     switch (n) {
         case 1:
             a = CGPointMake(p, p);
-            b = CGPointMake(x-p, p);
+            b = CGPointMake(x - p, p);
             vertical = YES;
             sign = -1;
             break;
         case 2:
-            a = CGPointMake(x-p, p);
-            b = CGPointMake(x-p, y-p);
+            a = CGPointMake(x - p, p);
+            b = CGPointMake(x - p, y - p);
             sign = 1;
             break;
         case 3:
-            a = CGPointMake(x-p, y-p);
-            b = CGPointMake(p, y-p);
+            a = CGPointMake(x - p, y - p);
+            b = CGPointMake(p, y - p);
             vertical = YES;
             sign = 1;
             break;
         case 4:
-            a = CGPointMake(p, y-p);
+            a = CGPointMake(p, y - p);
             b = CGPointMake(p, p);
             sign = -1;
             break;
@@ -490,21 +487,22 @@
     CGPoint point = [self sum:a plus:b firstWeight:2.0 / 3.0];
     CGContextAddLineToPoint(ctx, point.x, point.y);
 
+    CGFloat radius = (l - 2 * p) / 6;
     if (ABS(type) != 0) {
         CGPoint p2 = [self sum:a plus:b firstWeight:1.0 / 2.0];
         
         switch (n) {
             case 1:
-                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, M_PI, 0, sign+1);
+                CGContextAddArc(ctx, p2.x, p2.y, radius, M_PI, 0, sign + 1);
                 break;
             case 2:
-                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, M_PI_2 * 3, M_PI_2, sign - 1);
+                CGContextAddArc(ctx, p2.x, p2.y, radius, M_PI_2 * 3, M_PI_2, sign - 1);
                 break;
             case 3:
-                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, 0, M_PI, sign - 1);
+                CGContextAddArc(ctx, p2.x, p2.y, radius, 0, M_PI, sign - 1);
                 break;
             case 4:
-                CGContextAddArc(ctx, p2.x, p2.y, (l - 2 * p) / 6, M_PI_2, M_PI_2 * 3, sign + 1);
+                CGContextAddArc(ctx, p2.x, p2.y, radius, M_PI_2, M_PI_2 * 3, sign + 1);
                 break;
             default:
                 break;
