@@ -127,17 +127,6 @@
     image.image = temp;
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    
-    popover = nil;
-    [UIView animateWithDuration:0.3 animations:^{
-        delegate.chooseLabel.alpha = 0;
-    }];
-
-//    [self adjustForAd];
-
-}
-
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
     [UIView animateWithDuration:0.3 animations:^{
