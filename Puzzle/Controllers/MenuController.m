@@ -147,10 +147,11 @@
 }
 
 - (IBAction)showThePicture:(id)sender {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hint" message:@"A shortcut to show the image: hold one finger on the screen for 1 second.\nEnjoy!" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:action];
+    [self presentViewController:alertController animated:YES completion:nil];
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Hint" message:@"A shortcut to show the image: hold one finger on the screen for 1 second.\nEnjoy!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-    [alertView show];
-
     //[self toggleMenu];    
     [delegate toggleImageWithDuration:0.5];
     [self playMenuSound];

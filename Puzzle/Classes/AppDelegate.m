@@ -28,10 +28,6 @@
     [self.window makeKeyAndVisible];
     self.window.frame = [[UIScreen mainScreen] bounds];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    }
-    
     _puzzle = [[PuzzleController alloc] init];
     _puzzle.managedObjectContext = self.managedObjectContext;
     _puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;

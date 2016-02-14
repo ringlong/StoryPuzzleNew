@@ -52,8 +52,6 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
     NSArray *directions_positions;
     NSArray *directions_numbers;
     
-    UIAlertView *alertView;
-
     NSInteger numberOfPiecesInDrawer;
     
     NSInteger DrawerPosition;
