@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class PieceView;
 @protocol LatticeDelegate
 
 @end
@@ -17,7 +17,7 @@
 }
 
 @property (nonatomic, assign) UIViewController *delegate;
-@property (nonatomic, retain) NSArray *pieces;
+@property (nonatomic, retain) NSArray<PieceView *> *pieces;
 @property (nonatomic) float scale;
 
 - (void)initWithFrame:(CGRect)frame withNumber:(NSInteger)n withDelegate:(id)delegate;

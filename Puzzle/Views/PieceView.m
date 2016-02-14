@@ -12,27 +12,11 @@
 
 @implementation PieceView
 
-@synthesize image, number, edges, position, angle, size, tempAngle, padding, delegate, neighbors, oldPosition, centerView, positionInDrawer, group;
-
-@synthesize isBoss, isLifted, isPositioned, isFree, hasNeighbors, isRotating;
-
-@synthesize pan;
-
-@synthesize moves, rotations;
-
-
-
-
 - (void)setup {
-    
-    pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [pan setMinimumNumberOfTouches:1];
-    [pan setMaximumNumberOfTouches:1];
-    pan.delegate = self;
-    pan.delaysTouchesBegan = YES;
-
-    [self addGestureRecognizer:pan];
-
+    self.pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    self.pan.delegate = self;
+    self.pan.delaysTouchesBegan = YES;
+    [self addGestureRecognizer:self.pan];
     
     UIRotationGestureRecognizer *rot = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];    
     [self addGestureRecognizer:rot];
@@ -45,22 +29,21 @@
 }
 
 - (void)pulse {    
-        
-    if (delegate.loadingGame) return;
+    if (self.delegate.loadingGame) {
+        return;
+    }
     
-    if (group && !group.isPositioned) {
-        
-        [group pulse];
+    if (self.group && !self.group.isPositioned) {
+        [self.group pulse];
         return;
         
     }
     
     [self removeFromSuperview];
-    [delegate.view insertSubview:self aboveSubview:[delegate upperPositionedThing]];
+    [self.delegate.view insertSubview:self aboveSubview:[self.delegate upperPositionedThing]];
     
     CATransform3D trasform = CATransform3DScale(self.layer.transform, 1.15, 1.15, 1);
 
-    
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
     animation.toValue = [NSValue valueWithCATransform3D:trasform];
     animation.autoreverses = YES;
@@ -69,21 +52,14 @@
     animation.repeatCount = 2;
     [self.layer addAnimation:animation forKey:@"pulseAnimation"];
     
-    
     return;
 }
 
-
-
-#pragma mark
-#pragma GESTURE HANDLING
+#pragma mark - GESTURE HANDLING
 
 - (BOOL)isNeighborOf:(PieceView*)piece {
-    
     for (PieceView *p in [self allTheNeighborsBut:nil]) {
-        
-        if (p.number==piece.number) {
-            
+        if (p.number == piece.number) {
             return YES;
         }
     }
@@ -91,20 +67,11 @@
     return NO;
 }
 
-- (CGPoint)sum:(CGPoint)a plus:(CGPoint)b firstWeight:(float)f {
-    
-    return CGPointMake(f*a.x+(1-f)*b.x, f*a.y+(1-f)*b.y);
-    
-}
-
 - (CGPoint)sum:(CGPoint)a plus:(CGPoint)b {
-    
-    return CGPointMake(a.x+b.x, a.y+b.y);
-    
+    return CGPointMake(a.x + b.x, a.y + b.y);
 }
 
 - (void)translateWithVector:(CGPoint)traslation {
-
     CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
     CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, self.frame.size.width, self.frame.size.height);
     self.frame = newFrame;
@@ -112,17 +79,16 @@
 
 - (void)movedNeighborhoodExcludingPieces:(NSMutableArray*)excluded {
     
-    for (NSInteger j=0; j<[neighbors count]; j++) {
+    for (NSInteger j = 0; j< self.neighbors.count; j++) {
         
-        NSInteger i = [[neighbors objectAtIndex:j] integerValue];
+        NSInteger i = [self.neighbors[j] integerValue];
         
-        if (i<delegate.NumberSquare) {
-            PieceView *piece = [delegate pieceWithNumber:i];
+        if (i < self.delegate.NumberSquare) {
+            PieceView *piece = [self.delegate pieceWithNumber:i];
             
             BOOL present = NO;
             for (PieceView *p in excluded) {
-                
-                if (piece==p) {
+                if (piece == p) {
                     present = YES;
                 }
             }
@@ -130,7 +96,7 @@
             if (!present) {
                 [excluded addObject:piece];
                 [piece movedNeighborhoodExcludingPieces:excluded];
-                [delegate pieceMoved:piece];
+                [self.delegate pieceMoved:piece];
             }
         }
     }
@@ -138,19 +104,18 @@
 }
 
 - (void)translateNeighborhoodExcluding:(NSMutableArray*)excluded WithVector:(CGPoint)traslation {
- 
-    for (NSInteger j=0; j<[neighbors count]; j++) {
+    
+    for (NSInteger j = 0; j < _neighbors.count; j++) {
         
-        NSInteger i = [[neighbors objectAtIndex:j] integerValue];
+        NSInteger i = [_neighbors[j] integerValue];
         
-        if (i<delegate.NumberSquare) {
+        if (i < _delegate.NumberSquare) {
             //DLog(@"From piece #%d, translating the other, i=%d", self.number ,i);
-            PieceView *piece = [delegate pieceWithNumber:i];
+            PieceView *piece = [_delegate pieceWithNumber:i];
             
             BOOL present = NO;
             for (PieceView *p in excluded) {
-                
-                if (piece==p) {
+                if (piece == p) {
                     present = YES;
                 }
             }
@@ -169,7 +134,7 @@
     
     BOOL rotating = NO;
     
-    for (PieceView *p in delegate.pieces) {
+    for (PieceView *p in _delegate.pieces) {
         if (p.isRotating && !p.isFree) {
             return YES;
         }
@@ -180,104 +145,79 @@
     
 }
 
-- (void)move:(UIPanGestureRecognizer*)gesture {    
-    
+- (void)move:(UIPanGestureRecognizer *)gesture {
     
     if (!self.userInteractionEnabled) {
         return;
     }
 
-    if(delegate.imageView.alpha == 1) {
-        [delegate toggleImageWithDuration:0.5];
+    if (_delegate.imageView.alpha == 1) {
+        [_delegate toggleImageWithDuration:0.5];
     }
     
     CGPoint traslation = [gesture translationInView:self.superview];
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        
         [self.superview bringSubviewToFront:self];
-        [self.superview bringSubviewToFront:delegate.adBannerView];
         
-        oldPosition = [self realCenter];
+        _oldPosition = [self realCenter];
         tr = 0;
-        delegate.drawerStopped = [delegate drawerStoppedShouldBeStopped];
-
+        _delegate.drawerStopped = [_delegate drawerStoppedShouldBeStopped];
     }
     
-    if (isFree || isLifted) { //In the board
-        
+    if (_isFree || _isLifted) { //In the board
         NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
         
-        if (group==nil) {
-            
+        if (!_group) {
             [self translateWithVector:traslation];
             [self translateNeighborhoodExcluding:excluded WithVector:traslation];
-            
         } else {
-            
-            //traslation = [gesture translationInView:self.superview.superview];
-            [group translateWithVector:traslation];
-            //DLog(@"%s", __FUNCTION__);
-            
+            [_group translateWithVector:traslation];
         }
-        
         
         [gesture setTranslation:CGPointZero inView:self.superview];
         
-        
         if (gesture.state == UIGestureRecognizerStateEnded) {
             
-            
-            if (group==nil) {
-                
-                //NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
-                //[self movedNeighborhoodExcludingPieces:excluded];
-                [delegate pieceMoved:self];                   
-                if (isFree) {
+            if (!_group) {
+                [_delegate pieceMoved:self];
+                if (_isFree) {
                     [self removeFromSuperview];
-                    [delegate.view insertSubview:self belowSubview:delegate.drawerView];
+                    [_delegate.view insertSubview:self belowSubview:_delegate.drawerView];
                 }
-                
             } else {
-                
-                [delegate groupMoved:group];                    
-                [group removeFromSuperview];
-                [delegate.view insertSubview:group aboveSubview:[delegate upperGroupBut:group]];  
+                [_delegate groupMoved:_group];
+                [_group removeFromSuperview];
+                [_delegate.view insertSubview:_group aboveSubview:[_delegate upperGroupBut:_group]];
             }
-            
-            
         }
         
     } else { //Inside the drawer
-        
-#define X_BOUND 5
-#define Y_BOUND 3
+        CGFloat xBound = 5;
+        CGFloat yBound = 3;
         
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-            
-            if (!delegate.drawerStopped && (ABS(traslation.x) < delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND )) {
+            if (!_delegate.drawerStopped && (ABS(traslation.x) < _delegate.piceSize/xBound || ABS(tr)>_delegate.piceSize/yBound )) {
                 tr += ABS(traslation.y);
-                [delegate panDrawer:gesture];
+                [_delegate panDrawer:gesture];
             } else {
                 [self translateWithVector:CGPointMake(traslation.x, 0)];
                 [gesture setTranslation:CGPointZero inView:self.superview];
                 self.isLifted = YES;
-                if(delegate.imageView.alpha == 1) {
-                    [delegate toggleImageWithDuration:0.5];
+                if (_delegate.imageView.alpha == 1) {
+                    [_delegate toggleImageWithDuration:0.5];
                 }
             }
-            
         } else {
-            
-            if (!delegate.drawerStopped && (ABS(traslation.y) < delegate.piceSize/X_BOUND || ABS(tr)>delegate.piceSize/Y_BOUND )) {
+            if (!_delegate.drawerStopped && (ABS(traslation.y) < _delegate.piceSize/xBound || ABS(tr)>_delegate.piceSize/yBound )) {
                 tr += ABS(traslation.x);
-                [delegate panDrawer:gesture];
+                [_delegate panDrawer:gesture];
             } else {
                 [self translateWithVector:CGPointMake(0, traslation.y)];
                 [gesture setTranslation:CGPointZero inView:self.superview];
                 self.isLifted = YES;
-                if(delegate.imageView.alpha == 1) {
-                    [delegate toggleImageWithDuration:0.5];
+                if (_delegate.imageView.alpha == 1) {
+                    [_delegate toggleImageWithDuration:0.5];
                 }
             }
         }
@@ -285,8 +225,7 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    [delegate touchesBegan:touches withEvent:event];
+    [_delegate touchesBegan:touches withEvent:event];
     
 }
 
@@ -301,21 +240,23 @@
         
         float rotation = [gesture rotation];
         
-        if ([gesture state]==UIGestureRecognizerStateEnded || [gesture state]==UIGestureRecognizerStateCancelled || [gesture state]==UIGestureRecognizerStateFailed) {
+        if (gesture.state == UIGestureRecognizerStateEnded ||
+            gesture.state == UIGestureRecognizerStateCancelled ||
+            gesture.state == UIGestureRecognizerStateFailed) {
             
-            NSInteger t = floor(ABS(tempAngle)/(M_PI_4));
+            NSInteger t = floor(ABS(_tempAngle) / M_PI_4);
             
-            if (t%2==0) {
-                t/=2;
+            if (t % 2 == 0) {
+                t /= 2;
             } else {
-                t= (t+1)/2;
+                t= (t + 1) / 2;
             }
             
-            rotation = tempAngle/ABS(tempAngle) * t * M_PI_2 - tempAngle;
+            rotation = _tempAngle / ABS(_tempAngle) * t * M_PI_2 - _tempAngle;
             
-            angle += rotation;
-            angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
-            [self setAngle:angle];
+            _angle += rotation;
+            _angle = [PuzzleController computeFloat:_angle modulo:2 * M_PI];
+            [self setAngle:_angle];
             
             //DLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
             
@@ -323,39 +264,29 @@
                 
                 self.transform = CGAffineTransformRotate(self.transform, rotation);
                 
-            }completion:^(BOOL finished) {
+            } completion:^(BOOL finished) {
 
                 self.isRotating = NO;
-                delegate.drawerView.userInteractionEnabled = YES;
-                [delegate pieceRotated:self];
+                _delegate.drawerView.userInteractionEnabled = YES;
+                [_delegate pieceRotated:self];
             }];
             
-//            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
+            _tempAngle = 0;
+   
+        } else if (gesture.state == UIGestureRecognizerStateBegan ||
+                   gesture.state == UIGestureRecognizerStateChanged){
             
-            tempAngle = 0;
-            
-            
-            
-            
-        } else if (gesture.state==UIGestureRecognizerStateBegan || gesture.state==UIGestureRecognizerStateChanged){
-            
-            delegate.drawerView.userInteractionEnabled = NO;
+            _delegate.drawerView.userInteractionEnabled = NO;
             
             self.isRotating = YES;
             self.transform = CGAffineTransformRotate(self.transform, rotation);
-            tempAngle += rotation;
-            angle += rotation;
+            _tempAngle += rotation;
+            _angle += rotation;
 
         }
         
-        //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
-        
-        
         [gesture setRotation:0];
-        
     }
-    
-    
 }
 
 - (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view {
@@ -384,282 +315,284 @@
         return;
     }
         
-    angle += M_PI_2;
-    angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
-    [self setAngle:angle];
+    _angle += M_PI_2;
+    _angle = [PuzzleController computeFloat:_angle modulo:2 * M_PI];
+    [self setAngle:_angle];
     
-    if (group==nil) {
+    if (!_group) {
         
         [UIView animateWithDuration:0.2 animations:^{
-            
             self.transform = CGAffineTransformRotate(self.transform, M_PI_2);
-            
-        }completion:^(BOOL finished) {
-            
-            [delegate pieceRotated:self];
+        } completion:^(BOOL finished) {
+            [_delegate pieceRotated:self];
         }];
         
     } else {
         
         CGPoint point = self.center; 
-        group.boss.isBoss = NO;
-        group.boss = self;
+        _group.boss.isBoss = NO;
+        _group.boss = self;
         self.isBoss = YES;
 
-        [self setAnchorPoint:CGPointMake(point.x / group.bounds.size.width, point.y / group.bounds.size.height) forView:group];
+        [self setAnchorPoint:CGPointMake(point.x / _group.bounds.size.width, point.y / _group.bounds.size.height) forView:_group];
         
-        group.angle += M_PI_2;
-        group.angle = [PuzzleController computeFloat:group.angle modulo:2*M_PI];
+        _group.angle += M_PI_2;
+        _group.angle = [PuzzleController computeFloat:_group.angle modulo:2 * M_PI];
         
-        CGAffineTransform transform = group.transform;
-        transform = CGAffineTransformRotate(transform,M_PI_2);
+        CGAffineTransform transform = _group.transform;
+        transform = CGAffineTransformRotate(transform, M_PI_2);
         
         [UIView animateWithDuration:0.2 animations:^{
-            
-            group.transform = transform;
-            
+            _group.transform = transform;
         } completion:^(BOOL finished) {
-            [delegate pieceRotated:self];
+            [_delegate pieceRotated:self];
         }];
                 
     }
 }
 
-
-
-
-#pragma mark -
-#pragma mark DRAWING
-
-#define CO_PADDING 0
+#pragma mark - DRAWING
 
 - (void)drawEdgeNumber:(NSInteger)n ofType:(NSInteger)type inContext:(CGContextRef)ctx {
     
-    float x = self.bounds.size.width;
-    float y = self.bounds.size.height;
-    float l;
-    float p = self.padding;
+    CGFloat x = CGRectGetWidth(self.bounds);
+    CGFloat y = CGRectGetHeight(self.bounds);
+    CGFloat p = self.padding;
+    CGFloat width = x - 2 * p;
+    CGFloat height = y - 2 * p;
     
-    BOOL vertical = NO;
-    int sign = 1;
+    // 1:逆时针，inside， 0:顺时针， outside
+    int clockwise = type < 0 ? 1 : 0;
     
-    CGPoint a = CGPointZero;
-    CGPoint b = CGPointZero;
-        
+    CGFloat radius = width / 6;
+
+    CGPoint a = CGPointZero;            // 起始端点
+    CGPoint b = CGPointZero;            // 结束端点
+    CGPoint control = CGPointZero;      // 贝塞尔曲线控制点
+    CGPoint center = CGPointZero;       // 圆心
+    CGPoint keyPoint = CGPointZero;     // 位置点
+    CGFloat startAngle = 0;
+    CGFloat endAngle = 0;
+    
+    CGFloat keyPointOffsetEdge = radius * (1.3 - M_SQRT1_2);        // 相对于边的偏移量
+    CGFloat keyPointOffsetCenter = radius * M_SQRT1_2;            // 相对于中线的偏移量
+    CGFloat circleCenterOffset = 1.3 * radius;                         // 圆心相对于边的偏移量
+    CGFloat controlPointOffset = 5;                                    // 控制点偏移量
+    
+    CGFloat centerPosition = 0;
     switch (n) {
         case 1:
+            // Top
             a = CGPointMake(p, p);
             b = CGPointMake(x - p, p);
-            vertical = YES;
-            sign = -1;
+            centerPosition = p + width / 2;
+            if (clockwise) {
+                // Inside
+                control = CGPointMake(centerPosition, p - controlPointOffset);
+                center = CGPointMake(centerPosition, p + circleCenterOffset);
+                keyPoint = CGPointMake(centerPosition - keyPointOffsetCenter, p + keyPointOffsetEdge);
+                startAngle = -3 * M_PI_4;
+                endAngle = -M_PI_4;
+            } else {
+                // Outside
+                control = CGPointMake(centerPosition, p + controlPointOffset);
+                center = CGPointMake(centerPosition, p - circleCenterOffset);
+                keyPoint = CGPointMake(centerPosition - keyPointOffsetCenter, p - keyPointOffsetEdge);
+                startAngle = 3 * M_PI_4;
+                endAngle = M_PI_4;
+            }
             break;
         case 2:
+            // Right
             a = CGPointMake(x - p, p);
             b = CGPointMake(x - p, y - p);
-            sign = 1;
+            centerPosition = p + height / 2;
+            if (clockwise) {
+                // Inside
+                control = CGPointMake(x - p + controlPointOffset, centerPosition);
+                center = CGPointMake(x - p - circleCenterOffset, centerPosition);
+                keyPoint = CGPointMake(x - p - keyPointOffsetEdge, centerPosition - keyPointOffsetCenter);
+                startAngle = -M_PI_4;
+                endAngle = M_PI_4;
+            } else {
+                // Outside
+                control = CGPointMake(x - p - controlPointOffset, centerPosition);
+                center = CGPointMake(x - p + circleCenterOffset, centerPosition);
+                keyPoint = CGPointMake(x - p + keyPointOffsetEdge, centerPosition - keyPointOffsetCenter);
+                startAngle = -3 * M_PI_4;
+                endAngle = 3 * M_PI_4;
+            }
             break;
         case 3:
+            // Bottom
             a = CGPointMake(x - p, y - p);
             b = CGPointMake(p, y - p);
-            vertical = YES;
-            sign = 1;
+            centerPosition = p + width / 2;
+            if (clockwise) {
+                // Inside
+                control = CGPointMake(centerPosition, y - p + controlPointOffset);
+                center = CGPointMake(centerPosition, y - p - circleCenterOffset);
+                keyPoint = CGPointMake(centerPosition + keyPointOffsetCenter, y - p - keyPointOffsetEdge);
+                startAngle = M_PI_4;
+                endAngle = 3 * M_PI_4;
+            } else {
+                // Outside
+                control = CGPointMake(centerPosition, y - p - controlPointOffset);
+                center = CGPointMake(centerPosition, y - p + circleCenterOffset);
+                keyPoint = CGPointMake(centerPosition + keyPointOffsetCenter, y - p + keyPointOffsetEdge);
+                startAngle = -M_PI_4;
+                endAngle = -3 * M_PI_4;
+            }
             break;
         case 4:
+            // Left
             a = CGPointMake(p, y - p);
             b = CGPointMake(p, p);
-            sign = -1;
+            centerPosition = p + height / 2;
+            if (clockwise) {
+                // Inside
+                control = CGPointMake(p - controlPointOffset, centerPosition);
+                center = CGPointMake(p + circleCenterOffset, centerPosition);
+                keyPoint = CGPointMake(p + keyPointOffsetEdge, centerPosition + keyPointOffsetCenter);
+                startAngle = 3 * M_PI_4;
+                endAngle = -3 * M_PI_4;
+            } else {
+                // Outside
+                control = CGPointMake(p + controlPointOffset, centerPosition);
+                center = CGPointMake(p - circleCenterOffset, centerPosition);
+                keyPoint = CGPointMake(p - keyPointOffsetEdge, centerPosition + keyPointOffsetCenter);
+                startAngle = M_PI_4;
+                endAngle = -M_PI_4;
+            }
             break;
-            
         default:
             break;
     }
-    
-    if (type < 0) {
-        sign *= -1;
-    }
-    
-    if (vertical) {
-        l = y;
-    } else {
-        l = x;
-    }
-    
-    CGPoint point = [self sum:a plus:b firstWeight:2.0 / 3.0];
-    CGContextAddLineToPoint(ctx, point.x, point.y);
 
-    CGFloat radius = (l - 2 * p) / 6;
-    if (ABS(type) != 0) {
-        CGPoint p2 = [self sum:a plus:b firstWeight:1.0 / 2.0];
-        
-        switch (n) {
-            case 1:
-                CGContextAddArc(ctx, p2.x, p2.y, radius, M_PI, 0, sign + 1);
-                break;
-            case 2:
-                CGContextAddArc(ctx, p2.x, p2.y, radius, M_PI_2 * 3, M_PI_2, sign - 1);
-                break;
-            case 3:
-                CGContextAddArc(ctx, p2.x, p2.y, radius, 0, M_PI, sign - 1);
-                break;
-            case 4:
-                CGContextAddArc(ctx, p2.x, p2.y, radius, M_PI_2, M_PI_2 * 3, sign + 1);
-                break;
-            default:
-                break;
-        }
-        
+    if (type) {
+        CGContextAddQuadCurveToPoint(ctx, control.x, control.y, keyPoint.x, keyPoint.y);
+        CGContextAddArc(ctx, center.x, center.y, radius, startAngle, endAngle, clockwise);
+        CGContextAddQuadCurveToPoint(ctx, control.x, control.y, b.x, b.y);
     } else {
-        
-        point = [self sum:a plus:b firstWeight:1.0/3.0];
-        CGContextAddLineToPoint(ctx, point.x, point.y);
-    
+        CGContextAddLineToPoint(ctx, b.x, b.y);
     }
-
-    CGContextAddLineToPoint(ctx, b.x, b.y);
 }
 
 
 - (void)drawRect:(CGRect)rect {
     
-    if (!delegate.loadingGame && !delegate.creatingGame) {
-        [delegate prepareForLoading];
-        [delegate loadPuzzle:delegate.puzzleDB];
+    if (!_delegate.loadingGame && !_delegate.creatingGame) {
+        [_delegate prepareForLoading];
+        [_delegate loadPuzzle:_delegate.puzzleDB];
         return;
     }
     
-    padding = self.bounds.size.width*0.15;
-    float LINE_WIDTH = self.bounds.size.width*0.005;
+    _padding = self.bounds.size.width * 0.15;
+    float LINE_WIDTH = self.bounds.size.width * 0.005;
         
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
-    
     
     CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.2);
     CGContextSetLineWidth(ctx, LINE_WIDTH);
     CGContextSetLineJoin(ctx, kCGLineJoinRound);
- 
     
     CGContextBeginPath(ctx);
     CGContextMoveToPoint(ctx, self.padding, self.padding);
 
-    for (NSInteger i=1; i<5; i++) {
-        NSInteger e = [[edges objectAtIndex:i-1] integerValue];
+    for (NSInteger i = 1; i < 5; i++) {
+        NSInteger e = _edges[i - 1].integerValue;
         [self drawEdgeNumber:i ofType:e inContext:ctx];
     }
 
-    /*
-    */
-    
-    //CGPathRef path = CGContextCopyPath(ctx);
-
     CGContextClip(ctx);
-    [image drawInRect:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
-
+    [_image drawInRect:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
 
     CGContextBeginPath(ctx);
     CGContextMoveToPoint(ctx, self.padding, self.padding);
     
     for (NSInteger i = 1; i < 5; i++) {
-        NSInteger e = [[edges objectAtIndex:i-1] integerValue];
+        NSInteger e = _edges[i - 1].integerValue;
         [self drawEdgeNumber:i ofType:e inContext:ctx];
     }
-    CGContextClosePath(ctx);
+    
     CGContextDrawPath(ctx, kCGPathStroke);
     
-    delegate.loadedPieces++;    
-    DLog(@"Piece #%d drawn, loadedPieces %d", number, delegate.loadedPieces);
-    [delegate moveBar];
+    _delegate.loadedPieces++;    
+    DLog(@"Piece #%d drawn, loadedPieces %d", number, _delegate.loadedPieces);
+    [_delegate moveBar];
     
-    NSInteger pieceNumber = (delegate.NumberSquare - delegate.missedPieces);
+    NSInteger pieceNumber = (_delegate.NumberSquare - _delegate.missedPieces);
 
-    if (delegate.loadedPieces>pieceNumber) {
+    if (_delegate.loadedPieces > pieceNumber) {
         DLog(@"loadedPieces resetted");
-        delegate.loadedPieces = 0;
+        _delegate.loadedPieces = 0;
     }
-    
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PiecesNotifications" object:self];
     
-    if (delegate.loadedPieces == pieceNumber && !delegate.duringGame) {
-        [delegate allPiecesLoaded];
+    if (_delegate.loadedPieces == pieceNumber && !_delegate.duringGame) {
+        [_delegate allPiecesLoaded];
     } else {
-        [delegate performSelectorOnMainThread:@selector(addAnothePieceToView) withObject:nil waitUntilDone:NO];
+        [_delegate performSelectorOnMainThread:@selector(addAnothePieceToView) withObject:nil waitUntilDone:NO];
     }
-    
-//    label = [[UILabel alloc] initWithFrame:self.bounds];
-//    label.text = [NSString stringWithFormat:@"", self.number];
-//    label.textColor = [UIColor whiteColor];
-//    label.textAlignment = UITextAlignmentCenter;
-//    label.backgroundColor = [UIColor clearColor];
-//    [self addSubview:label];
-    
+    /*
+    label = [[UILabel alloc] initWithFrame:self.bounds];
+    label.text = [NSString stringWithFormat:@"%@", @(self.number)];
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [UIColor clearColor];
+    [self addSubview:label];
+    */
 }
 
-- (void)setAngle:(float)angle_ {
-    
-    angle = angle_;
-
-    //DLog(@"Angle = %.1f", angle_);    
-    //label.text = [NSString stringWithFormat:@"%.1f", angle_];
-
-}
-
--(NSInteger)edgeNumber:(NSInteger)i {
-    
-    return [[edges objectAtIndex:i] integerValue];
+- (NSInteger)edgeNumber:(NSInteger)i {
+    return _edges[i].integerValue;
 }
 
 - (void)setNeighborNumber:(NSInteger)i forEdge:(NSInteger)edge {
-    
-
     NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:4];
     
     for (NSInteger j=0; j<4; j++) {
         
-        if (j==edge) {
+        if (j == edge) {
             [temp addObject:@(i)];
         } else {
-            [temp addObject:[neighbors objectAtIndex:j]];
+            [temp addObject:[_neighbors objectAtIndex:j]];
         }
         
     }
     
-    neighbors = [[NSArray alloc] initWithArray:temp];
+    _neighbors = [[NSArray alloc] initWithArray:temp];
     
-    //DLog(@"Setting neighbor #%d (edge %d) for piece #%d", [[neighbors objectAtIndex:edge] intValue], edge, self.number);
-    
-    hasNeighbors = YES;
+    _hasNeighbors = YES;
     
 }
 
 - (BOOL)isCompleted {
-        
-    for (NSNumber *n in neighbors) {
-        if (n.integerValue == delegate.NumberSquare) {
+    for (NSNumber *n in _neighbors) {
+        if (n.integerValue == _delegate.NumberSquare) {
             return NO;
         }
     }
-    
     return YES;
-    
 }
 
-- (NSArray*)allTheNeighborsBut:(NSMutableArray*)excluded {
+- (NSArray *)allTheNeighborsBut:(NSMutableArray*)excluded {
     
-    if (excluded==nil) {
+    if (!excluded) {
         excluded = [[NSMutableArray alloc] init];
     }
+    
     [excluded addObject:self];
     
-    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:delegate.NumberSquare-1];
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:_delegate.NumberSquare-1];
             
-        for (NSInteger j=0; j<[neighbors count]; j++) {
+        for (NSInteger j = 0; j < self.neighbors.count; j++) {
             
-            NSInteger i = [[neighbors objectAtIndex:j] integerValue];
+            NSInteger i = [self.neighbors[j] integerValue];
             
-            
-            if (i<delegate.NumberSquare) {
-                PieceView *otherPiece = [delegate pieceWithNumber:i];
+            if (i<_delegate.NumberSquare) {
+                PieceView *otherPiece = [_delegate pieceWithNumber:i];
                 
                 BOOL present = NO;
                 for (PieceView *p in excluded) {
@@ -683,30 +616,24 @@
         [temp addObjectsFromArray:[p allTheNeighborsBut:excluded]];
     }
     
-    
     //DLog(@"Neighbors: %d", [temp count]);
     
     return [NSArray arrayWithArray:temp];
 }
 
--(void)setPositionInDrawer:(NSInteger)positionInDrawer_ {
-    
-    positionInDrawer = positionInDrawer_;
+- (void)setPositionInDrawer:(NSInteger)positionInDrawer_ {
+    _positionInDrawer = positionInDrawer_;
 }
 
--(void)setIsPositioned:(BOOL)isPositioned_ {
-        
-    if (isPositioned_ && !isPositioned && !delegate.loadingGame) {
-        
+- (void)setIsPositioned:(BOOL)isPositioned_ {
+    if (isPositioned_ && !_isPositioned && !_delegate.loadingGame) {
         //[self pulse];
     }
         
-    isPositioned = isPositioned_;
-    self.userInteractionEnabled = !isPositioned;
+    _isPositioned = isPositioned_;
+    self.userInteractionEnabled = !_isPositioned;
 
 }
-
-
 
 #pragma mark
 #pragma UNUSEFUL
@@ -715,26 +642,18 @@
 
     self = [super initWithFrame:frame];
     if (self) {
-        
         self.frame = frame;
         [self setup];
-        
     }
     return self;
 }
 
 - (void)awakeFromNib {
-    
     [self setup];
-    
 }
 
 - (CGPoint)realCenter {
-   
-    return  CGPointMake(self.frame.origin.x + self.frame.size.width/2, self.frame.origin.y + self.frame.size.height/2);
+    return  CGPointMake(self.frame.origin.x + self.frame.size.width / 2, self.frame.origin.y + self.frame.size.height / 2);
 }
-
-
-
 
 @end

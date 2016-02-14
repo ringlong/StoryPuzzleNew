@@ -166,7 +166,6 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 - (void)groupMoved:(GroupView *)group;
 
 - (void)startNewGame;
-- (void)print_free_memory;
 - (void)removeOldPieces;
 
 - (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view;

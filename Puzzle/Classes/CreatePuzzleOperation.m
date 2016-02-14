@@ -81,11 +81,6 @@
             puzzleDB.pieceNumber = @(delegate.pieceNumber);
             puzzleDB.name = [NSString stringWithFormat:@"%d", arc4random_uniform(1000000)];
             
-            
-            DLog(@"Memory b4 creating:");        
-            [delegate print_free_memory];
-            
-            
             for (int i=0;i<pieceNumber;i++){
                 
                 for (int j=0;j<pieceNumber;j++){

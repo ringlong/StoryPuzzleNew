@@ -100,7 +100,6 @@
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
 
     DLog(@"After picking");
-    [delegate.delegate print_free_memory];
     
     NSData *dataJPG = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], IMAGE_QUALITY);
     
@@ -151,7 +150,6 @@
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
     
     DLog(@"After picking");
-    [delegate.delegate print_free_memory];
     
     NSData *dataJPG = UIImageJPEGRepresentation(pickedImage, IMAGE_QUALITY);
     
@@ -196,9 +194,6 @@
     
     c.allowsEditing = YES;
     c.delegate = self;
-    
-    DLog(@"B4 picking");
-    [delegate.delegate print_free_memory];
     
     [self presentViewController:c animated:YES completion:nil];
 }

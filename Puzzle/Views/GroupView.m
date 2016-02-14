@@ -62,75 +62,57 @@
 
 }
 
--(CGPoint)sum:(CGPoint)a plus:(CGPoint)b {
+- (CGPoint)sum:(CGPoint)a plus:(CGPoint)b {
     
     return CGPointMake(a.x+b.x, a.y+b.y);
     
 }
 
-- (void)rotate:(UIRotationGestureRecognizer*)gesture {
+- (void)rotate:(UIRotationGestureRecognizer *)gesture {
                 
     return;
-    
-    
-    
     float rotation = [gesture rotation];
     
     [self setAnchorPoint:boss.center forView:self];
     
-    
-    if ([gesture state]==UIGestureRecognizerStateEnded || 
-        [gesture state]==UIGestureRecognizerStateCancelled || 
-        [gesture state]==UIGestureRecognizerStateFailed) {
+    if (gesture.state == UIGestureRecognizerStateEnded ||
+        gesture.state == UIGestureRecognizerStateCancelled ||
+        gesture.state == UIGestureRecognizerStateFailed) {
         
-        int t = floor(ABS(tempAngle)/(M_PI/4));
+        int t = floor(ABS(tempAngle) / (M_PI_4));
         
-        if (t%2==0) {
-            t/=2;
+        if (t % 2 == 0) {
+            t /= 2;
         } else {
-            t= (t+1)/2;
+            t= (t + 1) / 2;
         }
         
-        rotation = tempAngle/ABS(tempAngle) * t*M_PI/2 - tempAngle;
+        rotation = tempAngle / ABS(tempAngle) * t * M_PI_2 - tempAngle;
         
         angle += rotation;
-        angle = [PuzzleController computeFloat:angle modulo:2*M_PI];
+        angle = [PuzzleController computeFloat:angle modulo:2 * M_PI];
         [self setAngle:angle];
         
         DLog(@"Angle = %.2f, Rot = %.2f, added +/- %d", angle, rotation, t);
         
         [UIView animateWithDuration:0.2 animations:^{
-            
             self.transform = CGAffineTransformRotate(self.transform, rotation);
-            
-        }completion:^(BOOL finished) {
-            
+        } completion:^(BOOL finished) {
             [delegate pieceRotated:self.boss];
         }];
         
-        //            angle = rotation - floor(rotation/(M_PI*2))*M_PI*2;
-        
         tempAngle = 0;
         
-        
-        
-        
-    } else if (gesture.state==UIGestureRecognizerStateBegan || gesture.state==UIGestureRecognizerStateChanged){
-        
+    } else if (gesture.state == UIGestureRecognizerStateBegan ||
+               gesture.state == UIGestureRecognizerStateChanged) {
         delegate.drawerView.userInteractionEnabled = NO;
         
         self.transform = CGAffineTransformRotate(self.transform, rotation);
         tempAngle += rotation;
         angle += rotation;
-        
     }
-    
     //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
-    
-    
-    [gesture setRotation:0];
-    
-    
+    [gesture setRotation:0];    
 }
 
 
@@ -150,14 +132,5 @@
     }
     return self;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

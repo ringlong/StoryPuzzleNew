@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		265799981C19B02A00DE05D4 /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 265799971C19B02A00DE05D4 /* UIColor+Additions.m */; };
 		602983F076B9E99CA2600ECB /* libPods-Puzzle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E1573E001317C1298F87A6 /* libPods-Puzzle.a */; };
+		9429A1C11C65F92A00DFE432 /* RRPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9429A1C01C65F92A00DFE432 /* RRPieceView.m */; };
 		942BB0CC1C0FD69B0024232F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 942BB0CB1C0FD69B0024232F /* Assets.xcassets */; };
 		9491D4631C1D177000C4A5F6 /* default-10-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D3631C1D177000C4A5F6 /* default-10-puzzle.jpeg */; };
 		9491D4641C1D177000C4A5F6 /* default-100-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D3641C1D177000C4A5F6 /* default-100-puzzle.jpeg */; };
@@ -335,6 +336,8 @@
 		265799971C19B02A00DE05D4 /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Additions.m"; path = "Classes/UIColor+Additions.m"; sourceTree = "<group>"; };
 		370C4E27AD0CDED87B9164B1 /* Pods-Puzzle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Puzzle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle.debug.xcconfig"; sourceTree = "<group>"; };
 		54E1573E001317C1298F87A6 /* libPods-Puzzle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Puzzle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9429A1BF1C65F92A00DFE432 /* RRPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RRPieceView.h; path = Views/RRPieceView.h; sourceTree = "<group>"; };
+		9429A1C01C65F92A00DFE432 /* RRPieceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RRPieceView.m; path = Views/RRPieceView.m; sourceTree = "<group>"; };
 		942BB0CB1C0FD69B0024232F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9491D3631C1D177000C4A5F6 /* default-10-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-10-puzzle.jpeg"; sourceTree = "<group>"; };
 		9491D3641C1D177000C4A5F6 /* default-100-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-100-puzzle.jpeg"; sourceTree = "<group>"; };
@@ -1070,6 +1073,8 @@
 				B8AE1204155990DB00742256 /* GroupView.m */,
 				B82AC5C5154411B500208887 /* Lattice.h */,
 				B82AC5C6154411B500208887 /* Lattice.m */,
+				9429A1BF1C65F92A00DFE432 /* RRPieceView.h */,
+				9429A1C01C65F92A00DFE432 /* RRPieceView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1577,6 +1582,7 @@
 				B8E4AC7F154AA22300D0A75D /* MenuController.m in Sources */,
 				265799981C19B02A00DE05D4 /* UIColor+Additions.m in Sources */,
 				B8AA19CE154B565400750458 /* NewGameController.m in Sources */,
+				9429A1C11C65F92A00DFE432 /* RRPieceView.m in Sources */,
 				B8AE1208155990DB00742256 /* GroupView.m in Sources */,
 				B8AE120A155990DB00742256 /* PieceView.m in Sources */,
 				B8AE1210155990F100742256 /* AppDelegate.m in Sources */,
