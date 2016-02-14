@@ -77,27 +77,23 @@
     return image;
 }
 
--(UIImage*)imageCroppedToSquareWithSide:(CGFloat)sideLength;
-{
-	// used code from http://www.nickkuh.com/iphone/how-to-create-square-thumbnails-using-iphone-sdk-cg-quartz-2d/2010/03/	
-	
-    
+- (UIImage *)imageCroppedToSquareWithSide:(CGFloat)sideLength; {
+	// used code from http://www.nickkuh.com/iphone/how-to-create-square-thumbnails-using-iphone-sdk-cg-quartz-2d/2010/03/
 	UIImageView *mainImageView = [[UIImageView alloc] initWithImage:self];
 	BOOL widthGreaterThanHeight = (self.size.width > self.size.height);
 	float sideFull = (widthGreaterThanHeight) ? self.size.height : self.size.width;
 	CGRect clippedRect = CGRectMake(0, 0, sideFull, sideFull);
-	//creating a square context the size of the final image which we will then
+	// creating a square context the size of the final image which we will then
 	// manipulate and transform before drawing in the original image
 	UIGraphicsBeginImageContext(CGSizeMake(sideLength, sideLength));
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
-	CGContextClipToRect( currentContext, clippedRect);
-	CGFloat scaleFactor = sideLength/sideFull;
+	CGContextClipToRect(currentContext, clippedRect);
+	CGFloat scaleFactor = sideLength / sideFull;
 	if (widthGreaterThanHeight) {
-		//a landscape image – make context shift the original image to the left when drawn into the context
+		// a landscape image – make context shift the original image to the left when drawn into the context
 		CGContextTranslateCTM(currentContext, - ((self.size.width - sideFull) /2 ) * scaleFactor, 0);
-	}
-	else {
-		//a portfolio image – make context shift the original image upwards when drawn into the context
+	} else {
+		// a portfolio image – make context shift the original image upwards when drawn into the context
 		CGContextTranslateCTM(currentContext, 0, -((self.size.height - sideFull) / 2) * scaleFactor);
 	}
 	CGContextScaleCTM(currentContext, scaleFactor, scaleFactor);

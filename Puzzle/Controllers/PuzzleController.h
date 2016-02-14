@@ -25,7 +25,7 @@
 #define QUALITY 1.5
 
 #define PIECE_SIZE_IPAD 180
-#define PIECE_SIZE_IPHONE 75
+#define PIECE_SIZE_IPHONE 88
 
 UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 
@@ -159,7 +159,7 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture;
 - (void)pan:(UIPanGestureRecognizer*)gesture;
 
-- (BOOL)pieceIsOut:(PieceView *)piece;
+//- (BOOL)pieceIsOut:(PieceView *)piece;
 - (void)movePiece:(PieceView *)piece toLatticePoint:(NSInteger)i animated:(BOOL)animated;
 - (void)groupMoved:(GroupView *)group;
 
@@ -167,9 +167,6 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 - (void)removeOldPieces;
 
 - (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view;
-
-- (void)adjustForAd:(NSInteger)direction;
-
 
 - (void)allPiecesLoaded;
 - (Piece *)pieceOfCurrentPuzzleDB:(NSInteger)n;

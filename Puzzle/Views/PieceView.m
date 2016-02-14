@@ -487,7 +487,7 @@
         return;
     }
     
-    _padding = self.bounds.size.width * 0.15;
+    _padding = self.bounds.size.width * 0.23;
     float LINE_WIDTH = self.bounds.size.width * 0.005;
         
     CGContextRef ctx = UIGraphicsGetCurrentContext();
