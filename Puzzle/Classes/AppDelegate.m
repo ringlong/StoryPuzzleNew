@@ -22,8 +22,7 @@
     DLog(@"\n\n Dio can!   \n\n");
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [UIWindow new];
     [self.window makeKeyAndVisible];
     self.window.frame = [[UIScreen mainScreen] bounds];
@@ -32,6 +31,9 @@
     _puzzle.managedObjectContext = self.managedObjectContext;
     _puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;
     [_puzzle loadPuzzle:[_puzzle lastSavedPuzzle]];
+    
+    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+    [UINavigationBar appearance].barStyle = UIBarStyleBlack;
     
     self.window.rootViewController = _puzzle;
     
@@ -86,7 +88,7 @@
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil)
     {
-        __managedObjectContext = [[NSManagedObjectContext alloc] init];
+        __managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         [__managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return __managedObjectContext;
@@ -111,11 +113,9 @@
  Returns the persistent store coordinator for the application.
  If the coordinator doesn't already exist, it is created and the application's store added to it.
  */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     
-    if (__persistentStoreCoordinator != nil)
-    {
+    if (__persistentStoreCoordinator != nil) {
         return __persistentStoreCoordinator;
     }
     
@@ -136,10 +136,10 @@
     }
     
     return __persistentStoreCoordinator;
-    
+    /*
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {} 
-    
+    */
 }
 
 #pragma mark - Application's Documents directory

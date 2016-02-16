@@ -72,8 +72,8 @@
 }
 
 - (void)translateWithVector:(CGPoint)traslation {
-    CGPoint newOrigin = [self sum:self.frame.origin plus:traslation];
-    CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, self.frame.size.width, self.frame.size.height);
+    CGPoint newOrigin = [self sum:self.origin plus:traslation];
+    CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, self.width, self.height);
     self.frame = newFrame;
 }
 
@@ -110,7 +110,6 @@
         NSInteger i = [_neighbors[j] integerValue];
         
         if (i < _delegate.NumberSquare) {
-            //DLog(@"From piece #%d, translating the other, i=%d", self.number ,i);
             PieceView *piece = [_delegate pieceWithNumber:i];
             
             BOOL present = NO;
@@ -131,26 +130,20 @@
 }
 
 - (BOOL)areTherePiecesBeingRotated {
-    
     BOOL rotating = NO;
-    
     for (PieceView *p in _delegate.pieces) {
         if (p.isRotating && !p.isFree) {
             return YES;
         }
     }
-    
-    return rotating;
 
-    
+    return rotating;
 }
 
 - (void)move:(UIPanGestureRecognizer *)gesture {
-    
     if (!self.userInteractionEnabled) {
         return;
     }
-
     if (_delegate.imageView.alpha == 1) {
         [_delegate toggleImageWithDuration:0.5];
     }
@@ -166,7 +159,7 @@
     }
     
     if (_isFree || _isLifted) { //In the board
-        NSMutableArray *excluded = [[NSMutableArray alloc] initWithObjects:self, nil];
+        NSMutableArray *excluded = @[self].mutableCopy;
         
         if (!_group) {
             [self translateWithVector:traslation];
@@ -178,7 +171,6 @@
         [gesture setTranslation:CGPointZero inView:self.superview];
         
         if (gesture.state == UIGestureRecognizerStateEnded) {
-            
             if (!_group) {
                 [_delegate pieceMoved:self];
                 if (_isFree) {
@@ -274,7 +266,7 @@
             _tempAngle = 0;
    
         } else if (gesture.state == UIGestureRecognizerStateBegan ||
-                   gesture.state == UIGestureRecognizerStateChanged){
+                   gesture.state == UIGestureRecognizerStateChanged) {
             
             _delegate.drawerView.userInteractionEnabled = NO;
             
@@ -291,8 +283,8 @@
 
 - (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view {
 
-    CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
-    CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
+    CGPoint newPoint = CGPointMake(view.width * anchorPoint.x, view.height * anchorPoint.y);
+    CGPoint oldPoint = CGPointMake(view.width * view.layer.anchorPoint.x, view.height * view.layer.anchorPoint.y);
     
     newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
     oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
@@ -309,8 +301,7 @@
     view.layer.anchorPoint = anchorPoint;
 }
 
-- (void)rotateTap:(UITapGestureRecognizer*)gesture {
-        
+- (void)rotateTap:(UITapGestureRecognizer *)gesture {
     if (!self.userInteractionEnabled) {
         return;
     }
@@ -320,16 +311,13 @@
     [self setAngle:_angle];
     
     if (!_group) {
-        
         [UIView animateWithDuration:0.2 animations:^{
             self.transform = CGAffineTransformRotate(self.transform, M_PI_2);
         } completion:^(BOOL finished) {
             [_delegate pieceRotated:self];
         }];
-        
     } else {
-        
-        CGPoint point = self.center; 
+        CGPoint point = self.center;
         _group.boss.isBoss = NO;
         _group.boss = self;
         self.isBoss = YES;
@@ -487,8 +475,8 @@
         return;
     }
     
-    _padding = self.bounds.size.width * 0.23;
-    float LINE_WIDTH = self.bounds.size.width * 0.005;
+    _padding = self.width * 0.23;
+    float LINE_WIDTH = self.width * 0.005;
         
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
@@ -505,7 +493,7 @@
     }
 
     CGContextClip(ctx);
-    [_image drawInRect:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+    [_image drawInRect:CGRectMake(0, 0, self.width, self.height)];
 
     CGContextBeginPath(ctx);
     CGContextMoveToPoint(ctx, self.padding, self.padding);
@@ -577,37 +565,32 @@
     return YES;
 }
 
-- (NSArray *)allTheNeighborsBut:(NSMutableArray*)excluded {
-    
+- (NSArray *)allTheNeighborsBut:(NSMutableArray *)excluded {
     if (!excluded) {
         excluded = [[NSMutableArray alloc] init];
     }
     
     [excluded addObject:self];
     
-    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:_delegate.NumberSquare-1];
+    NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:_delegate.NumberSquare - 1];
+    for (NSInteger j = 0; j < self.neighbors.count; j++) {
+        NSInteger i = [self.neighbors[j] integerValue];
+        
+        if (i < _delegate.NumberSquare) {
+            PieceView *otherPiece = [_delegate pieceWithNumber:i];
             
-        for (NSInteger j = 0; j < self.neighbors.count; j++) {
-            
-            NSInteger i = [self.neighbors[j] integerValue];
-            
-            if (i<_delegate.NumberSquare) {
-                PieceView *otherPiece = [_delegate pieceWithNumber:i];
-                
-                BOOL present = NO;
-                for (PieceView *p in excluded) {
-                                        
-                    if (otherPiece.number==p.number) {
-                        present = YES;
-                    }
-                }
-                
-                
-                if (!present) {
-                    [temp addObject:otherPiece];
+            BOOL present = NO;
+            for (PieceView *p in excluded) {
+                if (otherPiece.number == p.number) {
+                    present = YES;
                 }
             }
-        }            
+            
+            if (!present) {
+                [temp addObject:otherPiece];
+            }
+        }
+    }            
     
     NSMutableArray *temp2 = [[NSMutableArray alloc] initWithArray:temp];
     [excluded addObjectsFromArray:temp];
@@ -615,9 +598,7 @@
     for (PieceView *p in temp2) {
         [temp addObjectsFromArray:[p allTheNeighborsBut:excluded]];
     }
-    
-    //DLog(@"Neighbors: %d", [temp count]);
-    
+
     return [NSArray arrayWithArray:temp];
 }
 
@@ -635,11 +616,9 @@
 
 }
 
-#pragma mark
-#pragma UNUSEFUL
+#pragma mark -
 
 - (id)initWithFrame:(CGRect)frame {
-
     self = [super initWithFrame:frame];
     if (self) {
         self.frame = frame;

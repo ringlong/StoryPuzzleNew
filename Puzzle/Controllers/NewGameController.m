@@ -22,7 +22,7 @@
 
 @implementation NewGameController
 
-@synthesize popover, delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton, progressView, slider;
+@synthesize delegate, imagePath, startButton, image, tapToSelectLabel, puzzleLibraryButton, progressView, slider;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kPieceNumberChangedNotification object:nil];
@@ -44,42 +44,13 @@
         startButton.enabled = NO;
     }
     
-    loadingView.layer.cornerRadius = 10;
-    loadingView.layer.masksToBounds = YES;
-
-    image.layer.cornerRadius = 20;
-    image.layer.masksToBounds = YES;
-    
-    tapToSelectView.layer.cornerRadius = 20;
-    tapToSelectView.layer.masksToBounds = YES;
-    
-    containerView.layer.cornerRadius = 20;
-    containerView.layer.masksToBounds = YES;
-    
-    typeOfImageView.layer.cornerRadius = 20;
-    typeOfImageView.layer.masksToBounds = YES;
-
+    loadingView.cornerRadius = 10;
+    image.cornerRadius = 20;
+    tapToSelectView.cornerRadius = 20;
+    containerView.cornerRadius = 20;
+    typeOfImageView.cornerRadius = 20;
     imagePath = [[NSString alloc] initWithFormat:@""];
-
     typeOfImageView.backgroundColor = [UIColor puzzleBackgroundColor];
-    
-}
-
-- (void)adjustForAd {
-    [delegate.delegate.view bringSubviewToFront:delegate.delegate.adBannerView];
-    delegate.delegate.adBannerView.hidden = NO;
-
-    if (IS_iPad) {
-        return;
-    }    
-
-    float origin = -delegate.delegate.adPresent * delegate.delegate.adBannerView.frame.size.height / 2;
-    
-    NSLog(@"Origin = %.1f", origin);
-    
-    CGRect frame = self.view.frame;
-    frame.origin.y = origin;
-    self.view.frame = frame;
 }
 
 - (void)piecesNotificationResponse:(NSNotification *)notification {
@@ -127,12 +98,7 @@
 }
 
 - (void)dismissPicker {
-        
-    if (IS_iPad) {
-        [popover dismissPopoverAnimated:NO];
-    } else {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
@@ -155,20 +121,14 @@
 }
 
 - (IBAction)selectImageFromPuzzleLibrary:(id)sender {
-    
-    [delegate playMenuSound];
     delegate.chooseLabel.alpha = 1;
-    
     PuzzleLibraryController *c = [[PuzzleLibraryController alloc] init];
     c.delegate = self;
-    [self presentViewController:c animated:YES completion:nil];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:c];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
-- (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {
-    
-    delegate.delegate.adBannerView.hidden = YES;
-
-    [delegate playMenuSound];
+- (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {    
     delegate.chooseLabel.alpha = 1;
 
     int direction;
@@ -190,8 +150,6 @@
 }
 
 - (IBAction)selectImage:(id)sender {
-    [delegate playMenuSound];
-
     typeOfImageView.hidden = NO;
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
@@ -199,8 +157,6 @@
 }
 
 - (IBAction)startNewGame:(id)sender {
-    [delegate playMenuSound];
-    
     DLog(@"Started");
     
     tapToSelectView.hidden = YES;
@@ -223,24 +179,18 @@
 }
 
 - (IBAction)back:(id)sender {
-    
-    [delegate playMenuSound];
-
     if (typeOfImageView.hidden) {
-        
         [UIView animateWithDuration:0.3 animations:^{
-            self.view.frame = CGRectMake(self.view.frame.size.width, self.view.frame.origin.y,
-                                         self.view.frame.size.width, self.view.frame.size.height);
-            
-            delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y, 
-                                                 self.view.frame.size.width, self.view.frame.size.height);
+            self.view.frame = CGRectMake(self.view.width, self.view.top,
+                                         self.view.width, self.view.height);
+            delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y,
+                                                 self.view.width, self.view.height);
         } completion:^(BOOL finished) {
             typeOfImageView.hidden = YES;
         }];
     } else {
         typeOfImageView.hidden = YES;
     }
-    
 }
 
 - (void)startLoading {
@@ -260,7 +210,7 @@
 
     slider.enabled = NO;    
     
-    if (image.image==nil) {
+    if (!image.image) {
         image.image = [UIImage imageNamed:@"Wood.jpg"];
     }
     
@@ -271,9 +221,6 @@
 
 
 - (void)gameStarted {
-    
-    DLog(@"Game is started");
-    
     [timer invalidate];
 
     [delegate toggleMenuWithDuration:0];
@@ -290,13 +237,12 @@
     tapToSelectView.hidden = NO;
     tapToSelectLabel.hidden = NO;
 
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value * (int)slider.value];
 }
 
 - (void)loadingFailed {
     
     DLog(@"Game failed");
-    
     [timer invalidate];
     
     [delegate toggleMenuWithDuration:0];
@@ -317,10 +263,9 @@
     
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];    
     
-    self.view.frame = CGRectMake(self.view.frame.size.width, self.view.frame.origin.y, 
-                                 self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRectMake(self.view.width, self.view.top,
+                                 self.view.width, self.view.height);
 }
-
 
 - (void)moveBar {
     float a = (float)delegate.delegate.loadedPieces;
@@ -332,13 +277,8 @@
     progressView.progress = a / b;
 }
 
-
 - (IBAction)numberSelected:(UISlider *)sender {
     pieceNumberLabel.text = [NSString stringWithFormat:@"%@ ", @(slider.value * slider.value)];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

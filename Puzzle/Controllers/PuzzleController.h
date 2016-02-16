@@ -29,8 +29,7 @@
 
 UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 
-@interface PuzzleController : iAdViewController <UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
-    
+@interface PuzzleController : iAdViewController<UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
     BOOL swiping;
     BOOL didRotate;
     BOOL receivedFirstTouch;
@@ -39,13 +38,11 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
     BOOL loadingFailed;
         
     CGPoint drawerFirstPoint;
-    
     IBOutlet UIStepper *stepper;
     IBOutlet UIView *stepperDrawer;
     IBOutlet UIButton *restartButton;
     IBOutlet UILabel *percentageLabel;
     IBOutlet UILabel *scoreLabel;
-    
     IBOutlet UIView *HUDView;
     IBOutlet UIView *firstPointView;
 
@@ -53,29 +50,21 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
     NSArray *directions_numbers;
     
     NSInteger numberOfPiecesInDrawer;
-    
     NSInteger DrawerPosition;
     NSInteger firstPiecePlace;
     
     float drawerSize;
     float drawerMargin;
-
     float biggerPieceSize;
-    float screenWidth;
-    float screenHeight;
 
     NSTimer *timer;
-    
     PieceView *movingPiece;
-    
 }
-
 
 @property (nonatomic) float piceSize;
 @property (nonatomic) float elapsedTime;
-@property (nonatomic) NSInteger NumberSquare;
 @property (nonatomic) float padding;
-
+@property (nonatomic) NSInteger NumberSquare;
 @property (nonatomic) NSInteger pieceNumber;
 @property (nonatomic) NSInteger loadedPieces;
 @property (nonatomic) NSInteger missedPieces;
@@ -90,21 +79,11 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 @property (nonatomic) BOOL drawerStopped;
 @property (nonatomic) BOOL duringGame;
 
-@property (nonatomic, retain) AVAudioPlayer *positionedSound;
-@property (nonatomic, retain) AVAudioPlayer *completedSound;
-@property (nonatomic, retain) AVAudioPlayer *neighborSound;
-
-
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
-
 @property (nonatomic, strong, readonly) NSOperationQueue *operationQueue;
-
 @property (nonatomic, retain) CreatePuzzleOperation *puzzleOperation;
 @property (nonatomic, retain) Puzzle *puzzleDB;
-
-
 @property (nonatomic, retain) IBOutlet UIView *drawerView;
 @property (nonatomic, retain) IBOutlet UIView *menuButtonView;
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;;
@@ -119,11 +98,9 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 @property (nonatomic, retain) UIPanGestureRecognizer *panDrawer;
 @property (nonatomic, retain) UIPinchGestureRecognizer *pinch;
 
-
 @property (nonatomic, retain) MenuController *menu;
 @property (nonatomic, retain) PuzzleCompletedController *completedController;
 @property (nonatomic, retain) UIViewController *adViewController;
-
 
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView *imageView;
@@ -133,7 +110,6 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 - (NSMutableArray*)shuffleArray:(NSMutableArray*)array;
 
 - (void)fuckingRotateTo:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
-
 - (BOOL)pieceIsOut:(PieceView *)piece;
 - (PieceView*)pieceWithNumber:(NSInteger)j;
 - (PieceView*)pieceWithPosition:(NSInteger)j;
@@ -159,7 +135,6 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 - (void)panDrawer:(UIPanGestureRecognizer*)gesture;
 - (void)pan:(UIPanGestureRecognizer*)gesture;
 
-//- (BOOL)pieceIsOut:(PieceView *)piece;
 - (void)movePiece:(PieceView *)piece toLatticePoint:(NSInteger)i animated:(BOOL)animated;
 - (void)groupMoved:(GroupView *)group;
 

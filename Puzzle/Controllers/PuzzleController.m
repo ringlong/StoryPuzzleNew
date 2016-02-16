@@ -9,22 +9,17 @@
 #define PIECE_NUMBER 4
 #define ORG_TIME 0.5
 
-
 #define IMAGE_SIZE_BOUND_IPAD (2 * PIECE_SIZE_IPAD)
 #define IMAGE_SIZE_BOUND_IPHONE (3 * PIECE_SIZE_IPHONE)
-//#define IMAGE_SIZE_BOUND_IPHONE 262.5
 
 #define JPG_QUALITY 1
 #define SHAPE_QUALITY_IPAD 1
 #define SHAPE_QUALITY_IPHONE 3
 
-
 #import "PuzzleController.h"
 #import "AppDelegate.h"
 #import "GroupView.h"
 #import "LoadGameController.h"
-#import "iAdViewController.h"
-
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
@@ -34,7 +29,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 @end
 
-
 @implementation PuzzleController
 
 @synthesize operationQueue, managedObjectContext, persistentStoreCoordinator;
@@ -43,10 +37,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    scoreLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-    screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    screenHeight = [[UIScreen mainScreen] bounds].size.height;
     
     if (IS_iPad){
         _panningSwitch.hidden = YES;
@@ -61,12 +51,11 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     
     self.view.backgroundColor = [UIColor puzzleBackgroundColor];
     _drawerView.backgroundColor = [UIColor clearColor];
-        
     self.view.frame = [UIScreen mainScreen].bounds;
       
     [self computePieceSize];
     
-    //Add the images;    
+    // Add the images;
     _imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     _imageView.alpha = 0;
     [self.view addSubview:_imageView];
@@ -80,21 +69,14 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [self.view addSubview:_puzzleComplete];
     _puzzleComplete.hidden = YES;
     
-    //Resize the drawer
-    CGRect drawerFrame = _drawerView.frame;
-    CGRect stepperFrame = stepperDrawer.frame;
-
-    drawerFrame.size.height = drawerSize;
-    drawerFrame.size.width = screenHeight;
-    drawerFrame.origin.y = screenHeight - drawerSize;
+    // Resize the drawer
+    _drawerView.height = drawerSize;
+    _drawerView.width = UIScreen.screenHeight;
+    _drawerView.top = UIScreen.screenHeight - drawerSize;
+    stepperDrawer.top = drawerSize;
+    stepperDrawer.left = 10;
     
-    stepperFrame.origin.y = drawerFrame.size.height;
-    stepperFrame.origin.x = 10;
-        
-    _drawerView.frame = drawerFrame;
-    stepperDrawer.frame = stepperFrame;
-    
-    //Add the menu
+    // Add the menu
     _menu = [[MenuController alloc] init];
     _menu.delegate = self;
     _menu.duringGame = NO;
@@ -102,18 +84,16 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [self.view addSubview:_menu.view];
     
     
-    //Add the puzzleCompletedController
+    // Add the puzzleCompletedController
     NSString *nibName = @"PuzzleCompletedController_iPhone";
     _completedController = [[PuzzleCompletedController alloc] initWithNibName:nibName bundle:nil];
     _completedController.delegate = self;
     [self.view addSubview:_completedController.view];
-    _completedController.view.center = CGPointMake(self.view.center.x, screenHeight - 30);
+    _completedController.view.center = CGPointMake(self.view.center.x, UIScreen.screenHeight - 30);
     _completedController.view.alpha = 0;
-
     
     //gesture recognizers
-    [self addGestures];    
-
+    [self addGestures];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -222,7 +202,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
     if (finished.boolValue) {
         if ([animationID isEqualToString:@"pulseAnimation"]) {
-            float f = screenWidth / (_pieceNumber + 1) / (_piceSize - 2 * _padding);
+            float f = UIScreen.screenWidth / (_pieceNumber + 1) / (_piceSize - 2 * _padding);
             
             [UIView animateWithDuration:1.5 animations:^{
                 _completedController.view.alpha = 1;
@@ -239,9 +219,9 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
             
             float translation = 0;
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-                translation = -screenWidth / 2 + _puzzleComplete.bounds.size.height / 2;
+                translation = -UIScreen.screenWidth / 2 + _puzzleComplete.bounds.size.height / 2;
             } else {
-                translation = -screenHeight / 2 + _puzzleComplete.bounds.size.height / 2;
+                translation = -UIScreen.screenHeight / 2 + _puzzleComplete.bounds.size.height / 2;
                 if (IS_iPad){
                  translation += 30;   
                 }
@@ -301,9 +281,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (IBAction)toggleMenu:(id)sender {
-    
-    if (sender!=nil) [_menu playMenuSound];
-    
     _menu.duringGame = (_puzzleDB!=nil);
     [self.view bringSubviewToFront:_menu.obscuringView];
     [self.view bringSubviewToFront:_menu.view];
@@ -514,6 +491,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     _image = [UIImage imageWithData:_puzzleDB.image.data];
     
     _imageView.image = _image;
+    _imageView.frame = CGRectMake(0, 0, UIScreen.screenWidth, _image.size.height * UIScreen.screenWidth / _image.size.width);
     _imageViewLattice.image = _image;
     
     [_menu.game startLoading];
@@ -779,10 +757,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         [self.view bringSubviewToFront:HUDView];
     }];
     
-    if (!Is_Device_Playing_Music) {
-        [_completedSound play];
-    }
-    
     [self showCompleteImage];
     [self showNextButton];
 }
@@ -898,7 +872,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
     float z = newScale/_lattice.scale;
         
-    if (_lattice.scale*z*3*_pieceNumber*(_piceSize-2*_padding)>screenWidth && _lattice.scale*z*_piceSize<screenWidth) {
+    if (_lattice.scale*z*3*_pieceNumber*(_piceSize-2*_padding)>UIScreen.screenWidth && _lattice.scale*z*_piceSize<UIScreen.screenWidth) {
     
         _lattice.scale = newScale;
 
@@ -1169,7 +1143,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         
         BOOL outOfDrawer;
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
-            outOfDrawer = point.y<screenHeight-drawerSize;
+            outOfDrawer = point.y<UIScreen.screenHeight-drawerSize;
         } else {
             outOfDrawer = point.x>drawerSize-self.padding;
         }
@@ -1410,10 +1384,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                                 if (!_loadingGame &&
                                     !Is_Device_Playing_Music &&
                                     ![self isTheFuckingPiecePositioned:piece]) {
-                                    [_neighborSound play];
                                 }
-                                
-                                //DLog(@"piece.isPositioned = %d, otherpiece.isPositioned = %d", piece.isPositioned, otherPiece.isPositioned);
                                 
                                 if ((![self isTheFuckingPiecePositioned:piece] || ![self isTheFuckingPiecePositioned:otherPiece]) && !_loadingGame) {
                                                                         
@@ -1468,25 +1439,16 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 - (BOOL)isTheFuckingPiecePositioned:(PieceView*)piece {
     
-    return (firstPiecePlace + 3*_pieceNumber*(piece.number/_pieceNumber) + (piece.number%_pieceNumber) == piece.position);
+    return (firstPiecePlace + 3 * _pieceNumber * (piece.number / _pieceNumber) + (piece.number % _pieceNumber) == piece.position);
 }
 
 - (BOOL)isPositioned:(PieceView*)piece  {
-    
-    //DLog(@"isPositioned? Position %d, number %d -> %d", piece.position, piece.number, firstPiecePlace + 3*_pieceNumber*(piece.number/_pieceNumber) + (piece.number%_pieceNumber));
-    
     if (piece.isFree && ([self isTheFuckingPiecePositioned:piece]) && ABS(piece.angle) < 1) {
-        
-        //DLog(@"Piece #%d positioned!", piece.number);
-        //Flashes and block the piece
+        // Flashes and block the piece
         if (!piece.isPositioned) {
-            
-            
             if (!_loadingGame) {
-                                
                 [self addPoints:[self pointsForPiece:piece]];
             }
-            
             
             piece.isPositioned = YES;
             piece.userInteractionEnabled = NO;
@@ -1494,43 +1456,22 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                 [piece removeFromSuperview];
                 [self.view insertSubview:piece aboveSubview:_lattice];
             }
-    
-            
-            //DLog(@"Salvi! Piece #%d is positioned! :-)", piece.number);
-            
             [piece pulse];
-
-            
-            if (![self isPuzzleComplete] && !_loadingGame) {
-                               
-                if (!Is_Device_Playing_Music) {
-                    [_positionedSound play];
-                }
-            }
-        }        
+        }
         return YES;
     }
     return NO;
 }
 
 - (void)movePiece:(PieceView*)piece toLatticePoint:(NSInteger)i animated:(BOOL)animated {
-    
-    //DLog(@"Moving piece #%d to position %d", piece.number, i);
-    
     piece.position = i;
-    
     if (animated) {
-        
         [UIView animateWithDuration:0.3 animations:^{
-            
             piece.center = [self centerOfLatticePiece:i];
             CGAffineTransform trans = CGAffineTransformMakeScale(_lattice.scale, _lattice.scale);
             piece.transform = CGAffineTransformRotate(trans, piece.angle);
-            
-        }completion:^(BOOL finished) {
-            
+        } completion:^(BOOL finished) {
             [self checkNeighborsOfPiece:piece];
-            
             if (piece.hasNeighbors) {
                 [self createNewGroupForPiece:piece];
             }
@@ -1538,21 +1479,15 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
             if (!piece.isPositioned) {
                 [self isPositioned:piece];
             }
-            
             [self updatePercentage];
             [self updatePieceDB:piece];
         }];
-        
     } else {
-        
         piece.center = [self centerOfLatticePiece:i];
         CGAffineTransform trans = CGAffineTransformMakeScale(_lattice.scale, _lattice.scale);
         piece.transform = CGAffineTransformRotate(trans, piece.angle);
-        
     }
-        
     piece.oldPosition = [piece realCenter];
-    
 }
 
 - (BOOL)piece:(PieceView*)piece isInFrame:(CGRect)frame {
@@ -1561,19 +1496,13 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (BOOL)point:(CGPoint)point isInFrame:(CGRect)frame {
-    
-    //DLog(@"Point = %.1f, %.1f", point.x, point.y);
-    
-    return (frame.origin.x<point.x && 
-            frame.origin.y<point.y &&
-            frame.origin.x+frame.size.width>point.x &&
-            frame.origin.y+frame.size.height>point.y
-            );
+    return (frame.origin.x < point.x &&
+            frame.origin.y < point.y &&
+            frame.origin.x + frame.size.width > point.x &&
+            frame.origin.y + frame.size.height > point.y);
 }
 
 - (void)updatePieceDB:(PieceView*)piece {
-    
-    //Update piece in the DB
     Piece *pieceDB = [self pieceOfCurrentPuzzleDB:piece.number];
     pieceDB.position = @(piece.position);
     pieceDB.angle = @(piece.angle);
@@ -1581,30 +1510,26 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     pieceDB.rotations = @(piece.moves);
     [pieceDB setisFreeScalar:piece.isFree];
     
-    pieceDB.edge0 = [piece.edges objectAtIndex:0];
-    pieceDB.edge1 = [piece.edges objectAtIndex:1];
-    pieceDB.edge2 = [piece.edges objectAtIndex:2];
-    pieceDB.edge3 = [piece.edges objectAtIndex:3];
+    pieceDB.edge0 = piece.edges[0];
+    pieceDB.edge1 = piece.edges[1];
+    pieceDB.edge2 = piece.edges[2];
+    pieceDB.edge3 = piece.edges[3];
     
     [self saveGame];
-    
 }
 
-- (CGPoint)coordinatesOfPiece:(PieceView*)piece relativeToPiece:(PieceView*)boss {
-    
-    return CGPointMake((float)((piece.number % _pieceNumber - boss.number % _pieceNumber) % _pieceNumber),
-                       (float)(piece.number / _pieceNumber - boss.number / _pieceNumber));
+- (CGPoint)coordinatesOfPiece:(PieceView*)piece relativeToPiece:(PieceView *)boss {
+    return CGPointMake((piece.number % _pieceNumber - boss.number % _pieceNumber) % _pieceNumber,
+                       piece.number / _pieceNumber - boss.number / _pieceNumber);
 }
 
 - (Piece *)pieceOfCurrentPuzzleDB:(NSInteger)n {
-    
     for (Piece *p in _puzzleDB.pieces) {
-        if ([p.number intValue]==n) {
+        if (p.number.intValue == n) {
             return p;
         }
     }
     
-    DLog(@"------>  Piece #%d is NIL!", n);
     _missedPieces++;
     return nil;
 }
@@ -1631,7 +1556,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
             return p;
         }
     }
-    
     return nil;
 }
 
@@ -1641,30 +1565,25 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
             return p;
         }
     }
-    DLog(@"None of the pieces is in position %d", j);
     return nil;
 }
 
 - (BOOL)pieceIsOut:(PieceView *)piece {
-    
     CGRect frame1 = [self frameOfLatticePiece:0];
-    CGRect frame2 = [self frameOfLatticePiece:9*_NumberSquare-1];
+    CGRect frame2 = [self frameOfLatticePiece:9 * _NumberSquare - 1];
     
-    if ([piece realCenter].x > frame2.origin.x+frame2.size.width ||
-        [piece realCenter].y > frame2.origin.y+frame2.size.width ||
+    if ([piece realCenter].x > frame2.origin.x + frame2.size.width ||
+        [piece realCenter].y > frame2.origin.y + frame2.size.width ||
         [piece realCenter].x < frame1.origin.x ||
         [piece realCenter].y < frame1.origin.y) {
-        DLog(@"Piece #%d is out, N= %.1d", piece.number, _NumberSquare);
         return YES;
     }
     
     for (PieceView *p in [piece allTheNeighborsBut:nil]) {
-        
-        if ([p realCenter].x > frame2.origin.x+frame2.size.width ||
-            [p realCenter].y > frame2.origin.y+frame2.size.width ||
+        if ([p realCenter].x > frame2.origin.x + frame2.size.width ||
+            [p realCenter].y > frame2.origin.y + frame2.size.width ||
             [p realCenter].x < frame1.origin.x ||
             [p realCenter].y < frame1.origin.y) {
-            DLog(@"Piece is #%d out, N= %.1d (neighbor)", piece.number, _NumberSquare);
             return YES;
         }
     }
@@ -1673,17 +1592,13 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (UIView *)upperPositionedThing {
-    
     NSInteger N = self.view.subviews.count;
-    
     for (NSInteger i = 0; i < N; i++) {
-        
         UIView *v = self.view.subviews[N - i - 1];
-        
-        if ([v isKindOfClass:[GroupView class]]) {            
+        if ([v isKindOfClass:GroupView.self]) {
             return v;
         }
-        if ([v isKindOfClass:[PieceView class]]) {            
+        if ([v isKindOfClass:PieceView.self]) {
             if (!v.userInteractionEnabled) {
                 return v;
             }
@@ -1693,9 +1608,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     return _lattice;
 }
 
-#pragma mark -
-#pragma mark Lattice
-
+#pragma mark - Lattice
 - (void)createLattice {
     
     [_lattice removeFromSuperview];
@@ -1704,8 +1617,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     
     CGRect rect = [[UIScreen mainScreen] bounds];
     
-    //Center the lattice
-    
+    // Center the lattice
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
         rect = CGRectMake((rect.size.height - w) / 2 + drawerSize / 2, (rect.size.width - w) / 2, w, w);
     } else {
@@ -1716,7 +1628,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [_lattice initWithFrame:rect withNumber:_pieceNumber withDelegate:self];
     _lattice.frame = [self frameForLatticeWithOrientation:[UIApplication sharedApplication].statusBarOrientation];
     
-    _lattice.scale = 1; //optimalPiceSize/piceSize;
+    _lattice.scale = 1;
     
     [self.view addSubview:_lattice];
     
@@ -1724,8 +1636,9 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [self.view bringSubviewToFront:_drawerView];
     [self.view bringSubviewToFront:_menu.obscuringView];
     [self.view bringSubviewToFront:_menu.view];
+    [self addChildViewController:_menu];
     
-    //Add the image to lattice
+    // Add the image to lattice
     _imageViewLattice.image = _image;
     _imageViewLattice.contentMode = UIViewContentModeScaleAspectFill;
     _imageViewLattice.frame = CGRectMake(0 ,0, _pieceNumber * _lattice.scale * (_piceSize - 2 * self.padding), _pieceNumber * _lattice.scale * (_piceSize - 2 * self.padding));
@@ -1734,22 +1647,15 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (void)resetLatticePositionAndSizeWithDuration:(float)duration {
-    
-    float f = screenWidth / (_pieceNumber + 1) / (_piceSize - 2 * _padding);
-
-        
+    float f = UIScreen.screenWidth / (_pieceNumber + 1) / (_piceSize - 2 * _padding);
     [UIView animateWithDuration:duration animations:^{
         [self resizeLatticeToScale:f];
-
     } completion:^(BOOL finished) {
-        
         [UIView animateWithDuration:duration animations:^{
-            
             CGPoint center = [self.view convertPoint:[[_lattice objectAtIndex:firstPiecePlace] center] fromView:_lattice];
-            int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))*20;
+            int topBar = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) * 20;
 
-            float ad = self.adPresent*self.adBannerView.frame.size.height;
-
+            float ad = self.adPresent * self.adBannerView.frame.size.height;
             
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
                 
@@ -1847,7 +1753,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
     }
     
-
     float bannerHeight = (self.adBannerView.frame.size.height)*self.adBannerView.bannerLoaded;
     if (IS_iPad) {
         bannerHeight -= 20 * self.adBannerView.bannerLoaded;
@@ -1869,7 +1774,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                 point.x = _drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
             } else {
                 point.x = point2.x+p2.bounds.size.width+drawerMargin;
-                point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
+                point.y = UIScreen.screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
             }
             
         } else {
@@ -1878,7 +1783,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                 point.x = _drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
             } else {
                 point.x = drawerFirstPoint.x+p.bounds.size.width/2+drawerMargin;
-                point.y = screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
+                point.y = UIScreen.screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
             }
         }
 
@@ -1929,7 +1834,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                 
                 if (velocity < -velocityLimit) velocity = -velocityLimit;
             
-                if ([self lastPieceInDrawer].frame.origin.y<screenWidth-_piceSize) {
+                if ([self lastPieceInDrawer].frame.origin.y<UIScreen.screenWidth-_piceSize) {
 
                     [self moveNegativePieces];
                 }
@@ -1968,7 +1873,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                 
                 if (velocity < -velocityLimit) velocity = -velocityLimit;
                 
-                if ([self lastPieceInDrawer].frame.origin.x<screenWidth-_piceSize) {
+                if ([self lastPieceInDrawer].frame.origin.x<UIScreen.screenWidth-_piceSize) {
                     
                     [self moveNegativePieces];
                 }
@@ -2116,7 +2021,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         sgn *= -1;
     }
     
-    float traslation = screenWidth-drawerMargin;
+    float traslation = UIScreen.screenWidth-drawerMargin;
     
     
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
@@ -2128,7 +2033,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         PieceView *p = [temp lastObject];
         if (
             direction==UISwipeGestureRecognizerDirectionLeft && 
-            p.frame.origin.y<screenWidth-p.frame.size.height+self.padding
+            p.frame.origin.y<UIScreen.screenWidth-p.frame.size.height+self.padding
             ) {
             return;
         }
@@ -2163,7 +2068,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         
         PieceView *p = [temp lastObject];
         if (direction == UISwipeGestureRecognizerDirectionLeft &&
-            p.frame.origin.x < screenWidth - p.frame.size.width + self.padding) {
+            p.frame.origin.x < UIScreen.screenWidth - p.frame.size.width + self.padding) {
             return;
         }
         
@@ -2329,7 +2234,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         drawerFrame.size.width = drawerSize;
-        drawerFrame.size.height = screenWidth;
+        drawerFrame.size.height = UIScreen.screenWidth;
         drawerFrame.origin.x = 0;
         drawerFrame.origin.y = -10;
 
@@ -2349,39 +2254,35 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         
         completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
         
-        statsFrame = CGRectMake(screenWidth/2-160+10, screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
+        statsFrame = CGRectMake(UIScreen.screenWidth/2-160+10, UIScreen.screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
 
         
-    } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)){
-
+    } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) &&
+               !UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
         drawerFrame.size.height = drawerSize;
-        drawerFrame.size.width = screenWidth;
+        drawerFrame.size.width = UIScreen.screenWidth;
         drawerFrame.origin.x = 0;
-        drawerFrame.origin.y = screenWidth-drawerSize-bannerHeight/2;
+        drawerFrame.origin.y = UIScreen.screenWidth - drawerSize - bannerHeight / 2;
         
         stepperFrame.origin.y = drawerFrame.size.height;
-        stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
+        stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width - 10;
         imageFrame.origin.y = 0;
         imageFrame.origin.x = 0;
         
-        chooseCenter = CGPointMake(self.view.center.x-10, self.view.center.y-290);
-        _panningSwitch.center = CGPointMake(_panningSwitch.center.x-drawerSize, _panningSwitch.center.y);
+        chooseCenter = CGPointMake(self.view.center.x - 10, self.view.center.y - 290);
+        _panningSwitch.center = CGPointMake(_panningSwitch.center.x - drawerSize, _panningSwitch.center.y);
         if (IS_iPhone) {
-            percentageLabel.center = CGPointMake(percentageLabel.center.x-drawerSize, percentageLabel.center.y);
+            percentageLabel.center = CGPointMake(percentageLabel.center.x - drawerSize, percentageLabel.center.y);
         }
         
-        _lattice.center = CGPointMake(_lattice.center.x-drawerSize, _lattice.center.y);
+        _lattice.center = CGPointMake(_lattice.center.x - drawerSize, _lattice.center.y);
         
         completedCenter = CGPointMake(self.view.center.x, self.view.center.y);
         
-        statsFrame = CGRectMake((screenHeight-statsFrame.size.width)/2, screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
-        
-        //DLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
-
+        statsFrame = CGRectMake((UIScreen.screenHeight - statsFrame.size.width) / 2, UIScreen.screenWidth - 240 - 20, statsFrame.size.width, statsFrame.size.height);
     }
-    
     
     [self refreshPositions];    
     
@@ -2389,7 +2290,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     HUDFrame.origin.y = 20;
     
     [UIView animateWithDuration:duration animations:^{
-        
         _drawerView.frame = drawerFrame;
         stepperDrawer.frame = stepperFrame;
         _imageView.frame = imageFrame;
@@ -2397,24 +2297,18 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         _puzzleComplete.center = completedCenter;
         _completedController.view.frame = statsFrame;
         HUDView.frame = HUDFrame;
-        
     }];
-    
     
     [UIView animateWithDuration:duration animations:^{
         [self organizeDrawerWithOrientation:toInterfaceOrientation];
     }];    
-    //DLog(@"FirstPoint = %.1f, %.1f", drawerFirstPoint.x, drawerFirstPoint.y);
 }
 
 - (void)fuckingRotateTo:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
     NSLog(@"Will fucking rotate");
-            
-    [_completedController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     //Rotate the drawer
-    
     CGRect drawerFrame = _drawerView.frame;
     CGRect HUDFrame = HUDView.frame;
     CGRect stepperFrame = stepperDrawer.frame;
@@ -2427,7 +2321,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         drawerFirstPoint = CGPointMake(5, drawerFirstPoint.x);
         
         drawerFrame.size.width = drawerSize;
-        drawerFrame.size.height = screenWidth;
+        drawerFrame.size.height = UIScreen.screenWidth;
         drawerFrame.origin.x = 0;
         drawerFrame.origin.y = -10;
 
@@ -2447,7 +2341,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         
         completedCenter = CGPointMake(self.view.center.y, self.view.center.x);
         
-        statsFrame = CGRectMake(screenWidth/2-160+10, screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
+        statsFrame = CGRectMake(UIScreen.screenWidth/2-160+10, UIScreen.screenHeight/2-160, statsFrame.size.width, statsFrame.size.height);
         
         
     } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
@@ -2455,9 +2349,9 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         drawerFirstPoint = CGPointMake(drawerFirstPoint.y, 5);
         
         drawerFrame.size.height = drawerSize;
-        drawerFrame.size.width = screenWidth;
+        drawerFrame.size.width = UIScreen.screenWidth;
         drawerFrame.origin.x = 0;
-        drawerFrame.origin.y = screenWidth;
+        drawerFrame.origin.y = UIScreen.screenWidth;
         
         stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width-10;
@@ -2474,12 +2368,8 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         
         completedCenter = CGPointMake(self.view.center.x, self.view.center.y);
         
-        statsFrame = CGRectMake((screenHeight-statsFrame.size.width)/2, screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
-        
-        //DLog(@"self.view.center = (%.0f, %.0f)", self.view.center.x, self.view.center.y);
-        
+        statsFrame = CGRectMake((UIScreen.screenHeight-statsFrame.size.width)/2, UIScreen.screenWidth-240-20, statsFrame.size.width, statsFrame.size.height);
     }
-    
     
     [self refreshPositions];    
     
@@ -2508,14 +2398,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     if (IS_iPad){
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-    } 
-    
-    if (IS_iPad && [_menu.game.popover isPopoverVisible]) {
-        [_menu.game.popover dismissPopoverAnimated:NO];
-        CGRect rect = CGRectMake(_menu.game.view.center.x, -20, 1, 1);
-        [_menu.game.popover presentPopoverFromRect:rect inView:_menu.game.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
     }
-    
     didRotate = YES;
 }
 
@@ -2553,30 +2436,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     }
 }
 
-- (void)loadSounds {
-    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"PiecePositioned" ofType:@"mp3"];
-    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
-    _positionedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    _positionedSound.volume = 0.3;
-    [_positionedSound prepareToPlay];
-    
-    if ([_positionedSound respondsToSelector:@selector(setEnableRate:)]) {
-        _positionedSound.enableRate = YES;
-        _positionedSound.rate = 1.5;
-    }
-    
-    soundPath =[[NSBundle mainBundle] pathForResource:@"PuzzleCompleted" ofType:@"mp3"];
-    soundURL = [NSURL fileURLWithPath:soundPath];   
-    _completedSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    [_completedSound prepareToPlay];
-
-    soundPath =[[NSBundle mainBundle] pathForResource:@"NeighborFound" ofType:@"wav"];
-    soundURL = [NSURL fileURLWithPath:soundPath];   
-    _neighborSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    [_neighborSound prepareToPlay];
-
-}
-
 - (CGPoint)applyMatrix:(CGAffineTransform)matrix toVector:(CGPoint)vector {
     return CGPointMake(matrix.a*vector.x+matrix.b*vector.y, matrix.c*vector.x+matrix.d*vector.y);
 }
@@ -2603,9 +2462,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 - (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        
         UIView *piece = gestureRecognizer.view;
-        //Change this!!!
         piece = _lattice;
         
         CGPoint locationInView = [gestureRecognizer locationInView:piece];
@@ -2623,7 +2480,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         PieceView *p = [_pieces objectAtIndex:i];
         CGRect rect = p.frame;
         rect.origin.x = _piceSize * i + drawerMargin;
-        rect.origin.y = screenHeight - drawerSize + 5;
+        rect.origin.y = UIScreen.screenHeight - drawerSize + 5;
         p.frame = rect;
         
         int r = arc4random_uniform(4);
@@ -2668,8 +2525,8 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         drawerSize = _piceSize + 1.8 * self.padding - 10;
     }
     
-    numberOfPiecesInDrawer = screenWidth / (_piceSize + 1);
-    float unUsedSpace = screenWidth - numberOfPiecesInDrawer * _piceSize;
+    numberOfPiecesInDrawer = UIScreen.screenWidth / (_piceSize + 1);
+    float unUsedSpace = UIScreen.screenWidth - numberOfPiecesInDrawer * _piceSize;
     drawerMargin = unUsedSpace / (numberOfPiecesInDrawer + 1);
     
     firstPiecePlace = 3 * _NumberSquare + _pieceNumber;
@@ -2715,9 +2572,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
     receivedFirstTouch = YES;
-    
     if (_imageView.alpha == 1) {
         [self toggleImageWithDuration:0.5];
     }
@@ -2736,7 +2591,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 + (float)computeFloat:(float)f modulo:(float)m {
     float result = f - floor(f / m) * m;
-
     if (result > m - 0.2) {
         result = 0;
     }
@@ -2746,11 +2600,9 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     return result;
 }
 
-#pragma mark -
-#pragma mark Timer
+#pragma mark - Timer
 
 - (void)oneSecondElapsed {
-    
     _elapsedTime += 0.1;
     _puzzleDB.elapsedTime = @(_elapsedTime);
     
@@ -2774,14 +2626,12 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 - (void)startNewGame {
     _puzzleCompete = NO;
-    
     [self removeOldPieces];
 
     _groups = [[NSMutableArray alloc] initWithCapacity:_NumberSquare];
     _pieces = [[NSMutableArray alloc] initWithCapacity:_NumberSquare];
     
-    [self createPuzzleFromImage:_image];
-    
+    [self createPuzzleFromImage:_image];    
     receivedFirstTouch = NO;    
     
     [UIView animateWithDuration:0.2 animations:^{

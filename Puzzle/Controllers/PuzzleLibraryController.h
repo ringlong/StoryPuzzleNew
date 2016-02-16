@@ -11,23 +11,18 @@
 @class NewGameController;
 
 @interface PuzzleLibraryController : UITableViewController {
-    
     NSArray *contents;
-    
     NSArray *thumbs;
     NSArray *paths;
 }
 
 @property (nonatomic, assign) NewGameController *delegate;
 
-
 @end
 
 
-@interface PhotoCell : UITableViewCell {
-    
-}
+@interface PhotoCell : UITableViewCell
 
-@property (nonatomic, retain) UIImageView *photo;
+@property (nonatomic, strong) UIImageView *photo;
 
 @end

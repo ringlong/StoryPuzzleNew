@@ -3,14 +3,12 @@
 NSString * const BannerViewActionWillBegin = @"BannerViewActionWillBegin";
 NSString * const BannerViewActionDidFinish = @"BannerViewActionDidFinish";
 
-@implementation BannerViewController
-{
+@implementation BannerViewController {
     ADBannerView *_bannerView;
     UIViewController *_contentController;
 }
 
-- (id)initWithContentViewController:(UIViewController *)contentController
-{
+- (id)initWithContentViewController:(UIViewController *)contentController {
     self = [super init];
     if (self != nil) {
         _bannerView = [[ADBannerView alloc] init];
@@ -20,8 +18,7 @@ NSString * const BannerViewActionDidFinish = @"BannerViewActionDidFinish";
     return self;
 }
 
-- (void)loadView
-{
+- (void)loadView {
     UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [contentView addSubview:_bannerView];
     [self addChildViewController:_contentController];
@@ -30,29 +27,15 @@ NSString * const BannerViewActionDidFinish = @"BannerViewActionDidFinish";
     self.view = contentView;
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [_contentController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
     [_contentController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    
     [_contentController didRotateFromInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
 }
 
-
-- (void)viewDidLayoutSubviews
-{
+- (void)viewDidLayoutSubviews {
     CGRect contentFrame = self.view.bounds;
     CGRect bannerFrame = _bannerView.frame;
     if (_bannerView.bannerLoaded) {
@@ -65,30 +48,26 @@ NSString * const BannerViewActionDidFinish = @"BannerViewActionDidFinish";
     _bannerView.frame = bannerFrame;
 }
 
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner
-{
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
     [UIView animateWithDuration:0.25 animations:^{
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     }];
 }
 
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
-{
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
     [UIView animateWithDuration:0.25 animations:^{
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     }];
 }
 
-- (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
-{
+- (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave {
     [[NSNotificationCenter defaultCenter] postNotificationName:BannerViewActionWillBegin object:self];
     return YES;
 }
 
-- (void)bannerViewActionDidFinish:(ADBannerView *)banner
-{
+- (void)bannerViewActionDidFinish:(ADBannerView *)banner {
     [[NSNotificationCenter defaultCenter] postNotificationName:BannerViewActionDidFinish object:self];
 }
 

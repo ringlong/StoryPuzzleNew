@@ -58,7 +58,6 @@
 
 - (IBAction)startNewGame:(id)sender {
     if (sender) {
-        [self playMenuSound];
         [UIView animateWithDuration:0.3 animations:^{
             [self showNewGameView];
         }];
@@ -73,19 +72,6 @@
     game.startButton.enabled = game.image.image;
     game.view.frame = CGRectMake(0, game.view.frame.origin.y, game.view.frame.size.width, game.view.frame.size.height);
     mainView.frame = CGRectMake(-mainView.frame.size.width, mainView.frame.origin.y, mainView.frame.size.width, mainView.frame.size.height);
-}
-
-- (void)loadSounds {
-    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"Scissors_Shears" ofType:@"wav"];
-    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
-    menuSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
-    [menuSound prepareToPlay];
-}
-
-- (void)playMenuSound {
-    if (!Is_Device_Playing_Music) {
-        [menuSound play];
-    }
 }
 
 - (IBAction)loadGame:(id)sender {
@@ -106,7 +92,6 @@
     
     delegate.puzzleCompleteImage.alpha = 0;
     [self toggleMenuWithDuration:0.5];
-    [self playMenuSound];
 }
 
 - (IBAction)showThePicture:(id)sender {
@@ -116,13 +101,10 @@
     [self presentViewController:alertController animated:YES completion:nil];
     
     [delegate toggleImageWithDuration:0.5];
-    [self playMenuSound];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadSounds];
-
     if (IS_iPad) {
         self.view.layer.masksToBounds = YES;
         self.view.layer.cornerRadius = 20;        

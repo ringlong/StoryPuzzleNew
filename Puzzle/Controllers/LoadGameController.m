@@ -14,6 +14,8 @@
 
 @interface LoadGameController ()
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+
 @end
 
 @implementation LoadGameController
@@ -33,32 +35,28 @@
     contents = [[NSMutableArray alloc] initWithCapacity:100];
     images = [[NSMutableArray alloc] initWithCapacity:100];
     
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, UIScreen.screenWidth, 64)];
+    [self.view addSubview:navBar];
+
+    UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"Load Games"];
+    item.rightBarButtonItem = self.editButtonItem;
+    item.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+    navBar.items = @[item];
+    _indicator.centerX = self.view.width / 2;
 }
 
 - (void)reloadData {
-    
-    if (loading) return;
-    
+    if (loading) {
+        return;
+    }
     loading = YES;
-    
     [tableView reloadData];
-    
-    indicator.alpha = 1;
-    [indicator startAnimating];
-    
-    
+    _indicator.hidden = NO;
+    [_indicator startAnimating];
     [NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
-
 }
 
 - (void)fetchData {
-
-//    NSFetchRequest *fetchRequest2 = [[NSFetchRequest alloc] init];    
-//    NSEntityDescription *entity2 = [NSEntityDescription entityForName:@"Image"  inManagedObjectContext:delegate.delegate.managedObjectContext];
-//    [fetchRequest2 setEntity:entity2];    
-//    NSLog(@"Images: %d", [[NSMutableArray arrayWithArray:[delegate.delegate.managedObjectContext executeFetchRequest:fetchRequest2 error:nil]] count]);
-    
     
     NSFetchRequest *fetchRequest1 = [[NSFetchRequest alloc] init];
     
@@ -83,16 +81,10 @@
     
     images = array;
     array = nil;
-    
-    
-    
-    indicator.alpha = 0;
-    [indicator stopAnimating];
-    
+    _indicator.hidden = YES;
+    [_indicator stopAnimating];
     loading = NO;
-    
     [tableView reloadData];
-    
 }
 
 - (void)viewDidUnload

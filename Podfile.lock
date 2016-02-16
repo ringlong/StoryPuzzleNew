@@ -1,10 +1,23 @@
 PODS:
   - FLEX (2.2.0)
+  - RRToolKit (1.0.2)
 
 DEPENDENCIES:
   - FLEX
+  - RRToolKit (from `https://github.com/ringlong/RRToolKit`, branch `master`)
+
+EXTERNAL SOURCES:
+  RRToolKit:
+    :branch: master
+    :git: https://github.com/ringlong/RRToolKit
+
+CHECKOUT OPTIONS:
+  RRToolKit:
+    :commit: 85140c4097f3712f28dcbbfba55776b2e162560d
+    :git: https://github.com/ringlong/RRToolKit
 
 SPEC CHECKSUMS:
   FLEX: bc8a4fb887ed5d3cdf7c2f3bd665f7bb1647cc58
+  RRToolKit: dcddb7135431f44f1288f4d4750c524ea081e0f9
 
 COCOAPODS: 0.39.0

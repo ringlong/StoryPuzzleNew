@@ -15,9 +15,7 @@
     
     NSMutableArray *contents;
     NSDateFormatter *df;
-    BOOL loading;
-    
-    IBOutlet UIActivityIndicatorView *indicator;
+    BOOL loading;    
 }
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext; 

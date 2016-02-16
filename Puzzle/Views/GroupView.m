@@ -69,8 +69,8 @@
 }
 
 - (void)rotate:(UIRotationGestureRecognizer *)gesture {
-                
     return;
+    /*
     float rotation = [gesture rotation];
     
     [self setAnchorPoint:boss.center forView:self];
@@ -112,7 +112,8 @@
         angle += rotation;
     }
     //DLog(@"Angle = %.2f, Temp = %.2f", angle, tempAngle);
-    [gesture setRotation:0];    
+    [gesture setRotation:0];  
+     */
 }
 
 

@@ -36,7 +36,6 @@
 
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 
-@property (nonatomic, retain) UIPopoverController *popover;
 @property (nonatomic, retain) NSString *imagePath;
 @property (nonatomic, assign) MenuController *delegate;
 @property (nonatomic, retain) IBOutlet UIButton *startButton;

@@ -15,6 +15,7 @@
     #import <CoreData/CoreData.h>
     #import "AppDelegate.h"
     #import "UIColor+Additions.h"
+    #import "RRToolkit.h"
 #endif
 
 #ifdef FRACTAL_DEBUG

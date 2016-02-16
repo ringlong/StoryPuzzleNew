@@ -11,10 +11,8 @@
 @class PuzzleController;
 
 @interface PuzzleCompletedController : UIViewController {
-    
     IBOutlet UIView *one;
     IBOutlet UIView *two;
-    
     IBOutlet UILabel *pieces;
     IBOutlet UILabel *time;    
     IBOutlet UILabel *score;

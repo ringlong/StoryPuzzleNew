@@ -61,6 +61,5 @@
 - (void)toggleMenuWithDuration:(float)duration;
 
 - (void)createNewGame;
-- (void)playMenuSound;
 
 @end

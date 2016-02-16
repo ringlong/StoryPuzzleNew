@@ -267,6 +267,7 @@
 		9491D5601C1D177000C4A5F6 /* default-97-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D4601C1D177000C4A5F6 /* default-97-puzzle.jpeg */; };
 		9491D5611C1D177000C4A5F6 /* default-98-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D4611C1D177000C4A5F6 /* default-98-puzzle.jpeg */; };
 		9491D5621C1D177000C4A5F6 /* default-99-puzzle.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9491D4621C1D177000C4A5F6 /* default-99-puzzle.jpeg */; };
+		94A0ACE91C73189D00AE8B30 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACE81C73189D00AE8B30 /* iAdViewController.m */; };
 		94B1F1B01C60952800E72133 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94B1F1AF1C60952800E72133 /* Launch Screen.storyboard */; };
 		B804EF3A1560870F00826712 /* BelloPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B804EF391560870F00826712 /* BelloPro.ttf */; };
 		B804EF3E156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */; };
@@ -308,7 +309,6 @@
 		B8DAFCE6155BDB0700A901A3 /* PuzzleLibraryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */; };
 		B8DAFCE8155BDB0700A901A3 /* PuzzleLibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */; };
 		B8DBE9FD15813412005199B4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBE9FC15813412005199B4 /* iAd.framework */; };
-		B8DBEA00158144AF005199B4 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBE9FF158144AF005199B4 /* iAdViewController.m */; };
 		B8DBEA061581589B005199B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBEA0415815887005199B4 /* Security.framework */; };
 		B8E18159155000C200A8B450 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E18158155000C200A8B450 /* MediaPlayer.framework */; };
 		B8E4AC7F154AA22300D0A75D /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E4AC7D154AA22300D0A75D /* MenuController.m */; };
@@ -579,6 +579,8 @@
 		9491D4601C1D177000C4A5F6 /* default-97-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-97-puzzle.jpeg"; sourceTree = "<group>"; };
 		9491D4611C1D177000C4A5F6 /* default-98-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-98-puzzle.jpeg"; sourceTree = "<group>"; };
 		9491D4621C1D177000C4A5F6 /* default-99-puzzle.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-99-puzzle.jpeg"; sourceTree = "<group>"; };
+		94A0ACE71C73189D00AE8B30 /* iAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iAdViewController.h; path = Controllers/iAdViewController.h; sourceTree = "<group>"; };
+		94A0ACE81C73189D00AE8B30 /* iAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iAdViewController.m; path = Controllers/iAdViewController.m; sourceTree = "<group>"; };
 		94B1F1AF1C60952800E72133 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		AC74B84026307EBD6FA5290B /* Pods-Puzzle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Puzzle.release.xcconfig"; path = "Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle.release.xcconfig"; sourceTree = "<group>"; };
 		B804EF391560870F00826712 /* BelloPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BelloPro.ttf; sourceTree = "<group>"; };
@@ -647,8 +649,6 @@
 		B8DAFCE4155BDB0700A901A3 /* PuzzleLibraryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleLibraryController.m; path = Controllers/PuzzleLibraryController.m; sourceTree = "<group>"; };
 		B8DAFCE5155BDB0700A901A3 /* PuzzleLibraryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleLibraryController.xib; path = Controllers/PuzzleLibraryController.xib; sourceTree = "<group>"; };
 		B8DBE9FC15813412005199B4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		B8DBE9FE158144AF005199B4 /* iAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iAdViewController.h; path = Controllers/iAdViewController.h; sourceTree = "<group>"; };
-		B8DBE9FF158144AF005199B4 /* iAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iAdViewController.m; path = Controllers/iAdViewController.m; sourceTree = "<group>"; };
 		B8DBEA0415815887005199B4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B8E18158155000C200A8B450 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Puzzle iPhone-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1068,10 +1068,10 @@
 				B823757D1561B58000426E92 /* LoadGameController.h */,
 				B823757E1561B58000426E92 /* LoadGameController.m */,
 				B823757F1561B58000426E92 /* LoadGameController.xib */,
-				B8DBE9FE158144AF005199B4 /* iAdViewController.h */,
-				B8DBE9FF158144AF005199B4 /* iAdViewController.m */,
 				B88BF754158214000057F65D /* BannerViewController.h */,
 				B88BF753158213FF0057F65D /* BannerViewController.m */,
+				94A0ACE71C73189D00AE8B30 /* iAdViewController.h */,
+				94A0ACE81C73189D00AE8B30 /* iAdViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1522,7 +1522,7 @@
 				B8B0E74215605E23002FE0A2 /* Image.m in Sources */,
 				B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */,
 				B82375801561B58000426E92 /* LoadGameController.m in Sources */,
-				B8DBEA00158144AF005199B4 /* iAdViewController.m in Sources */,
+				94A0ACE91C73189D00AE8B30 /* iAdViewController.m in Sources */,
 				B88BF755158214000057F65D /* BannerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
