@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Università degli studi di Padova. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+@import Foundation;
+@import CoreData;
 
 @class Piece, Puzzle;
 

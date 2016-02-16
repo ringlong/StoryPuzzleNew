@@ -21,57 +21,34 @@
 
 
 - (void)toggleMenuWithDuration:(float)duration {
-    
     resumeButton.hidden = !duringGame;
     showThePictureButton.hidden = (!duringGame || delegate.puzzleCompete);
-    
-    float obscuring;
-    
-    if (duringGame) {
-        
-        obscuring = 1;
-        
-    } else {
-        obscuring = 1;
-    }
-    
-    
+    float obscuring = 1;
+
     if (self.view.alpha == 0) {
-        
         [delegate.view removeGestureRecognizer:delegate.pan];
 
         [UIView animateWithDuration:duration animations:^{
-            
             obscuringView.alpha = obscuring;
             self.view.alpha = 1;
             delegate.completedController.view.alpha = 0;
         }];
-        
         [delegate stopTimer];
-
-        
     } else {
-     
         [delegate.view addGestureRecognizer:delegate.pan];
         
         [UIView animateWithDuration:duration animations:^{
-            
             obscuringView.alpha = 0;
             self.view.alpha = 0;
             if (delegate.puzzleCompete) delegate.completedController.view.alpha = 1;
-            
         } completion:^(BOOL finished) {
-
-            game.view.frame = CGRectMake(self.view.frame.size.width, game.view.frame.origin.y, 
+            game.view.frame = CGRectMake(self.view.frame.size.width, game.view.frame.origin.y,
                                          game.view.frame.size.width, game.view.frame.size.height);
-            
-            mainView.frame = CGRectMake(0, mainView.frame.origin.y, 
+            mainView.frame = CGRectMake(0, mainView.frame.origin.y,
                                         mainView.frame.size.width, mainView.frame.size.height);
             [delegate startTimer];
-
         }];
     }
-    
 }
 
 - (void)createNewGame {
@@ -80,33 +57,22 @@
 }
 
 - (IBAction)startNewGame:(id)sender {
-    
     if (sender) {
-        
         [self playMenuSound];
-        
         [UIView animateWithDuration:0.3 animations:^{
-            
             [self showNewGameView];
-            
         }];
-        
     } else {
-        
         [self showNewGameView];
     }
-    
-    
 }
 
 - (void)showNewGameView {
-    
     chooseLabel.center = CGPointMake(self.view.center.x - 5, self.view.center.y - 280);
     game.tapToSelectLabel.hidden = NO;
     game.startButton.enabled = game.image.image;
     game.view.frame = CGRectMake(0, game.view.frame.origin.y, game.view.frame.size.width, game.view.frame.size.height);
     mainView.frame = CGRectMake(-mainView.frame.size.width, mainView.frame.origin.y, mainView.frame.size.width, mainView.frame.size.height);
-    
 }
 
 - (void)loadSounds {
@@ -114,13 +80,10 @@
     NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
     menuSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil];
     [menuSound prepareToPlay];
-
 }
 
 - (void)playMenuSound {
-    
     if (!Is_Device_Playing_Music) {
-        
         [menuSound play];
     }
 }
@@ -152,41 +115,21 @@
     [alertController addAction:action];
     [self presentViewController:alertController animated:YES completion:nil];
     
-    //[self toggleMenu];    
     [delegate toggleImageWithDuration:0.5];
     [self playMenuSound];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     [self loadSounds];
-    
-    newGameButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-    resumeButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-    showThePictureButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-    loadGameButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-    
-    
+
     if (IS_iPad) {
         self.view.layer.masksToBounds = YES;
         self.view.layer.cornerRadius = 20;        
     }
 
-    CGRect screen = [[UIScreen mainScreen] bounds];
-    CGRect rect = CGRectMake(0, 0, screen.size.height, screen.size.height);
-    obscuringView = [[UIView alloc] initWithFrame:rect];
+    obscuringView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     obscuringView.backgroundColor = [UIColor puzzleBackgroundColor];
-    
     
     chooseLabel = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChooseLabel"]];
     chooseLabel.alpha = 0;
@@ -201,7 +144,6 @@
     resumeButton.hidden = YES;
     showThePictureButton.hidden = YES; 
     
-    
     mainView.frame = CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height);
 
     game = [[NewGameController alloc] init];    
@@ -215,19 +157,6 @@
     loadGameController.delegate = self;
     
     [self.view addSubview:loadGameController.view];
-
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (YES);
 }
 
 @end

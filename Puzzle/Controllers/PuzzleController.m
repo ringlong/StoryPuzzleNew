@@ -73,10 +73,12 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     
     _imageViewLattice = [[UIImageView alloc] initWithImage:_image];
     
-    _puzzleCompleteImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:IS_iPad ? @"PuzzleComplete" : @"PuzzleComplete_iPhone"]];
-    
-    [self.view addSubview:_puzzleCompleteImage];
-    _puzzleCompleteImage.alpha = 0;
+    _puzzleComplete = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 58)];
+    _puzzleComplete.text = @"Puzzle Complete";
+    _puzzleComplete.textColor = [UIColor whiteColor];
+    _puzzleComplete.font = [UIFont fontWithName:@"Bello-Pro" size:50];
+    [self.view addSubview:_puzzleComplete];
+    _puzzleComplete.hidden = YES;
     
     //Resize the drawer
     CGRect drawerFrame = _drawerView.frame;
@@ -89,10 +91,8 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     stepperFrame.origin.y = drawerFrame.size.height;
     stepperFrame.origin.x = 10;
         
-    
     _drawerView.frame = drawerFrame;
     stepperDrawer.frame = stepperFrame;
-    
     
     //Add the menu
     _menu = [[MenuController alloc] init];
@@ -193,18 +193,14 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 - (void)showCompleteImage {
     
     [self centerCompletedImage];
-    _puzzleCompleteImage.transform = CGAffineTransformIdentity;
     
-    
-    [self.view bringSubviewToFront:_puzzleCompleteImage];
-//    [self.view bringSubviewToFront:self.adBannerView];
+    [self.view bringSubviewToFront:_puzzleComplete];
 
     [UIView animateWithDuration:1 animations:^{
-        
-        _puzzleCompleteImage.alpha = 1;
+        _puzzleComplete.hidden = NO;
     }];
     
-    _puzzleCompleteImage.transform = CGAffineTransformScale(_puzzleCompleteImage.transform, 1/1.8, 1/1.8);
+    _puzzleComplete.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1 / 1.8, 1 / 1.8);
     
     if (IS_iPhone) {
         [self resetLatticePositionAndSizeWithDuration:1.75];
@@ -217,41 +213,35 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [UIView setAnimationRepeatCount:2.5];
     [UIView setAnimationDelegate:self];
     
-    _puzzleCompleteImage.transform = CGAffineTransformScale(_puzzleCompleteImage.transform, 1.8, 1.8);
-    
+    _puzzleComplete.transform = CGAffineTransformScale(_puzzleComplete.transform, 1.8, 1.8);
     [UIView commitAnimations];
     
 }
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
 
-    if ([finished boolValue]) {
-        
+    if (finished.boolValue) {
         if ([animationID isEqualToString:@"pulseAnimation"]) {
-            
-            float f = (screenWidth)/(_pieceNumber+1)/(_piceSize-2*_padding);
+            float f = screenWidth / (_pieceNumber + 1) / (_piceSize - 2 * _padding);
             
             [UIView animateWithDuration:1.5 animations:^{
-               
                 _completedController.view.alpha = 1;
             }];
             
             [UIView animateWithDuration:0.5 animations:^{
-                
+    
             } completion:^(BOOL finished) {
-                
                 [self resizeLatticeToScale:f];
                 if (IS_iPad) {
                     [self moveLatticeToLeftWithDuration:0.5];
                 }
-        
             }];
             
             float translation = 0;
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-                translation = -screenWidth/2+_puzzleCompleteImage.bounds.size.height / 2;
+                translation = -screenWidth / 2 + _puzzleComplete.bounds.size.height / 2;
             } else {
-                translation = -screenHeight/2+_puzzleCompleteImage.bounds.size.height / 2;
+                translation = -screenHeight / 2 + _puzzleComplete.bounds.size.height / 2;
                 if (IS_iPad){
                  translation += 30;   
                 }
@@ -259,20 +249,15 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
             translation += 30;
             
             if (!didRotate) {
-                translation +=20;
+                translation += 20;
             }
 
-            
             [UIView animateWithDuration:1 animations:^{
-               
-                _puzzleCompleteImage.transform = CGAffineTransformMakeTranslation(0, translation);
-                
+                _puzzleComplete.transform = CGAffineTransformMakeTranslation(0, translation);
             }];
         }
         
-        DLog(@"Deleting");
         [self.managedObjectContext deleteObject:_puzzleDB];
-        DLog(@"Deleted");
     }
 }
 
@@ -458,15 +443,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (void)centerCompletedImage {
-    
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-        
-        _puzzleCompleteImage.center = CGPointMake(self.view.center.y, self.view.center.x);
-        
-    } else {
-        
-        _puzzleCompleteImage.center = CGPointMake(self.view.center.x, self.view.center.y);
-    }
+    _puzzleComplete.center = self.view.center;
 }
 
 - (void)prepareForNewPuzzle {
@@ -490,7 +467,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     panningMode = NO;
     _duringGame = NO;
     
-    _puzzleCompleteImage.alpha = 0;
+    _puzzleComplete.hidden = YES;
     _completedController.view.alpha = 0;
     
     if (!_loadingGame) {
@@ -732,16 +709,13 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     
     float padding_temp = partSize * 0.23;
     
-    DLog(@"Splitting image w=%.1f, ww=%.1f, imageSize=%.1f", partSize, padding_temp, im.size.width);
-        
     NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:_NumberSquare];
     for (int i = 0; i < x; i++){
         for (int j = 0; j < y; j++){
-            
             CGRect rect = CGRectMake(i * (partSize - 2 * padding_temp) - padding_temp,
                                      j * (partSize - 2 * padding_temp) - padding_temp,
-                                     partSize, partSize);
-            
+                                     partSize,
+                                     partSize);
             [arr addObject:[im subimageWithRect:rect]];
         }
     }
@@ -752,32 +726,26 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (BOOL)isPuzzleComplete {
-    
     if (_puzzleCompete) {
         return YES;
     } else {
-        
         for (PieceView *p in _pieces) {
             if (!p.isPositioned && !p.group.isPositioned) {
                 return NO;
             }
         }
         [self puzzleCompleted];
-}
-    
+    }
     return _puzzleCompete;
 }
 
-- (void)toggleImage:(UILongPressGestureRecognizer*)gesture {
-    
+- (void)toggleImage:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateBegan && _menu.view.alpha == 0) {
         [self toggleImageWithDuration:0.5];
     }
-    
 }
 
 - (void)toggleImageWithDuration:(float)duration {
-    
     [UIView animateWithDuration:duration animations:^{
         if (_imageView.alpha == 0) {
             _menuButtonView.userInteractionEnabled = NO;
@@ -791,27 +759,20 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (IBAction)puzzleCompleted {
-    
     _puzzleCompete = YES;
-    
     [self stopTimer];
     [_completedController updateValues];
 
-    
     [UIView animateWithDuration:2 animations:^{
-    
         _drawerView.alpha = 0;
         _panningSwitch.alpha = 0;
         percentageLabel.alpha = 0;
         _elapsedTimeLabel.alpha = 0;
         scoreLabel.alpha = 0;
-
         for (UIView *v in _lattice.pieces) {
             v.alpha = 0;
         }
-        
     } completion:^(BOOL finished) {
-        
         [self saveGame];
         [self.view bringSubviewToFront:_lattice];
         [self.view bringSubviewToFront:_completedController.view];
@@ -864,40 +825,30 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [self.view addGestureRecognizer:longPressure];
 }
 
-- (void)doubleTap:(UITapGestureRecognizer*)gesture {
-    
+- (void)doubleTap:(UITapGestureRecognizer *)gesture {
     CGPoint point = [gesture locationInView:_lattice];
-
     movingPiece = nil;
     
     for (int i = 0; i < 9 * _NumberSquare; i++) {
-        
         CGRect rect = _lattice.pieces[i].frame;
-        
         if ([self point:point isInFrame:rect]) {
             movingPiece = [self pieceWithPosition:i];
         }
-        
     }
     
     if (movingPiece) {
         [movingPiece rotateTap:gesture];
-        
     } else {
         [self resetLatticePositionAndSizeWithDuration:0.5];
     }
 }
 
-- (void)pan:(UIPanGestureRecognizer*)gesture {
-        
+- (void)pan:(UIPanGestureRecognizer *)gesture {
     CGPoint point = [gesture locationInView:_lattice];
-    
-    if (gesture.state==UIGestureRecognizerStateBegan) {
-        
+    if (gesture.state == UIGestureRecognizerStateBegan) {
         movingPiece = nil;
         
-        for (int i= 0; i<9*_NumberSquare; i++) {
-            
+        for (int i = 0; i < 9 * _NumberSquare; i++) {
             CGRect rect = [[[_lattice pieces] objectAtIndex:i] frame];
             
             if ([self point:point isInFrame:rect]) {
@@ -1818,22 +1769,18 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (void)moveLatticeToLeftWithDuration:(float)duration {
-        
     CGPoint center = [self.view convertPoint:[[_lattice objectAtIndex:firstPiecePlace] center] fromView:_lattice];
-    int topBar = (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad && UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))*20;
+    int topBar = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) * 20;
     
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-        
         _lattice.transform = CGAffineTransformTranslate(_lattice.transform,
                                                        -center.x/_lattice.scale+(_piceSize-2*_padding)/2+30,
                                                        -center.y/_lattice.scale+(_piceSize-2*_padding)-topBar);
     } else {
-        
         _lattice.transform = CGAffineTransformTranslate(_lattice.transform,
-                    -center.x/_lattice.scale+(_piceSize-2*_padding),
-                    -center.y/_lattice.scale+(_piceSize-2*_padding)/2+_puzzleCompleteImage.bounds.size.height/_lattice.scale+topBar);
+                    -center.x / _lattice.scale + (_piceSize - 2 * _padding),
+                    -center.y / _lattice.scale + (_piceSize - 2 * _padding) / 2 + _puzzleComplete.bounds.size.height / _lattice.scale+topBar);
     }
-
     
     [self refreshPositions];
     
@@ -2267,7 +2214,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 #pragma mark - Core Data
 
 - (BOOL)saveGame {
-    
     if (!_puzzleDB) {
         DLog(@"PuzzleDB is nil");
     }
@@ -2279,7 +2225,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     _puzzleDB.percentage = @([self completedPercentage]);
 
     if ([self.managedObjectContext save:nil]) {
-        //DLog(@"Puzzle saved");
+        DLog(@"Puzzle saved");
     }
     
     return YES;
@@ -2298,28 +2244,27 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     
     [fetchRequest1 setFetchLimit:1];
     
-    return [[self.managedObjectContext executeFetchRequest:fetchRequest1 error:nil] lastObject];
-    
+    return [self.managedObjectContext executeFetchRequest:fetchRequest1 error:nil].lastObject;
 }
 
 - (void)createPuzzleInDB {
     
     self.view.userInteractionEnabled = NO;
     
-    _puzzleDB = [self newPuzzleInCOntext:self.managedObjectContext];
-    Image *imageDB = [self newImageInCOntext:self.managedObjectContext];
+    _puzzleDB = [self newPuzzleInContext:self.managedObjectContext];
+    Image *imageDB = [self newImageInContext:self.managedObjectContext];
     imageDB.data = UIImageJPEGRepresentation(_image, 1);
     _puzzleDB.image = imageDB;
     _puzzleDB.pieceNumber = @(_pieceNumber);
     
     for (PieceView *piece in _pieces) {
         //Creating the piece in the database
-        Piece *pieceDB = [self newPieceInCOntext:self.managedObjectContext];
+        Piece *pieceDB = [self newPieceInContext:self.managedObjectContext];
         pieceDB.puzzle = _puzzleDB;
         pieceDB.number = @(piece.number);
         pieceDB.position = @(piece.position);
         pieceDB.angle = @(piece.angle);
-        Image *imagePieceDB = [self newImageInCOntext:self.managedObjectContext];
+        Image *imagePieceDB = [self newImageInContext:self.managedObjectContext];
         imagePieceDB.data = UIImageJPEGRepresentation(piece.image, 0.5);
         pieceDB.image = imagePieceDB;
         
@@ -2332,20 +2277,19 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     self.view.userInteractionEnabled = YES;
 }
 
-- (Puzzle *)newPuzzleInCOntext:(NSManagedObjectContext *)context {
-    
+- (Puzzle *)newPuzzleInContext:(NSManagedObjectContext *)context {
     return [NSEntityDescription
             insertNewObjectForEntityForName:@"Puzzle" 
             inManagedObjectContext:context];
 }
 
-- (Image *)newImageInCOntext:(NSManagedObjectContext *)context {
+- (Image *)newImageInContext:(NSManagedObjectContext *)context {
     return [NSEntityDescription
             insertNewObjectForEntityForName:@"Image" 
             inManagedObjectContext:context];
 }
 
-- (Piece *)newPieceInCOntext:(NSManagedObjectContext *)context {
+- (Piece *)newPieceInContext:(NSManagedObjectContext *)context {
     return [NSEntityDescription
             insertNewObjectForEntityForName:@"Piece" 
             inManagedObjectContext:context];
@@ -2389,8 +2333,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         drawerFrame.origin.x = 0;
         drawerFrame.origin.y = -10;
 
-
-        
         stepperFrame.origin.y = drawerFrame.size.height - stepperFrame.size.height-30;
         stepperFrame.origin.x = drawerFrame.size.width;
         float pad = ([[UIScreen mainScreen] bounds].size.height - imageFrame.size.width)/1;
@@ -2452,7 +2394,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         stepperDrawer.frame = stepperFrame;
         _imageView.frame = imageFrame;
         _menu.chooseLabel.center = chooseCenter;
-        _puzzleCompleteImage.center = completedCenter;
+        _puzzleComplete.center = completedCenter;
         _completedController.view.frame = statsFrame;
         HUDView.frame = HUDFrame;
         
@@ -2547,17 +2489,16 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [UIView animateWithDuration:duration animations:^{
         
         CGRect rect = drawerFrame;
-        NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f",rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+        NSLog(@"Rect = %.1f, %.1f, %.1f, %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         
         _drawerView.frame = drawerFrame;
         stepperDrawer.frame = stepperFrame;
         _imageView.frame = imageFrame;
         _menu.chooseLabel.center = chooseCenter;
-        _puzzleCompleteImage.center = completedCenter;
+        _puzzleComplete.center = completedCenter;
         _completedController.view.frame = statsFrame;
         HUDView.frame = HUDFrame;
     }];
-    
     
     [UIView animateWithDuration:0.5 animations:^{
         [self organizeDrawerWithOrientation:toInterfaceOrientation];
@@ -2565,7 +2506,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    
     if (IS_iPad){
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
     } 
@@ -2577,10 +2517,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     }
     
     didRotate = YES;
-    
 }
-
-
 
 #pragma mark -
 #pragma mark Tools
@@ -2606,7 +2543,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 - (void)refreshPositions {
     for (PieceView *p in _pieces) {
-        if (p.isFree && p.position>-1 && p.group==nil) {
+        if (p.isFree && p.position > -1 && !p.group) {
             [self movePiece:p toLatticePoint:p.position animated:NO];
         }
     }

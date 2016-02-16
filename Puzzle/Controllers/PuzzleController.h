@@ -107,10 +107,10 @@ UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 
 @property (nonatomic, retain) IBOutlet UIView *drawerView;
 @property (nonatomic, retain) IBOutlet UIView *menuButtonView;
-@property (nonatomic, retain) IBOutlet UIImageView *puzzleCompleteImage;
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;;
 @property (nonatomic, retain) IBOutlet UIButton *panningSwitch;
-
+@property (nonatomic, strong) UIImageView *puzzleCompleteImage;
+@property (nonatomic, strong) UILabel *puzzleComplete;
 
 @property (nonatomic, retain) NSMutableArray *pieces;
 @property (nonatomic, retain) NSMutableArray *groups;

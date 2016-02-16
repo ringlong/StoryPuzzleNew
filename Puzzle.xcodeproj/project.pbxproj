@@ -295,20 +295,10 @@
 		B8AE12271559912200742256 /* Puzzle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AE121B1559912200742256 /* Puzzle.xcdatamodeld */; };
 		B8B0E724155FB612002FE0A2 /* ChooseLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */; };
 		B8B0E726155FB612002FE0A2 /* ChooseLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E721155FB612002FE0A2 /* ChooseLabel.png */; };
-		B8B0E728155FB612002FE0A2 /* Wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E722155FB612002FE0A2 /* Wood.jpg */; };
-		B8B0E72A155FB612002FE0A2 /* Wood@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */; };
-		B8B0E72E155FFA56002FE0A2 /* PuzzleComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */; };
-		B8B0E730155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */; };
-		B8B0E7341560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */; };
-		B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */; };
 		B8B0E73B15601E2C002FE0A2 /* PuzzleCompletedController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */; };
 		B8B0E73D15601E2C002FE0A2 /* PuzzleCompletedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */; };
 		B8B0E74215605E23002FE0A2 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74115605E23002FE0A2 /* Image.m */; };
 		B8B0E74715605EE8002FE0A2 /* Puzzle.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E74615605EE8002FE0A2 /* Puzzle.m */; };
-		B8CFE4D0157269ED00AAC396 /* Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CFE4CE157269ED00AAC396 /* Menu.png */; };
-		B8CFE4D4157269ED00AAC396 /* Menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CFE4CF157269ED00AAC396 /* Menu@2x.png */; };
-		B8D28BC815667CCF00DCF1A0 /* PanningSwitch.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */; };
-		B8D28BCB15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */; };
 		B8DADF9615654973002DCEF8 /* Notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = B8DADF9515654973002DCEF8 /* Notes.txt */; };
 		B8DAFCC4155BA1C400A901A3 /* NeighborFound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */; };
 		B8DAFCC6155BA1C400A901A3 /* PiecePositioned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */; };
@@ -320,12 +310,6 @@
 		B8DBE9FD15813412005199B4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBE9FC15813412005199B4 /* iAd.framework */; };
 		B8DBEA00158144AF005199B4 /* iAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBE9FF158144AF005199B4 /* iAdViewController.m */; };
 		B8DBEA061581589B005199B4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBEA0415815887005199B4 /* Security.framework */; };
-		B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */; };
-		B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */; };
-		B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */; };
-		B8DFA69B15497ED300256385 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */; };
-		B8DFA69C15497ED300256385 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69615497ED300256385 /* Default.png */; };
-		B8DFA69D15497ED300256385 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFA69715497ED300256385 /* Default@2x.png */; };
 		B8E18159155000C200A8B450 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E18158155000C200A8B450 /* MediaPlayer.framework */; };
 		B8E4AC7F154AA22300D0A75D /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E4AC7D154AA22300D0A75D /* MenuController.m */; };
 		B8E4AC80154AA22300D0A75D /* MenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8E4AC7E154AA22300D0A75D /* MenuController.xib */; };
@@ -642,12 +626,6 @@
 		B8AE12201559912200742256 /* Puzzle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Puzzle.xcdatamodel; sourceTree = "<group>"; };
 		B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChooseLabel@2x.png"; path = "PNGs/ChooseLabel@2x.png"; sourceTree = "<group>"; };
 		B8B0E721155FB612002FE0A2 /* ChooseLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChooseLabel.png; path = PNGs/ChooseLabel.png; sourceTree = "<group>"; };
-		B8B0E722155FB612002FE0A2 /* Wood.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Wood.jpg; path = PNGs/Wood.jpg; sourceTree = "<group>"; };
-		B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Wood@2x.jpg"; path = "PNGs/Wood@2x.jpg"; sourceTree = "<group>"; };
-		B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuzzleComplete.png; path = PNGs/PuzzleComplete.png; sourceTree = "<group>"; };
-		B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PuzzleComplete@2x.png"; path = "PNGs/PuzzleComplete@2x.png"; sourceTree = "<group>"; };
-		B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuzzleComplete_iPhone.png; path = PNGs/PuzzleComplete_iPhone.png; sourceTree = "<group>"; };
-		B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PuzzleComplete_iPhone@2x.png"; path = "PNGs/PuzzleComplete_iPhone@2x.png"; sourceTree = "<group>"; };
 		B8B0E73815601E2C002FE0A2 /* PuzzleCompletedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleCompletedController.h; path = Controllers/PuzzleCompletedController.h; sourceTree = "<group>"; };
 		B8B0E73915601E2C002FE0A2 /* PuzzleCompletedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleCompletedController.m; path = Controllers/PuzzleCompletedController.m; sourceTree = "<group>"; };
 		B8B0E73A15601E2C002FE0A2 /* PuzzleCompletedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleCompletedController.xib; path = Controllers/PuzzleCompletedController.xib; sourceTree = "<group>"; };
@@ -659,10 +637,6 @@
 		B8B0E74615605EE8002FE0A2 /* Puzzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puzzle.m; sourceTree = "<group>"; };
 		B8B857C515631DF300C62D9F /* Puzzle 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 8.xcdatamodel"; sourceTree = "<group>"; };
 		B8C0EE511567A20F0042EB89 /* Puzzle 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Puzzle 9.xcdatamodel"; sourceTree = "<group>"; };
-		B8CFE4CE157269ED00AAC396 /* Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Menu.png; path = PNGs/Menu.png; sourceTree = "<group>"; };
-		B8CFE4CF157269ED00AAC396 /* Menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Menu@2x.png"; path = "PNGs/Menu@2x.png"; sourceTree = "<group>"; };
-		B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanningSwitch.png; path = PNGs/PanningSwitch.png; sourceTree = "<group>"; };
-		B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanningSwitch@2x.png"; path = "PNGs/PanningSwitch@2x.png"; sourceTree = "<group>"; };
 		B8DADF9515654973002DCEF8 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 		B8DAFCC0155BA1C400A901A3 /* NeighborFound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NeighborFound.wav; path = Audio/NeighborFound.wav; sourceTree = "<group>"; };
 		B8DAFCC1155BA1C400A901A3 /* PiecePositioned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = PiecePositioned.mp3; path = Audio/PiecePositioned.mp3; sourceTree = "<group>"; };
@@ -676,12 +650,6 @@
 		B8DBE9FE158144AF005199B4 /* iAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iAdViewController.h; path = Controllers/iAdViewController.h; sourceTree = "<group>"; };
 		B8DBE9FF158144AF005199B4 /* iAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iAdViewController.m; path = Controllers/iAdViewController.m; sourceTree = "<group>"; };
 		B8DBEA0415815887005199B4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
-		B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
-		B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
-		B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
-		B8DFA69615497ED300256385 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		B8DFA69715497ED300256385 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B8E18158155000C200A8B450 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B8E18192155040CE00A8B450 /* Puzzle iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Puzzle iPhone-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B8E4AC7C154AA22300D0A75D /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuController.h; path = Controllers/MenuController.h; sourceTree = "<group>"; };
@@ -1026,7 +994,6 @@
 				B87C5CE9154014C300AF69BC /* Classes */,
 				B8E1815F15503B0900A8B450 /* Audio */,
 				B8E1815E15503AF800A8B450 /* PNGs */,
-				B8DFA69115497ED300256385 /* Default */,
 				B8AE12141559912200742256 /* Core Data models */,
 				B87C5CCE15400B2A00AF69BC /* Supporting Files */,
 			);
@@ -1123,34 +1090,11 @@
 			path = "Core Data models";
 			sourceTree = "<group>";
 		};
-		B8DFA69115497ED300256385 /* Default */ = {
-			isa = PBXGroup;
-			children = (
-				B8DFA69215497ED300256385 /* Default-Landscape@2x~ipad.png */,
-				B8DFA69315497ED300256385 /* Default-Landscape~ipad.png */,
-				B8DFA69415497ED300256385 /* Default-Portrait@2x~ipad.png */,
-				B8DFA69515497ED300256385 /* Default-Portrait~ipad.png */,
-				B8DFA69615497ED300256385 /* Default.png */,
-				B8DFA69715497ED300256385 /* Default@2x.png */,
-			);
-			path = Default;
-			sourceTree = "<group>";
-		};
 		B8E1815E15503AF800A8B450 /* PNGs */ = {
 			isa = PBXGroup;
 			children = (
-				B8CFE4CE157269ED00AAC396 /* Menu.png */,
-				B8CFE4CF157269ED00AAC396 /* Menu@2x.png */,
-				B8D28BC615667CCF00DCF1A0 /* PanningSwitch.png */,
-				B8D28BC715667CCF00DCF1A0 /* PanningSwitch@2x.png */,
 				B8B0E720155FB612002FE0A2 /* ChooseLabel@2x.png */,
 				B8B0E721155FB612002FE0A2 /* ChooseLabel.png */,
-				B8B0E722155FB612002FE0A2 /* Wood.jpg */,
-				B8B0E723155FB612002FE0A2 /* Wood@2x.jpg */,
-				B8B0E72C155FFA56002FE0A2 /* PuzzleComplete.png */,
-				B8B0E72D155FFA56002FE0A2 /* PuzzleComplete@2x.png */,
-				B8B0E7321560187A002FE0A2 /* PuzzleComplete_iPhone.png */,
-				B8B0E7331560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png */,
 			);
 			name = PNGs;
 			sourceTree = "<group>";
@@ -1230,25 +1174,19 @@
 				9491D4901C1D177000C4A5F6 /* default-140-puzzle.jpeg in Resources */,
 				B87C5CF21540174400AF69BC /* PuzzleController.xib in Resources */,
 				9491D4E51C1D177000C4A5F6 /* default-217-puzzle.jpeg in Resources */,
-				B8DFA69815497ED300256385 /* Default-Landscape@2x~ipad.png in Resources */,
 				9491D50D1C1D177000C4A5F6 /* default-253-puzzle.jpeg in Resources */,
 				9491D4BB1C1D177000C4A5F6 /* default-18-puzzle.jpeg in Resources */,
 				9491D4CD1C1D177000C4A5F6 /* default-196-puzzle.jpeg in Resources */,
 				9491D4721C1D177000C4A5F6 /* default-113-puzzle.jpeg in Resources */,
-				B8DFA69915497ED300256385 /* Default-Landscape~ipad.png in Resources */,
 				9491D5171C1D177000C4A5F6 /* default-30-puzzle.jpeg in Resources */,
 				9491D52F1C1D177000C4A5F6 /* default-52-puzzle.jpeg in Resources */,
 				942BB0CC1C0FD69B0024232F /* Assets.xcassets in Resources */,
-				B8DFA69A15497ED300256385 /* Default-Portrait@2x~ipad.png in Resources */,
-				B8DFA69B15497ED300256385 /* Default-Portrait~ipad.png in Resources */,
 				9491D5571C1D177000C4A5F6 /* default-89-puzzle.jpeg in Resources */,
-				B8DFA69C15497ED300256385 /* Default.png in Resources */,
 				9491D5201C1D177000C4A5F6 /* default-39-puzzle.jpeg in Resources */,
 				9491D4BD1C1D177000C4A5F6 /* default-181-puzzle.jpeg in Resources */,
 				9491D53D1C1D177000C4A5F6 /* default-65-puzzle.jpeg in Resources */,
 				9491D4E41C1D177000C4A5F6 /* default-216-puzzle.jpeg in Resources */,
 				9491D5071C1D177000C4A5F6 /* default-248-puzzle.jpeg in Resources */,
-				B8DFA69D15497ED300256385 /* Default@2x.png in Resources */,
 				B8E4AC80154AA22300D0A75D /* MenuController.xib in Resources */,
 				9491D48F1C1D177000C4A5F6 /* default-14-puzzle.jpeg in Resources */,
 				9491D4D91C1D177000C4A5F6 /* default-206-puzzle.jpeg in Resources */,
@@ -1375,8 +1313,6 @@
 				9491D4DE1C1D177000C4A5F6 /* default-210-puzzle.jpeg in Resources */,
 				B8B0E726155FB612002FE0A2 /* ChooseLabel.png in Resources */,
 				9491D4631C1D177000C4A5F6 /* default-10-puzzle.jpeg in Resources */,
-				B8B0E728155FB612002FE0A2 /* Wood.jpg in Resources */,
-				B8B0E72A155FB612002FE0A2 /* Wood@2x.jpg in Resources */,
 				9491D55E1C1D177000C4A5F6 /* default-95-puzzle.jpeg in Resources */,
 				9491D53C1C1D177000C4A5F6 /* default-64-puzzle.jpeg in Resources */,
 				9491D5001C1D177000C4A5F6 /* default-241-puzzle.jpeg in Resources */,
@@ -1384,12 +1320,8 @@
 				9491D4921C1D177000C4A5F6 /* default-142-puzzle.jpeg in Resources */,
 				9491D54B1C1D177000C4A5F6 /* default-78-puzzle.jpeg in Resources */,
 				9491D4831C1D177000C4A5F6 /* default-129-puzzle.jpeg in Resources */,
-				B8B0E72E155FFA56002FE0A2 /* PuzzleComplete.png in Resources */,
-				B8B0E730155FFA56002FE0A2 /* PuzzleComplete@2x.png in Resources */,
 				9491D4BE1C1D177000C4A5F6 /* default-182-puzzle.jpeg in Resources */,
-				B8B0E7341560187A002FE0A2 /* PuzzleComplete_iPhone.png in Resources */,
 				9491D4EE1C1D177000C4A5F6 /* default-225-puzzle.jpeg in Resources */,
-				B8B0E7361560187A002FE0A2 /* PuzzleComplete_iPhone@2x.png in Resources */,
 				9491D4F91C1D177000C4A5F6 /* default-235-puzzle.jpeg in Resources */,
 				9491D55C1C1D177000C4A5F6 /* default-93-puzzle.jpeg in Resources */,
 				9491D47C1C1D177000C4A5F6 /* default-122-puzzle.jpeg in Resources */,
@@ -1404,7 +1336,6 @@
 				9491D5281C1D177000C4A5F6 /* default-46-puzzle.jpeg in Resources */,
 				9491D5541C1D177000C4A5F6 /* default-86-puzzle.jpeg in Resources */,
 				B8DADF9615654973002DCEF8 /* Notes.txt in Resources */,
-				B8D28BC815667CCF00DCF1A0 /* PanningSwitch.png in Resources */,
 				9491D4E71C1D177000C4A5F6 /* default-219-puzzle.jpeg in Resources */,
 				9491D49F1C1D177000C4A5F6 /* default-154-puzzle.jpeg in Resources */,
 				9491D4661C1D177000C4A5F6 /* default-102-puzzle.jpeg in Resources */,
@@ -1416,7 +1347,6 @@
 				9491D50B1C1D177000C4A5F6 /* default-251-puzzle.jpeg in Resources */,
 				9491D4AC1C1D177000C4A5F6 /* default-166-puzzle.jpeg in Resources */,
 				9491D4A11C1D177000C4A5F6 /* default-156-puzzle.jpeg in Resources */,
-				B8D28BCB15667CCF00DCF1A0 /* PanningSwitch@2x.png in Resources */,
 				9491D5451C1D177000C4A5F6 /* default-72-puzzle.jpeg in Resources */,
 				9491D46A1C1D177000C4A5F6 /* default-106-puzzle.jpeg in Resources */,
 				9491D4931C1D177000C4A5F6 /* default-143-puzzle.jpeg in Resources */,
@@ -1512,8 +1442,6 @@
 				9491D4B51C1D177000C4A5F6 /* default-174-puzzle.jpeg in Resources */,
 				9491D4691C1D177000C4A5F6 /* default-105-puzzle.jpeg in Resources */,
 				9491D51B1C1D177000C4A5F6 /* default-34-puzzle.jpeg in Resources */,
-				B8CFE4D0157269ED00AAC396 /* Menu.png in Resources */,
-				B8CFE4D4157269ED00AAC396 /* Menu@2x.png in Resources */,
 				9491D4701C1D177000C4A5F6 /* default-111-puzzle.jpeg in Resources */,
 				9491D4A41C1D177000C4A5F6 /* default-159-puzzle.jpeg in Resources */,
 				9491D4D61C1D177000C4A5F6 /* default-203-puzzle.jpeg in Resources */,

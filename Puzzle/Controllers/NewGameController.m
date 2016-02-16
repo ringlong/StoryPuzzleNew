@@ -33,9 +33,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:kPieceNumberChangedNotification object:nil];
     
-    backButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-    startButton.titleLabel.font = [UIFont fontWithName:@"Bello-Pro" size:40];
-
     slider.maximumValue = 8;
     pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value * (int)slider.value];
     
@@ -139,21 +136,15 @@
 }
 
 - (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
-    
     typeOfImageView.hidden = YES;
 
     [UIView animateWithDuration:0.3 animations:^{
         delegate.chooseLabel.alpha = 0;
     }];
 
-    
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
     
-    DLog(@"After picking");
-    
     NSData *dataJPG = UIImageJPEGRepresentation(pickedImage, IMAGE_QUALITY);
-    
-    DLog(@"Image size JPG = %.2f", (float)2*((float)dataJPG.length/10000000.0));
     
     [self dismissPicker];
     
@@ -199,7 +190,6 @@
 }
 
 - (IBAction)selectImage:(id)sender {
-    
     [delegate playMenuSound];
 
     typeOfImageView.hidden = NO;
@@ -244,7 +234,7 @@
             
             delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y, 
                                                  self.view.frame.size.width, self.view.frame.size.height);
-        }completion:^(BOOL finished) {
+        } completion:^(BOOL finished) {
             typeOfImageView.hidden = YES;
         }];
     } else {
@@ -258,16 +248,14 @@
     backButton.hidden = YES;
     
     if (delegate.delegate.loadingGame) {
-        
-        int n = [delegate.delegate.puzzleDB.pieceNumber intValue];
+         int n = [delegate.delegate.puzzleDB.pieceNumber intValue];
         pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", n*n];
         slider.value = (float)n;
         tapToSelectView.hidden = YES;
         image.image = delegate.delegate.image;
 
     } else {
-
-        image.image = delegate.delegate.image;
+         image.image = delegate.delegate.image;
     }
 
     slider.enabled = NO;    
@@ -278,9 +266,7 @@
     
     progressView.hidden = NO;
     loadingView.hidden = NO;
-    progressView.progress = 0.0;
-    
-    //timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(moveBar) userInfo:nil repeats:YES];
+    progressView.progress = 0.0;    
 }
 
 
@@ -333,7 +319,6 @@
     
     self.view.frame = CGRectMake(self.view.frame.size.width, self.view.frame.origin.y, 
                                  self.view.frame.size.width, self.view.frame.size.height);
-
 }
 
 
