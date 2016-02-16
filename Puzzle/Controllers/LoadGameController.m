@@ -20,15 +20,13 @@
 
 @implementation LoadGameController
 
-@synthesize managedObjectContext, delegate, contents,images, tableView;
+@synthesize managedObjectContext, delegate, contents, images;
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
-    tableView.backgroundColor = [UIColor clearColor];
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    self.tableView.tableFooterView = UIView.new;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"d MMM YYYY - hh:mm"];
     
@@ -45,12 +43,17 @@
     _indicator.centerX = self.view.width / 2;
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:YES];
+}
+
 - (void)reloadData {
     if (loading) {
         return;
     }
     loading = YES;
-    [tableView reloadData];
+    [_tableView reloadData];
     _indicator.hidden = NO;
     [_indicator startAnimating];
     [NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
@@ -84,94 +87,71 @@
     _indicator.hidden = YES;
     [_indicator stopAnimating];
     loading = NO;
-    [tableView reloadData];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [_tableView reloadData];
 }
 
 - (IBAction)back:(id)sender {
-    
     [delegate.delegate.managedObjectContext save:nil];
     
     [UIView animateWithDuration:0.3 animations:^{
         
         self.view.frame = CGRectMake(delegate.mainView.frame.size.width, self.view.frame.origin.y, 
                                      self.view.frame.size.width, self.view.frame.size.height);
-        
-        delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y, 
+        delegate.mainView.frame = CGRectMake(0, delegate.mainView.frame.origin.y,
                                              delegate.mainView.frame.size.width, delegate.mainView.frame.size.height);
-    
     }];
 
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     return 100;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    
     return 0;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return !loading;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return contents.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView_ dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        
+    if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.backgroundColor = [UIColor clearColor];
-        UIView *v = [[UIView alloc] init];
-        v.backgroundColor = [UIColor rrYellowColor];
-        cell.selectedBackgroundView = v;
+        UIView *selectedBackgroundView = [[UIView alloc] init];
+        selectedBackgroundView.backgroundColor = [UIColor colorWithRGBHex:0xe98f74];;
+        cell.selectedBackgroundView = selectedBackgroundView;
         cell.textLabel.textColor = [UIColor whiteColor];
-        cell.detailTextLabel.textColor = [UIColor rrYellowColor];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
+        cell.detailTextLabel.textColor = [UIColor colorWithRGBHex:0xfbf3b1];
+        cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:14];
         cell.textLabel.textAlignment = NSTextAlignmentRight;
         cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
     }
         
-    Puzzle *puzzle = [contents objectAtIndex:indexPath.row];
-    
-    cell.imageView.image = [images objectAtIndex:indexPath.row];
+    Puzzle *puzzle = contents[indexPath.row];
+    UIImage *image = images[indexPath.row];
+    cell.imageView.image = [image imageByScalingProportionallyToSize:CGSizeMake(80, 80)];
     cell.textLabel.text = [df stringFromDate:[puzzle lastSaved]];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d pieces, %d%% completed", puzzle.pieceNumber.intValue*puzzle.pieceNumber.intValue, puzzle.percentage.intValue];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ pieces, %@%% completed", @(puzzle.pieceNumber.integerValue * puzzle.pieceNumber.integerValue), @(puzzle.percentage.integerValue)];
 
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
-
-- (void)tableView:(UITableView *)tableView_ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         Puzzle *puzzleToDelete = [contents objectAtIndex:indexPath.row];
@@ -182,7 +162,7 @@
         [contents removeObjectAtIndex:indexPath.row];
         [images removeObjectAtIndex:indexPath.row];
         
-        [tableView_ deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }    
 }
 

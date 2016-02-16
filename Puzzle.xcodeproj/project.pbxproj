@@ -1674,7 +1674,7 @@
 				B87C5CDD15400B2A00AF69BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B87C5CDE15400B2A00AF69BC /* Build configuration list for PBXNativeTarget "Puzzle" */ = {
 			isa = XCConfigurationList;
@@ -1683,7 +1683,7 @@
 				B87C5CE015400B2A00AF69BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

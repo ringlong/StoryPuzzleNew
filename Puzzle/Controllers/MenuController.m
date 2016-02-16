@@ -13,47 +13,48 @@
 
 @interface MenuController ()
 
+@property (nonatomic, weak) IBOutlet UIButton *resumeButton;
+@property (nonatomic, weak) IBOutlet UIButton *showThePictureButton;
+@property (nonatomic, weak) IBOutlet UIButton *loadGameButton;
+@property (weak, nonatomic) IBOutlet UIButton *startNewGame;
+
 @end
 
 @implementation MenuController
 
-@synthesize delegate, duringGame, game, obscuringView, mainView, menuSound, chooseLabel, loadGameController;
-
-
 - (void)toggleMenuWithDuration:(float)duration {
-    resumeButton.hidden = !duringGame;
-    showThePictureButton.hidden = (!duringGame || delegate.puzzleCompete);
+    _resumeButton.hidden = !_duringGame;
+    _showThePictureButton.hidden = (!_duringGame || _delegate.puzzleCompete);
     float obscuring = 1;
 
     if (self.view.alpha == 0) {
-        [delegate.view removeGestureRecognizer:delegate.pan];
+        [_delegate.view removeGestureRecognizer:_delegate.pan];
 
         [UIView animateWithDuration:duration animations:^{
-            obscuringView.alpha = obscuring;
+            _obscuringView.alpha = obscuring;
             self.view.alpha = 1;
-            delegate.completedController.view.alpha = 0;
+            _delegate.completedController.view.alpha = 0;
         }];
-        [delegate stopTimer];
+        [_delegate stopTimer];
     } else {
-        [delegate.view addGestureRecognizer:delegate.pan];
+        [_delegate.view addGestureRecognizer:_delegate.pan];
         
         [UIView animateWithDuration:duration animations:^{
-            obscuringView.alpha = 0;
+            _obscuringView.alpha = 0;
             self.view.alpha = 0;
-            if (delegate.puzzleCompete) delegate.completedController.view.alpha = 1;
+            if (_delegate.puzzleCompete) _delegate.completedController.view.alpha = 1;
         } completion:^(BOOL finished) {
-            game.view.frame = CGRectMake(self.view.frame.size.width, game.view.frame.origin.y,
-                                         game.view.frame.size.width, game.view.frame.size.height);
-            mainView.frame = CGRectMake(0, mainView.frame.origin.y,
-                                        mainView.frame.size.width, mainView.frame.size.height);
-            [delegate startTimer];
+            _game.view.frame = CGRectMake(self.view.frame.size.width, _game.view.frame.origin.y,
+                                         _game.view.frame.size.width, _game.view.frame.size.height);
+            _mainView.frame = CGRectMake(0, _mainView.frame.origin.y,
+                                        _mainView.frame.size.width, _mainView.frame.size.height);
+            [_delegate startTimer];
         }];
     }
 }
 
 - (void)createNewGame {
-        
-    [delegate startNewGame];            
+    [_delegate startNewGame];
 }
 
 - (IBAction)startNewGame:(id)sender {
@@ -67,78 +68,66 @@
 }
 
 - (void)showNewGameView {
-    chooseLabel.center = CGPointMake(self.view.center.x - 5, self.view.center.y - 280);
-    game.tapToSelectLabel.hidden = NO;
-    game.startButton.enabled = game.image.image;
-    game.view.frame = CGRectMake(0, game.view.frame.origin.y, game.view.frame.size.width, game.view.frame.size.height);
-    mainView.frame = CGRectMake(-mainView.frame.size.width, mainView.frame.origin.y, mainView.frame.size.width, mainView.frame.size.height);
+    _game.tapToSelectLabel.hidden = NO;
+    _game.startButton.enabled = _game.image.image;
+    _game.view.frame = CGRectMake(0, _game.view.frame.origin.y, _game.view.frame.size.width, _game.view.frame.size.height);
+    _mainView.frame = CGRectMake(-_mainView.frame.size.width, _mainView.frame.origin.y, _mainView.frame.size.width, _mainView.frame.size.height);
 }
 
-- (IBAction)loadGame:(id)sender {
+- (IBAction)loadGame:(UIButton *)sender {
+    [_loadGameController reloadData];
 
-    [loadGameController reloadData];
-
-    float f = 0;//delegate.adBannerView.bannerLoaded*delegate.adBannerView.frame.size.height;
-
+    float f = 0;
     [UIView animateWithDuration:0.3 animations:^{
-        loadGameController.view.frame = CGRectMake(0, f/2, game.view.frame.size.width, game.view.frame.size.height-f);
-        mainView.frame = CGRectMake(-mainView.frame.size.width, mainView.frame.origin.y, mainView.frame.size.width, mainView.frame.size.height);
+        _loadGameController.view.frame = CGRectMake(0, f/2, _game.view.frame.size.width, _game.view.frame.size.height-f);
+        _mainView.frame = CGRectMake(-_mainView.frame.size.width, _mainView.frame.origin.y, _mainView.frame.size.width, _mainView.frame.size.height);
     }];
 }
 
-- (IBAction)resumeGame:(id)sender {
-    
-    DLog(@"Resume game");
-    
-    delegate.puzzleCompleteImage.alpha = 0;
+- (IBAction)resumeGame:(UIButton *)sender {
+    _delegate.puzzleCompleteImage.alpha = 0;
     [self toggleMenuWithDuration:0.5];
 }
 
-- (IBAction)showThePicture:(id)sender {
+- (IBAction)showThePicture:(UIButton *)sender {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hint" message:@"A shortcut to show the image: hold one finger on the screen for 1 second.\nEnjoy!" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:action];
     [self presentViewController:alertController animated:YES completion:nil];
     
-    [delegate toggleImageWithDuration:0.5];
+    [_delegate toggleImageWithDuration:0.5];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (IS_iPad) {
-        self.view.layer.masksToBounds = YES;
-        self.view.layer.cornerRadius = 20;        
-    }
 
-    obscuringView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    obscuringView.backgroundColor = [UIColor puzzleBackgroundColor];
+    self.view.backgroundColor = [UIColor puzzleBackgroundColor];
+    _obscuringView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _obscuringView.backgroundColor = [UIColor puzzleBackgroundColor];
     
-    chooseLabel = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChooseLabel"]];
-    chooseLabel.alpha = 0;
+    [_delegate.view addSubview:_obscuringView];
+    [_delegate.view bringSubviewToFront:self.view];
     
-    if (IS_iPad) {
-        [obscuringView addSubview:chooseLabel];
-    }
+    _resumeButton.hidden = YES;
+    _showThePictureButton.hidden = YES;
     
-    [delegate.view addSubview:obscuringView];
-    [delegate.view bringSubviewToFront:self.view];
-    
-    resumeButton.hidden = YES;
-    showThePictureButton.hidden = YES; 
-    
-    mainView.frame = CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height);
+    _mainView.frame = CGRectMake(0, 0, _mainView.frame.size.width, _mainView.frame.size.height);
 
-    game = [[NewGameController alloc] init];    
-    game.view.frame = CGRectMake(self.view.frame.size.width, 0, game.view.frame.size.width, game.view.frame.size.height);
-    game.delegate = self;
+    _game = [[NewGameController alloc] init];    
+    _game.view.frame = CGRectMake(self.view.frame.size.width, 0, _game.view.frame.size.width, _game.view.frame.size.height);
+    _game.delegate = self;
 
-    [self.view addSubview:game.view];
+    [self.view addSubview:_game.view];
     
-    loadGameController = [[LoadGameController alloc] init];   
-    loadGameController.view.frame = CGRectMake(mainView.frame.size.width, 0, loadGameController.view.frame.size.width, loadGameController.view.frame.size.height);
-    loadGameController.delegate = self;
+    _loadGameController = [[LoadGameController alloc] init];   
+    _loadGameController.view.frame = CGRectMake(_mainView.frame.size.width, 0, _loadGameController.view.frame.size.width, _loadGameController.view.frame.size.height);
+    _loadGameController.delegate = self;
     
-    [self.view addSubview:loadGameController.view];
+    [self.view addSubview:_loadGameController.view];
 }
 
 @end

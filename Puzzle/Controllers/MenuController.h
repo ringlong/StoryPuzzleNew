@@ -18,40 +18,21 @@
 @class NewGameController;
 @class LoadGameController;
 
-
 @protocol MenuProtocol
 
 - (void)startNewGame;
 
 @end
 
-
-@interface MenuController : UIViewController <NewGameDelegate> {
-    
-    IBOutlet UIButton *resumeButton;
-    IBOutlet UIButton *newGameButton;
-    IBOutlet UIButton *showThePictureButton;
-    IBOutlet UIButton *loadGameButton;
-    
-    IBOutlet UIImageView *image;
-    IBOutlet UIProgressView *progressView;
-    IBOutlet UIActivityIndicatorView *indicator;
-    IBOutlet UIView *loadingView;
-    
-}
+@interface MenuController : UIViewController <NewGameDelegate>
 
 @property (nonatomic, assign) PuzzleController *delegate;
 @property (nonatomic) BOOL duringGame;
 @property (nonatomic, retain) NewGameController *game;
 @property (nonatomic, retain) LoadGameController *loadGameController;
 
+@property (nonatomic, weak) IBOutlet UIView *mainView;
 @property (nonatomic, retain) UIView *obscuringView;
-@property (nonatomic, retain) IBOutlet UIView *mainView;
-@property (nonatomic, retain) IBOutlet UIImageView *chooseLabel;
-
-
-@property (nonatomic, retain) AVAudioPlayer *menuSound;
-
 
 - (IBAction)startNewGame:(id)sender;
 - (IBAction)resumeGame:(id)sender;

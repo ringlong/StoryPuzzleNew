@@ -61,9 +61,6 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
         
     typeOfImageView.hidden = YES;
-    [UIView animateWithDuration:0.3 animations:^{
-        delegate.chooseLabel.alpha = 0;
-    }];
 
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
 
@@ -89,11 +86,6 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        delegate.chooseLabel.alpha = 0;
-    }];
-    
     [self dismissPicker];
 }
 
@@ -103,11 +95,6 @@
 
 - (void)imagePickedFromPuzzleLibrary:(UIImage*)pickedImage {
     typeOfImageView.hidden = YES;
-
-    [UIView animateWithDuration:0.3 animations:^{
-        delegate.chooseLabel.alpha = 0;
-    }];
-
     [delegate.delegate.view bringSubviewToFront:delegate.delegate.menuButtonView];
     
     NSData *dataJPG = UIImageJPEGRepresentation(pickedImage, IMAGE_QUALITY);
@@ -121,16 +108,13 @@
 }
 
 - (IBAction)selectImageFromPuzzleLibrary:(id)sender {
-    delegate.chooseLabel.alpha = 1;
     PuzzleLibraryController *c = [[PuzzleLibraryController alloc] init];
     c.delegate = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:c];
     [self presentViewController:nav animated:YES completion:nil];
 }
 
-- (IBAction)selectImageFromPhotoLibrary:(UIButton*)sender {    
-    delegate.chooseLabel.alpha = 1;
-
+- (IBAction)selectImageFromPhotoLibrary:(UIButton *)sender {
     int direction;
 
     UIImagePickerController *c = [[UIImagePickerController alloc] init];
@@ -151,9 +135,6 @@
 
 - (IBAction)selectImage:(id)sender {
     typeOfImageView.hidden = NO;
-    [UIView animateWithDuration:0.3 animations:^{
-        delegate.chooseLabel.alpha = 0;
-    }];
 }
 
 - (IBAction)startNewGame:(id)sender {
