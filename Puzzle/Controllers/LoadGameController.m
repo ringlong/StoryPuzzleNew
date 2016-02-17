@@ -2,8 +2,8 @@
 //  LoadGameController.m
 //  Puzzle
 //
-//  Created by Andrea Barbon on 14/05/12.
-//  Copyright (c) 2012 Università degli studi di Padova. All rights reserved.
+//  Created by Ryan on 16/2/3.
+//  Copyright © 2016年 BitAuto. All rights reserved.
 //
 
 #import "LoadGameController.h"

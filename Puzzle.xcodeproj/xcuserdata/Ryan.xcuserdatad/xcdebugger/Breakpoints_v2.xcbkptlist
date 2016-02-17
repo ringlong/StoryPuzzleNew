@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Puzzle/Controllers/PuzzleController.m"
-            timestampString = "477306237.988645"
+            timestampString = "477367052.195145"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "873"
-            endingLineNumber = "873"
-            landmarkName = "-resizeLatticeToScale:"
+            startingLineNumber = "874"
+            endingLineNumber = "874"
+            landmarkName = "-createNewGroupForPiece:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Puzzle/Controllers/PuzzleController.m"
-            timestampString = "477306237.988645"
+            timestampString = "477368039.809666"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1871"
-            endingLineNumber = "1871"
-            landmarkName = "-panDrawer:"
+            startingLineNumber = "1857"
+            endingLineNumber = "1857"
+            landmarkName = "-frameOverPiece:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "588"
             endingLineNumber = "588"
-            landmarkName = "-createPieces"
+            landmarkName = "-addAnothePieceToView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -143,7 +143,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "279"
             endingLineNumber = "279"
-            landmarkName = "-loadPuzzle:"
+            landmarkName = "-puzzleSaved:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

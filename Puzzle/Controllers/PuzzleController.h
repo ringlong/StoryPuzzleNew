@@ -2,8 +2,8 @@
 //  PuzzleController.h
 //  Puzzle
 //
-//  Created by Andrea Barbon on 19/04/12.
-//  Copyright (c) 2012 Università degli studi di Padova. All rights reserved.
+//  Created by Ryan on 16/2/3.
+//  Copyright © 2016年 BitAuto. All rights reserved.
 //
 
 @import UIKit;
@@ -20,7 +20,6 @@
 #import "Puzzle.h"
 #import "Image.h"
 #import "CreatePuzzleOperation.h"
-#import "iAdViewController.h"
 
 #define QUALITY 1.5
 
@@ -29,7 +28,7 @@
 
 UIKIT_EXTERN NSString * const kPieceNumberChangedNotification;
 
-@interface PuzzleController : iAdViewController<UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
+@interface PuzzleController : UIViewController<UIGestureRecognizerDelegate, PieceViewProtocol, MenuProtocol, CreatePuzzleDelegate, UIAlertViewDelegate> {
     BOOL swiping;
     BOOL didRotate;
     BOOL receivedFirstTouch;

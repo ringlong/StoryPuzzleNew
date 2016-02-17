@@ -3,7 +3,7 @@
 //  Puzzle
 //
 //  Created by Vanessa on 15/12/10.
-//  Copyright © 2015年 Università degli studi di Padova. All rights reserved.
+//  Copyright © 2015年 BitAuto. All rights reserved.
 //
 
 @import UIKit;

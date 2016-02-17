@@ -2,8 +2,8 @@
 //  PuzzleController.m
 //  Puzzle
 //
-//  Created by Andrea Barbon on 19/04/12.
-//  Copyright (c) 2012 Università degli studi di Padova. All rights reserved.
+//  Created by Ryan on 16/2/3.
+//  Copyright © 2016年 BitAuto. All rights reserved.
 //
 
 #define PIECE_NUMBER 4
@@ -764,8 +764,9 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 }
 
 - (void)pinch:(UIPinchGestureRecognizer *)gesture {
-    if (CGRectContainsPoint(_drawerView.frame, [gesture locationInView:self.view])) return;
-    
+    if (CGRectContainsPoint(_drawerView.frame, [gesture locationInView:self.view])) {
+        return;
+    }
     
     float z = [gesture scale];
     
@@ -1561,19 +1562,17 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         [UIView animateWithDuration:duration animations:^{
             CGPoint center = [self.view convertPoint:[[_lattice objectAtIndex:firstPiecePlace] center] fromView:_lattice];
             int topBar = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) * 20;
-
-            float ad = self.adPresent * self.adBannerView.frame.size.height;
             
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
                 
                 _lattice.transform = CGAffineTransformTranslate(_lattice.transform,
                 -center.x/_lattice.scale+(_piceSize-2*_padding)+(drawerSize)/_lattice.scale,
-                -center.y/_lattice.scale+(_piceSize-2*_padding)+10-ad/_lattice.scale/2);
+                -center.y/_lattice.scale + _piceSize-2 * _padding + 10);
             } else {
                 
                 _lattice.transform = CGAffineTransformTranslate(_lattice.transform,
-                -center.x/_lattice.scale+(_piceSize-2*_padding),
-                -center.y/_lattice.scale+(_piceSize-2*_padding)+(HUDView.bounds.size.height-ad)/_lattice.scale-topBar);
+                -center.x / _lattice.scale + _piceSize - 2 * _padding,
+                -center.y / _lattice.scale + _piceSize - 2 * _padding + HUDView.height / _lattice.scale - topBar);
             }
             [self refreshPositions];
         }];
@@ -1636,12 +1635,12 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     
     NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:_pieces];
     
-    if ([temp count] == 0) {
+    if (temp.count == 0) {
         return;
     }
     
-    //Removes removed pieces
-    for (int i=0; i<[_pieces count]; i++) {
+    // Removes removed pieces
+    for (int i = 0; i < _pieces.count; i++) {
         
         PieceView *p = [_pieces objectAtIndex:i];
         if (p.isFree || p.isLifted) {
@@ -1649,52 +1648,39 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         }
     }
     
-    
-    if ((drawerFirstPoint.x==0 && drawerFirstPoint.y==0) ){//|| removed) {
-        
-        PieceView *p = [temp objectAtIndex:0];
-        drawerFirstPoint.x = [p frame].origin.x+p.bounds.size.height/2;
-        drawerFirstPoint.y = [p frame].origin.y+p.bounds.size.height/2;
-        //DLog(@"FirstPoint = %.1f, %.1f", drawerView.frame.origin.x, drawerView.frame.origin.y);
-
+    if (drawerFirstPoint.x == 0 && drawerFirstPoint.y == 0) {
+        PieceView *p = temp.firstObject;
+        drawerFirstPoint.x = p.left + p.height / 2;
+        drawerFirstPoint.y = p.top + p.height / 2;
     }
     
-    float bannerHeight = (self.adBannerView.frame.size.height)*self.adBannerView.bannerLoaded;
-    if (IS_iPad) {
-        bannerHeight -= 20 * self.adBannerView.bannerLoaded;
-    }
-    
-    for (int i=0; i<[temp count]; i++) {
+    for (int i = 0; i < temp.count; i++) {
         
-        PieceView *p = [temp objectAtIndex:i];
+        PieceView *p = temp[i];
         
         CGPoint point = p.center;
         PieceView *p2;
         
-        if (i>0) {
+        if (i > 0) {
             p2 = [temp objectAtIndex:i-1];
             CGPoint point2 = p2.center;
             
             if (UIInterfaceOrientationIsLandscape(orientation)) {
-                point.y = point2.y+p2.bounds.size.width+drawerMargin;
-                point.x = _drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
+                point.y = point2.y + p2.width + drawerMargin;
+                point.x = _drawerView.center.x;
             } else {
-                point.x = point2.x+p2.bounds.size.width+drawerMargin;
-                point.y = UIScreen.screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
+                point.x = point2.x + p2.width + drawerMargin;
+                point.y = UIScreen.screenHeight - drawerSize + self.padding * 0.75 / 2 + p.height / 2;
             }
             
         } else {
             if (UIInterfaceOrientationIsLandscape(orientation)) {
-                point.y = drawerFirstPoint.y+p.bounds.size.height/2+drawerMargin;
-                point.x = _drawerView.center.x; //(self.padding*0.75)/2+p.bounds.size.width/2;;
+                point.y = drawerFirstPoint.y + p.height / 2 + drawerMargin;
+                point.x = _drawerView.centerX;
             } else {
-                point.x = drawerFirstPoint.x+p.bounds.size.width/2+drawerMargin;
-                point.y = UIScreen.screenHeight-drawerSize+(self.padding*0.75)/2+p.bounds.size.height/2-bannerHeight;
+                point.x = drawerFirstPoint.x + p.width / 2 + drawerMargin;
+                point.y = UIScreen.screenHeight - drawerSize + self.padding * 0.75 / 2 + p.height / 2;
             }
-        }
-
-        if (!didRotate && IS_iPad) {
-            //point.y += 20;
         }
         
         p.center = point;
@@ -2129,9 +2115,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     CGPoint chooseCenter = CGPointZero;
     CGPoint completedCenter = CGPointZero;
     
-    float bannerHeight = self.adBannerView.frame.size.height*self.adBannerView.bannerLoaded;
-    
-    
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && !UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
         
         
@@ -2168,7 +2151,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
         drawerFrame.size.height = drawerSize;
         drawerFrame.size.width = UIScreen.screenWidth;
         drawerFrame.origin.x = 0;
-        drawerFrame.origin.y = UIScreen.screenWidth - drawerSize - bannerHeight / 2;
+        drawerFrame.origin.y = UIScreen.screenWidth - drawerSize;
         
         stepperFrame.origin.y = drawerFrame.size.height;
         stepperFrame.origin.x = drawerFrame.size.width - stepperFrame.size.width - 10;

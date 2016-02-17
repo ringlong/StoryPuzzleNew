@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Puzzle/Controllers/PuzzleController.m"
-            timestampString = "477308880.049591"
+            timestampString = "477368039.809666"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2686"
-            endingLineNumber = "2686">
+            startingLineNumber = "2669"
+            endingLineNumber = "2669">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,11 +24,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Puzzle/Controllers/PuzzleController.m"
-            timestampString = "477308880.049591"
+            timestampString = "477368039.809666"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2678"
-            endingLineNumber = "2678">
+            startingLineNumber = "2661"
+            endingLineNumber = "2661">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -60,6 +60,38 @@
             startingLineNumber = "56"
             endingLineNumber = "56"
             landmarkName = "-reloadData"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Puzzle/Controllers/PuzzleController.m"
+            timestampString = "477310525.367515"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "707"
+            endingLineNumber = "707"
+            landmarkName = "-addGestures"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Puzzle/Controllers/PuzzleController.m"
+            timestampString = "477310607.645032"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "712"
+            endingLineNumber = "712"
+            landmarkName = "-addGestures"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
