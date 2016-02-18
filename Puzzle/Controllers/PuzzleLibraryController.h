@@ -6,8 +6,7 @@
 //  Copyright © 2016年 BitAuto. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
+@import UIKit;
 @class NewGameController;
 
 @interface PuzzleLibraryController : UITableViewController {

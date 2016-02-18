@@ -69,7 +69,7 @@
 
 - (void)showNewGameView {
     _game.tapToSelectLabel.hidden = NO;
-    _game.startButton.enabled = _game.image.image;
+    _game.startButton.enabled = (_game.image.image != nil);
     _game.view.frame = CGRectMake(0, _game.view.frame.origin.y, _game.view.frame.size.width, _game.view.frame.size.height);
     _mainView.frame = CGRectMake(-_mainView.frame.size.width, _mainView.frame.origin.y, _mainView.frame.size.width, _mainView.frame.size.height);
 }

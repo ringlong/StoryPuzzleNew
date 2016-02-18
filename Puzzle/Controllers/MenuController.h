@@ -6,14 +6,12 @@
 //  Copyright © 2016年 BitAuto. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
 #import "NewGameController.h"
 
-#import <AVFoundation/AVAudioPlayer.h>
-#import <MediaPlayer/MediaPlayer.h>
-
-
+@import UIKit;
+@import QuartzCore;
+@import AVFoundation;
+@import MediaPlayer;
 @class PuzzleController;
 @class NewGameController;
 @class LoadGameController;
