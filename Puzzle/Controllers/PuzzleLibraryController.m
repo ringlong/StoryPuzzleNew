@@ -64,7 +64,7 @@
     NSArray *dirContents = [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:nil];
     NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:dirContents.count];
     for (NSString *string in dirContents) {
-        if ([string hasSuffix:@"-puzzle.jpeg"]) {
+        if ([string hasSuffix:@"-puzzle.jpg"]) {
             [tempArray addObject:[UIImage imageWithContentsOfFile:string]];
         }
     }
@@ -75,7 +75,7 @@
     NSArray *dirContents = [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:nil];
     NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:dirContents.count];
     for (NSString *string in dirContents)  {
-        if ([string hasSuffix:@"-puzzle.jpeg"]) {
+        if ([string hasSuffix:@"-puzzle.jpg"]) {
             [tempArray addObject:string];
         }
     }
