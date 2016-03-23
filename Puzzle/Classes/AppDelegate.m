@@ -10,6 +10,7 @@
 #import "PuzzleController.h"
 #import "CreatePuzzleOperation.h"
 #import "FLEXManager.h"
+#import "GameCenterManager.h"
 
 @implementation AppDelegate
 
@@ -31,6 +32,8 @@
     _puzzle.managedObjectContext = self.managedObjectContext;
     _puzzle.persistentStoreCoordinator = self.persistentStoreCoordinator;
     [_puzzle loadPuzzle:[_puzzle lastSavedPuzzle]];
+    
+    [[GameCenterManager sharedManager] setupManager];
     
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     [UINavigationBar appearance].barStyle = UIBarStyleBlack;
@@ -152,10 +155,6 @@
     }
     
     return __persistentStoreCoordinator;
-    /*
-    __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {} 
-    */
 }
 
 #pragma mark - Application's Documents directory

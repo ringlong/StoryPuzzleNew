@@ -20,12 +20,13 @@
 #import "AppDelegate.h"
 #import "GroupView.h"
 #import "LoadGameController.h"
+#import "GameCenterManager.h"
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
 NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
-@interface PuzzleController ()
+@interface PuzzleController ()<GameCenterManagerDelegate>
 
 @property (nonatomic, strong) UIButton *nextButton;
 
@@ -39,7 +40,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [GameCenterManager sharedManager].delegate = self;
     if (IS_iPad){
         _panningSwitch.hidden = YES;
     } else {
@@ -259,8 +260,6 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
     [self.view bringSubviewToFront:_menu.view];
     [self.view bringSubviewToFront:_menuButtonView];
     [_menu toggleMenuWithDuration:(sender != nil) * 0.5];
-//    _menu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//    [self presentViewController:_menu animated:YES completion:NULL];
 }
 
 - (void)prepareForLoading {
