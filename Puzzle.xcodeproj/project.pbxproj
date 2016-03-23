@@ -43,6 +43,7 @@
 		602983F076B9E99CA2600ECB /* libPods-Puzzle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E1573E001317C1298F87A6 /* libPods-Puzzle.a */; };
 		942BB0CC1C0FD69B0024232F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 942BB0CB1C0FD69B0024232F /* Assets.xcassets */; };
 		94B1F1B01C60952800E72133 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94B1F1AF1C60952800E72133 /* Launch Screen.storyboard */; };
+		94F147901C97DDE8002C64EE /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94F1478F1C97DDE8002C64EE /* GameKit.framework */; };
 		B804EF3A1560870F00826712 /* BelloPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B804EF391560870F00826712 /* BelloPro.ttf */; };
 		B804EF3E156101DF00826712 /* PuzzleCompletedController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */; };
 		B82375801561B58000426E92 /* LoadGameController.m in Sources */ = {isa = PBXBuildFile; fileRef = B823757E1561B58000426E92 /* LoadGameController.m */; };
@@ -125,6 +126,7 @@
 		54E1573E001317C1298F87A6 /* libPods-Puzzle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Puzzle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		942BB0CB1C0FD69B0024232F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		94B1F1AF1C60952800E72133 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		94F1478F1C97DDE8002C64EE /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		AC74B84026307EBD6FA5290B /* Pods-Puzzle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Puzzle.release.xcconfig"; path = "Pods/Target Support Files/Pods-Puzzle/Pods-Puzzle.release.xcconfig"; sourceTree = "<group>"; };
 		B804EF391560870F00826712 /* BelloPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BelloPro.ttf; sourceTree = "<group>"; };
 		B804EF3D156101DF00826712 /* PuzzleCompletedController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleCompletedController_iPhone.xib; path = Controllers/PuzzleCompletedController_iPhone.xib; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94F147901C97DDE8002C64EE /* GameKit.framework in Frameworks */,
 				B8DBEA061581589B005199B4 /* Security.framework in Frameworks */,
 				B8DBE9FD15813412005199B4 /* iAd.framework in Frameworks */,
 				B8E18159155000C200A8B450 /* MediaPlayer.framework in Frameworks */,
@@ -286,6 +289,7 @@
 		B87C5CC415400B2A00AF69BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94F1478F1C97DDE8002C64EE /* GameKit.framework */,
 				B8DBEA0415815887005199B4 /* Security.framework */,
 				B8DBE9FC15813412005199B4 /* iAd.framework */,
 				B8E18158155000C200A8B450 /* MediaPlayer.framework */,
@@ -444,6 +448,17 @@
 				TargetAttributes = {
 					B87C5CC015400B2A00AF69BC = {
 						DevelopmentTeam = 6T9HA9B248;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -698,7 +713,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Hongyu Ren (B3NH3LR2V4)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Puzzle/Puzzle-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
@@ -706,7 +721,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = vanessa.StoryPuzzle;
 				PRODUCT_NAME = "Your$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2cc57b45-c82c-4d18-b2d8-b65722010d6f";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

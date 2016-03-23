@@ -31,8 +31,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(piecesNotificationResponse:) name:kPieceNumberChangedNotification object:nil];
     
-    slider.maximumValue = 8;
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value * (int)slider.value];
+    _slider.maximumValue = 8;
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)_slider.value * (int)_slider.value];
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         cameraButton.enabled = NO;
@@ -142,7 +142,7 @@
     _delegate.delegate.imageView.image = _delegate.delegate.image;
     _delegate.delegate.imageViewLattice.image = _delegate.delegate.image;
     if (!self.slider.hidden) {
-        _delegate.delegate.pieceNumber = (int)slider.value;
+        _delegate.delegate.pieceNumber = (int)_slider.value;
     }
     
     [self startLoading];
@@ -174,7 +174,7 @@
     if (_delegate.delegate.loadingGame) {
          int n = [_delegate.delegate.puzzleDB.pieceNumber intValue];
         pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", n*n];
-        slider.value = (float)n;
+        _slider.value = (float)n;
         tapToSelectView.hidden = YES;
         _image.image = _delegate.delegate.image;
 
@@ -182,7 +182,7 @@
          _image.image = _delegate.delegate.image;
     }
 
-    slider.enabled = NO;    
+    _slider.enabled = NO;    
     
     if (!_image.image) {
         _image.image = [UIImage imageNamed:@"Wood.jpg"];
@@ -206,12 +206,12 @@
     _startButton.hidden = NO;
     backButton.hidden = NO;
     pieceNumberLabel.hidden = NO;    
-    slider.enabled = YES;    
+    _slider.enabled = YES;    
     piecesLabel.hidden = NO;
     tapToSelectView.hidden = NO;
     _tapToSelectLabel.hidden = NO;
 
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value * (int)slider.value];
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)_slider.value * (int)_slider.value];
 }
 
 - (void)loadingFailed {
@@ -229,12 +229,12 @@
     backButton.hidden = NO;
     
     pieceNumberLabel.hidden = NO;    
-    slider.enabled = YES;    
+    _slider.enabled = YES;    
     piecesLabel.hidden = NO;
     tapToSelectView.hidden = NO;
     _tapToSelectLabel.hidden = NO ;
     
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)slider.value*(int)slider.value];    
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%d ", (int)_slider.value*(int)_slider.value];    
     
     self.view.frame = CGRectMake(self.view.width, self.view.top,
                                  self.view.width, self.view.height);
@@ -242,7 +242,7 @@
 
 - (void)moveBar {
     float a = (float)_delegate.delegate.loadedPieces;
-    float b = (float)(slider.value * slider.value);
+    float b = (float)(_slider.value * _slider.value);
     
     if (_delegate.delegate.loadingGame) {
         b = _delegate.delegate.NumberSquare;
@@ -251,7 +251,7 @@
 }
 
 - (IBAction)numberSelected:(UISlider *)sender {
-    pieceNumberLabel.text = [NSString stringWithFormat:@"%@ ", @(slider.value * slider.value)];
+    pieceNumberLabel.text = [NSString stringWithFormat:@"%@ ", @(_slider.value * _slider.value)];
 }
 
 @end

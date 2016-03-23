@@ -10,6 +10,7 @@
 #import "PuzzleController.h"
 #import "NewGameController.h"
 #import "LoadGameController.h"
+#import "FLEXManager.h"
 
 @interface MenuController ()
 
@@ -96,6 +97,10 @@
     [self presentViewController:alertController animated:YES completion:nil];
     
     [_delegate toggleImageWithDuration:0.5];
+}
+
+- (IBAction)showFLEX:(UIButton *)sender {
+    [[FLEXManager sharedManager] showExplorer];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

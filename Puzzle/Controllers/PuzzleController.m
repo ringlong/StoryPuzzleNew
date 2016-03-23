@@ -1291,7 +1291,7 @@ NSString * const kPieceNumberChangedNotification = @"PieceNumberChanged";
                                 otherPiece.hasNeighbors = YES;
                                 
                                 if (!_loadingGame &&
-                                    !Is_Device_Playing_Music &&
+                                    !(Is_Device_Playing_Music) &&
                                     ![self isTheFuckingPiecePositioned:piece]) {
                                 }
                                 

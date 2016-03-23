@@ -36,13 +36,13 @@
 
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 
-@property (nonatomic, retain) NSString *imagePath;
+@property (nonatomic, copy) NSString *imagePath;
 @property (nonatomic, assign) MenuController *delegate;
-@property (nonatomic, retain) IBOutlet UIButton *startButton;
-@property (nonatomic, retain) IBOutlet UIImageView *image;
-@property (nonatomic, retain) IBOutlet UIView *tapToSelectLabel;
-@property (nonatomic, retain) IBOutlet UIButton *puzzleLibraryButton;
-@property (nonatomic, retain) IBOutlet UISlider *slider;
+@property (nonatomic, weak) IBOutlet UIButton *startButton;
+@property (nonatomic, weak) IBOutlet UIImageView *image;
+@property (nonatomic, weak) IBOutlet UIView *tapToSelectLabel;
+@property (nonatomic, weak) IBOutlet UIButton *puzzleLibraryButton;
+@property (nonatomic, weak) IBOutlet UISlider *slider;
 
 - (IBAction)startNewGame:(id)sender;
 - (IBAction)numberSelected:(UISlider*)sender;
